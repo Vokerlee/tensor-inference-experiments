@@ -3,15 +3,11 @@
 Reproducible inference experiments: model adapters, data pipelines, evaluation,
 and automated report generation.
 
-Research hypotheses and their interpretation live in
-[`energy-efficient-inference-phd`](https://github.com/Vokerlee/energy-efficient-inference-phd).
-
 ## Engine dependency
 
-The general execution engine lives in
-[`tensor-inference-engine`](https://github.com/Vokerlee/tensor-inference-engine),
-included as a submodule at `deps/tensor-inference-engine`. Each commit of this
-repository records the exact engine revision used by its experiments.
+The execution engine is included as a submodule at `deps/tensor-inference-engine`.
+Each commit of this repository records the exact engine revision used by its
+experiments.
 
 Clone the repository with its submodules:
 
