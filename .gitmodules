@@ -1,0 +1,3 @@
+[submodule "deps/tensor-inference-engine"]
+	path = deps/tensor-inference-engine
+	url = https://github.com/Vokerlee/tensor-inference-engine.git
