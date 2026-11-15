@@ -20,3 +20,27 @@ For an existing checkout, or after checking out a historical revision:
 ```sh
 git submodule update --init --recursive
 ```
+
+## Python environment
+
+Use CPython 3.12 on Linux x86_64. Initialize the engine submodule before
+installing the environment:
+
+```sh
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m pip check
+```
+
+The requirements include the engine's pinned CUDA 12.8 runtime/build/test
+environment through `-r deps/tensor-inference-engine/requirements.txt`.
+Only torchvision, NumPy, and Pillow are added here, with exact versions.
+Shared package pins and the official CUDA wheel index remain in the engine's
+file. The recorded engine revision contains that file, so a recursive checkout
+restores both parts of the environment.
+
+CUDA runtime wheels require a compatible NVIDIA driver. Building custom CUDA
+operators additionally needs a separate native compiler/toolkit setup; the
+planned baseline uses CUDA 12.8. Model checkpoints, datasets, and the native
+toolchain are versioned separately from Python dependencies. No inference
+experiment is implemented by this environment setup alone.
