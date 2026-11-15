@@ -1,0 +1,8 @@
+# CPython 3.12 / Linux x86_64 / CUDA 12.8.
+# Shared runtime/build/test pins are owned by the engine.
+-r deps/tensor-inference-engine/requirements.txt
+
+# Experiment-specific packages and their additional dependencies.
+numpy==2.5.4
+pillow==13.0.0
+torchvision==0.26.0+cu128
