@@ -44,3 +44,8 @@ operators additionally needs a separate native compiler/toolkit setup; the
 planned baseline uses CUDA 12.8. Model checkpoints, datasets, and the native
 toolchain are versioned separately from Python dependencies. No inference
 experiment is implemented by this environment setup alone.
+
+## CUDA GEMM baseline
+
+See [build, validation and benchmark instructions](docs/benchmark-gemm.md) for
+running the custom engine operator against Torch with matched arithmetic.
