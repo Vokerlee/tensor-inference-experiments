@@ -181,15 +181,79 @@ def operator_measurements(layers, inputs, args):
     return records
 
 
+def quality_measurements(model, layers, loader, class_indices, args):
+    """Paired whole-model evaluations; no thresholds fitted to these labels."""
+    metadata = {name: selection.group_gram(layer.weight.detach().t().contiguous())
+                for name, layer in layers.items()}
+    batches = [(images.to(device="cuda", dtype=torch.bfloat16),
+                torch.tensor([class_indices[label] for label in labels], device="cuda"))
+               for images, labels in loader]
+    records = []
+    baseline_predictions = None
+    for case in args.case:
+        handles = []
+        if case != "baseline":
+            policy, bits_text = case.split(":")
+            bits = int(bits_text)
+            if policy not in (*POLICIES, "dense") or bits not in (4, 8, 16):
+                raise ValueError(f"unsupported case {case}")
+
+            def hook(name):
+                def alter(module, inputs):
+                    x = inputs[0]
+                    q = (x.float() if bits == 16 else
+                         selection.quantize_symmetric(x, bits, args.group_size))
+                    q = q.bfloat16().float()
+                    if policy != "dense":
+                        q, _ = selection.select_2of4(x, q, metadata[name], policy)
+                    return (q.to(x.dtype), *inputs[1:])
+                return alter
+
+            handles = [layer.register_forward_pre_hook(hook(name)) for name, layer in layers.items()
+                       if args.scope == "all" or name.endswith(".3")]
+        predictions, targets = [], []
+        restricted_predictions = []
+        try:
+            for images, labels in batches:
+                logits = model(images).float()
+                predictions.extend(logits.argmax(-1).cpu().tolist())
+                restricted_predictions.extend(
+                    logits[:, class_indices].argmax(-1).cpu().tolist())
+                targets.extend(labels.cpu().tolist())
+        finally:
+            for handle in handles:
+                handle.remove()
+        if case == "baseline":
+            baseline_predictions = predictions
+        correct = [prediction == target for prediction, target in zip(predictions, targets)]
+        restricted_correct = [class_indices[prediction] == target
+                              for prediction, target in zip(restricted_predictions, targets)]
+        record = {"case": case, "scope": args.scope, "count": len(targets),
+                  "top1_imagenet1000": sum(correct) / len(correct),
+                  "top1_restricted10": sum(restricted_correct) / len(correct),
+                  "predictions": predictions, "targets": targets,
+                  "correct": correct}
+        if baseline_predictions is not None:
+            record["agreement_with_baseline"] = sum(
+                a == b for a, b in zip(predictions, baseline_predictions)) / len(targets)
+        records.append(record)
+        print(json.dumps({key: value for key, value in record.items()
+                          if key not in ("predictions", "targets", "correct")}), flush=True)
+    return records
+
+
 def parser():
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--model", choices=MODELS, required=True)
-    result.add_argument("--phase", choices=["geometry", "operator"], required=True)
+    result.add_argument("--phase", choices=["geometry", "operator", "quality"], required=True)
     result.add_argument("--samples-per-class", type=int, default=4)
     result.add_argument("--rows-per-image", type=int, default=8)
     result.add_argument("--batch-size", type=int, default=8)
     result.add_argument("--bits", type=int, nargs="+", default=[16, 8, 4], choices=[4, 8, 16])
     result.add_argument("--group-size", type=int, default=32)
+    result.add_argument("--scope", choices=["all", "down"], default="all")
+    result.add_argument("--case", action="append", default=None,
+                        help="repeat baseline or POLICY:BITS; includes dense:4/8")
     result.add_argument("--output", type=Path, required=True)
     return result
 
@@ -211,6 +275,13 @@ def main():
         report["dataset"]["manifest"] = manifest
         inputs = capture_inputs(model, layers, loader, args.rows_per_image)
         report["operators"] = operator_measurements(layers, inputs, args)
+    elif args.phase == "quality":
+        args.case = args.case or ["baseline", "dense:4", "diagonal:16", "gram:16",
+                                  "diagonal:4", "gram:4"]
+        loader, class_indices, manifest = load_data(
+            weights, args.samples_per_class, "quality", args.batch_size)
+        report["dataset"]["manifest"] = manifest
+        report["quality"] = quality_measurements(model, layers, loader, class_indices, args)
     write_json(args.output, report)
     print(f"Saved {args.output}", flush=True)
 
