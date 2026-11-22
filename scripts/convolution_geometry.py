@@ -131,12 +131,19 @@ class MatrixCounter(TorchDispatchMode):
 
     def __torch_dispatch__(self, function, types, args=(), kwargs=None):
         if not self.inside_sdpa:
-            if function == torch.ops.aten.addmm.default:
+            if function == torch.ops.aten.linear.default:
+                values, weight = args[:2]
+                self.macs += math.prod(values.shape[:-1]) * values.shape[-1] * weight.shape[0]
+            elif function == torch.ops.aten.addmm.default:
                 left, right = args[1:3]
                 self.macs += left.shape[0] * left.shape[1] * right.shape[1]
-            elif function in (torch.ops.aten.mm.default, torch.ops.aten.bmm.default):
+            elif function in (torch.ops.aten.mm.default, torch.ops.aten.bmm.default,
+                               torch.ops.aten.matmul.default):
                 left, right = args[:2]
-                self.macs += math.prod(left.shape[:-2]) * left.shape[-2] * left.shape[-1] * right.shape[-1]
+                batch = math.prod(torch.broadcast_shapes(left.shape[:-2], right.shape[:-2]))
+                rows = left.shape[-2] if left.ndim > 1 else 1
+                columns = right.shape[-1] if right.ndim > 1 else 1
+                self.macs += batch * rows * left.shape[-1] * columns
         return function(*args, **(kwargs or {}))
 
 

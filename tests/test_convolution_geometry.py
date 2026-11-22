@@ -6,6 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 import torch
+import pytest
 from torch.nn import functional as F
 
 from convolution_geometry import Convolution, attention_counter, inventory, valid_axis
@@ -49,8 +50,9 @@ def test_attention_counts_both_products_and_restores_function():
     assert F.scaled_dot_product_attention is original
 
 
-def test_explicit_attention_and_sdpa_are_counted_without_double_counting():
-    with torch.device("meta"):
+@pytest.mark.parametrize("inference", [False, True])
+def test_explicit_attention_and_sdpa_are_counted_without_double_counting(inference):
+    with torch.inference_mode(inference), torch.device("meta"):
         model = torch.nn.Linear(8, 8)
         x = torch.empty(2, 3, 8)
 
