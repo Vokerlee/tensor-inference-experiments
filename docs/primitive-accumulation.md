@@ -1,0 +1,38 @@
+# Primitive accumulation numerical reference
+
+`scripts/primitive_accumulation_reference.py` evaluates two arithmetic contracts
+using identical group32 integer codes and power-of-two scales. It is a research
+oracle, with Python control and Torch products; its latency does not estimate
+a deployed hardware controller.
+
+The group-FP32 baseline computes each group dot product exactly, scales that
+sum and merges groups in FP32. Code magnitudes at most 127 keep every prefix
+of a 32-element integer dot product below 2^24, so FP32 represents it exactly.
+The guarded path uses activation maximum/L1 values and prepared weight extrema
+to bound every integer prefix across the current K slice. If one signed width
+suffices for all 128 output columns, it aligns group sums in a common integer
+domain and converts at the primitive output. Otherwise it uses the baseline.
+No receiving GEMM is used to make the guard decision.
+
+The exact-integer oracle uses FP64 to represent bounded integers of at most
+48 bits. This is a testing device, not a proposal to deploy FP64. Both paths
+emit FP32 after **every** K slice and merge emitted slices in FP32. A test
+distinguishes this behavior from preserving an exact integer sum over all K.
+
+K=128 and K=256 are explicitly selectable design contracts with the
+[fixed vector interface](matrix-unit-interface.md). INT8/E2M1 code support in
+those geometries is a proposed datapath option; it does not follow from the
+existing BF16/FP8 input modes. Required encoding, alignment, buffering,
+integer state, control and fallback hardware remain costs to characterize.
+
+Counters separate accepted vector groups, useful products and baseline
+floating group merges replaced. Products and fixed-size calls are retained;
+fewer floating merges is not an energy percentage. Numerical output changes
+are measured before any model-output BF16 cast, using the same represented
+inputs for the local comparison. Whole-model quality must be measured
+separately, following the same separation of local and propagated errors.
+
+Integer alignment/deferred conversion already occur in
+[Bucket Getter](https://doi.org/10.1145/3613424.3614249) and intermediate precision
+codesign in [MIAO](https://arxiv.org/abs/2611.19722v1). Passing this oracle is
+not evidence of novelty or a hardware energy advantage over those designs.
