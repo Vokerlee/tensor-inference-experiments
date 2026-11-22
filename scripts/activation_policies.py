@@ -18,7 +18,7 @@ def packed_gram(gram):
 
 
 def sparse_selection(x, q, gram, packed, policy, backend):
-    if backend == "cuda" and policy in {"diagonal", "gram"}:
+    if backend in {"cuda", "cuda-tile"} and policy in {"diagonal", "gram"}:
         shape = x.shape
         output, pairs = torch.ops.tensor_inference_engine.select_2of4(
             x.float().reshape(-1, shape[-1]).contiguous(),
@@ -86,6 +86,22 @@ def adaptive_representation(x, gram, packed, family, policy, tolerance, args):
     if policy not in {"diagonal", "gram"} or tolerance <= 0:
         raise ValueError("adaptive cases need diagonal/gram and positive relative tolerance")
     shape = x.shape
+    if family == "precision" and args.selector_backend == "cuda-tile":
+        flat = x.reshape(-1, shape[-1])
+        low_format = getattr(args, "low_format", "int4")
+        if args.group_size != 32 or getattr(args, "mode_rows", 128) != 128 or low_format == "affine4":
+            raise ValueError("native tile precision supports128 rows, group32 and INT4/E2M1")
+        output, modes = torch.ops.tensor_inference_engine.adaptive_precision(
+            flat.contiguous(), packed, tolerance,
+            low_format == "e2m1", policy == "diagonal")
+        expanded = modes.repeat_interleave(128, 0).repeat_interleave(128, 1)
+        expanded = expanded[:flat.shape[0], :flat.shape[1]]
+        counts = torch.zeros(6, device=x.device, dtype=torch.int64)
+        elements = torch.zeros_like(counts)
+        for mode, index in [(0, 3), (1, 1), (2, 0)]:
+            counts[index] = (modes == mode).sum()
+            elements[index] = (expanded == mode).sum()
+        return output.reshape(shape), counts, elements
     original = x.float().reshape(-1, shape[-1])
     candidates = [(0, original, 1.0)]
     if family in {"adaptive", "precision"}:

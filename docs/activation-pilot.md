@@ -126,3 +126,14 @@ block in row-major order and the previous token row's corresponding channels.
 It reports ideal saved bytes against a hypothetical separate raw-data pass,
 and explicitly zero such saving against a producer-buffered current-bin path.
 Hit rate alone does not establish an efficient predictor or replay mechanism.
+
+## Native precision-policy backend
+
+`--selector-backend cuda-tile` runs precision-only INT4/E2M1 versus INT8 with
+the engine's buffered128x128 CUDA controller. It requires group32,128 mode
+rows and the selected engine revision. Other policy families still use their
+reference orchestration and native mask evaluators. The adapter records mode
+and MAC counters separately from the kernel. Its model output remains a BF16
+reconstruction. The benchmark distinguishes a bare native controller from the
+same policy including counter collection; setup metadata regeneration has its
+own timing and is not assumed to occur on every inference.

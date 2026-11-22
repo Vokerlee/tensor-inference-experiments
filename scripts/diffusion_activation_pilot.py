@@ -28,11 +28,11 @@ def main():
     parser.add_argument("--batch-size", type=int, default=2)
     parser.add_argument("--case", action="append", default=None)
     parser.add_argument("--low-format", choices=["int4", "affine4", "e2m1"], default="int4")
+    parser.add_argument("--selector-backend", choices=["cuda", "cuda-tile"], default="cuda")
     args = parser.parse_args()
     args.case = args.case or ["baseline", "dense:4", "diagonal:4", "gram:4",
                               "adaptive-diagonal:0.01", "adaptive-gram:0.01"]
     args.group_size = 32
-    args.selector_backend = "cuda"
     if args.case[0] != "baseline" or min(args.steps, args.batch_size) <= 0:
         parser.error("baseline must be first; steps and batch size must be positive")
     if any(label < 0 or label > 999 for label in args.classes):
