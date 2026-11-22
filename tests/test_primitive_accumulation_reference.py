@@ -60,3 +60,18 @@ def test_invalid_integer_code_range_is_rejected():
     exponent = torch.zeros(1, 4, dtype=torch.int32)
     with pytest.raises(ValueError, match="magnitudes"):
         multiply(codes, exponent, codes, exponent)
+
+
+def test_cached_source_statistics_preserve_the_guarded_result():
+    generator = torch.Generator().manual_seed(91)
+    a = torch.randint(-127, 128, (3, 4, 32), generator=generator)
+    w = torch.randint(-127, 128, (5, 4, 32), generator=generator)
+    ae = torch.randint(-10, 0, (3, 4), generator=generator, dtype=torch.int32)
+    we = torch.randint(-10, 0, (5, 4), generator=generator, dtype=torch.int32)
+    stats = (a.abs().amax(-1), a.abs().sum(-1))
+    actual = multiply(a, ae, w, we, accumulator_width=24, a_statistics=stats)
+    reference = multiply(a, ae, w, we, accumulator_width=24)
+    assert torch.equal(actual, reference)
+    maximum_only = multiply(a, ae, w, we, accumulator_width=32,
+                            a_statistics=(stats[0], None), bound_kind="max")
+    assert torch.equal(maximum_only, multiply(a, ae, w, we, accumulator_width=32, bound_kind="max"))

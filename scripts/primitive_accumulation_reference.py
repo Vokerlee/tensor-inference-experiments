@@ -30,7 +30,8 @@ class Counters:
 def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
              w_codes: torch.Tensor, w_exponents: torch.Tensor, *,
              reduction_width: int = 128, accumulator_width: int | None = None,
-             counters: Counters | None = None) -> torch.Tensor:
+             counters: Counters | None = None, a_statistics=None,
+             bound_kind: str = "min") -> torch.Tensor:
     """Reduce represented operands, emitting FP32 after every K slice.
 
     Inputs are [rows, groups, 32] activation and [columns, groups, 32] weight
@@ -68,7 +69,11 @@ def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
         w = w_codes[:, begin:end]
         we = w_exponents[:, begin:end]
         if accumulator_width is not None:
-            fits, anchors = guarded_rows(a, ae, w, we, accumulator_width, 128)
+            statistics = None if a_statistics is None else (
+                a_statistics[0][:, begin:end],
+                None if a_statistics[1] is None else a_statistics[1][:, begin:end])
+            fits, anchors = guarded_rows(a, ae, w, we, accumulator_width, 128,
+                                        a_statistics=statistics, bound_kind=bound_kind)
         for column in range(0, columns, 128):
             stop = min(column + 128, columns)
             reference = torch.zeros(rows, stop - column, dtype=torch.float32, device=a.device)
