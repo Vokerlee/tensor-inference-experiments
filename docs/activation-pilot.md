@@ -101,3 +101,28 @@ Use the recorded mode names when comparing counts across different menus.
 Native fixed symmetric CUDA cases use the fused engine preparation kernel;
 affine/FP4 and multi-mode decisions use numerical references. Their GPU
 latencies are not comparable without accounting for these implementations.
+
+## Preparation and stream diagnostics
+
+```sh
+.venv/bin/python scripts/benchmark_selection.py --output results/preparation-timing.json
+.venv/bin/python scripts/activation_stream_diagnostics.py --model vit_b_16 \
+    --output results/vit-streams.json
+```
+
+Run timing without concurrent GPU jobs. CUDA graph trials compare selectors,
+unfused/fused current-group preparation and ordinary BF16 GEMM. Reconstructed
+outputs, metadata availability and supported inputs are explicit. Multi-mode
+evaluation, sparse packing and target-chip control are outside that benchmark.
+
+Stream diagnostics capture complete token rows from ten reserved images. A
+real-arithmetic sufficient condition compares the best two diagonal-mask losses
+using a normalized Gram off-diagonal bound. The script checks certified choices
+against the full local objective with stated FP32 tolerances; this is not a
+floating-point proof or a whole-model certificate.
+
+Scale-bin prediction is evaluated in two declared orders: previous32-value
+block in row-major order and the previous token row's corresponding channels.
+It reports ideal saved bytes against a hypothetical separate raw-data pass,
+and explicitly zero such saving against a producer-buffered current-bin path.
+Hit rate alone does not establish an efficient predictor or replay mechanism.
