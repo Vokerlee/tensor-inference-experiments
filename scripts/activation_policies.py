@@ -1,6 +1,7 @@
 """Numerical representation policies shared by model-dependent pilots."""
 
 import importlib.util
+from functools import lru_cache
 from pathlib import Path
 
 import torch
@@ -10,6 +11,12 @@ ENGINE = ROOT / "deps/tensor-inference-engine"
 SPEC = importlib.util.spec_from_file_location("selection", ENGINE / "src/selection_reference.py")
 selection = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(selection)
+
+
+@lru_cache(maxsize=None)
+def _mode_ranks(ranks: tuple[float, ...], device: torch.device) -> torch.Tensor:
+    """Immutable ordering constants, warmed before CUDA graph capture."""
+    return torch.tensor(ranks, device=device)[:, None, None]
 
 
 def packed_gram(gram):
@@ -139,7 +146,7 @@ def adaptive_representation(x, gram, packed, family, policy, tolerance, args):
     denominator = sum_mode_tiles(loss(original, signal=True), tile_rows).clamp_min(1e-30)
     scores = torch.stack([sum_mode_tiles(loss(values - original, high=mode == 1), tile_rows) / denominator
                           for mode, values, _ in candidates])
-    ranks = torch.tensor([rank for _, _, rank in candidates], device=x.device)[:, None, None]
+    ranks = _mode_ranks(tuple(rank for _, _, rank in candidates), x.device)
     valid_ranks = torch.where(scores <= tolerance, ranks, torch.inf)
     best_rank = valid_ranks.amin(0)
     # Tie at equal nominal rank: use lower proxy error, then candidate order.
