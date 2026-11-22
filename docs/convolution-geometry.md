@@ -31,7 +31,6 @@ requires a different mapping and cannot be assumed free.
 The report separates boundary padding from array capacity padding. Its byte
 counts describe scheduled interface capacity, not SRAM transactions or measured
 energy. Output volume per K slice is explicitly conditional on emitting every
-slice. MAC shares cover Conv2d, Linear and observed SDPA QK/AV products; other
+slice. MAC shares cover Conv2d, explicit mm/addmm/bmm and SDPA QK/AV products; other
 operators are excluded. A small MAC share can still have poor array utilization; neither
 metric alone establishes the fraction of system energy.
-
