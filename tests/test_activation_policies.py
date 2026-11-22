@@ -67,3 +67,22 @@ def test_native_tile_policy_matches_reference(low_format, geometry):
                                      SimpleNamespace(selector_backend="cuda-tile", **arguments))
     for actual, expected in zip(native, reference):
         torch.testing.assert_close(actual.float(), expected.float(), rtol=0, atol=0)
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA required")
+def test_reference_precision_graph_replay_after_constant_warmup():
+    x = torch.randn(131, 256, device="cuda", dtype=torch.bfloat16)
+    gram = selection.group_gram(torch.randn(256, 31, device="cuda"))
+    args = SimpleNamespace(group_size=32, mode_rows=128, low_format="e2m1",
+                           selector_backend="reference")
+    def evaluate():
+        return adaptive_representation(x, gram, None, "precision", "gram", .01, args)
+    evaluate()
+    torch.cuda.synchronize()
+    graph = torch.cuda.CUDAGraph()
+    with torch.cuda.graph(graph):
+        outputs = evaluate()
+    x.add_(.37)
+    graph.replay()
+    for actual, expected in zip(outputs, evaluate()):
+        torch.testing.assert_close(actual, expected, rtol=0, atol=0)
