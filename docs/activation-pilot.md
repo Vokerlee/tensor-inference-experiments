@@ -35,3 +35,23 @@ The input images originate at 160-pixel resolution and are transformed by each
 checkpoint's official preprocessing. This pilot is neither full ImageNet nor
 evidence for diffusion quality. It measures numerical effects, not native
 INT4/INT8 or 2:4 execution, target-chip throughput, or target-chip energy.
+
+## Whole-model checks
+
+```sh
+.venv/bin/python scripts/activation_pilot.py --model vit_b_16 --phase quality \
+    --samples-per-class 100 --case baseline --case dense:4 \
+    --case diagonal:16 --case gram:16 --case diagonal:4 --case gram:4 \
+    --output results/vit-quality.json
+```
+
+`--scope down` limits modifications to each MLP's second linear operation;
+the default modifies both MLP linear inputs. The classifier remains the
+checkpoint's full 1000-class classifier. Primary accuracy uses that prediction
+and the original ImageNet class indices. Restricted ten-class accuracy is a
+secondary diagnostic and must not be presented as ImageNet accuracy.
+
+Cases use the same image manifest. Reports retain predictions and correctness
+per image for paired comparisons. A small screening subset does not establish
+statistical significance or a general quality advantage. No calibration,
+fine-tuning or threshold selection from evaluation labels occurs.
