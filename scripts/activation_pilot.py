@@ -3,7 +3,6 @@
 
 import argparse
 import hashlib
-import importlib.util
 import json
 import platform
 import random
@@ -18,11 +17,10 @@ from torchvision.datasets import Imagenette
 from torchvision.models import Swin_T_Weights, ViT_B_16_Weights, swin_t, vit_b_16
 
 
-ROOT = Path(__file__).resolve().parents[1]
-ENGINE = ROOT / "deps/tensor-inference-engine"
-SPEC = importlib.util.spec_from_file_location("selection", ENGINE / "src/selection_reference.py")
-selection = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(selection)
+from activation_policies import (ENGINE, ROOT, adaptive_representation, common_representation,
+                                 packed_gram, selection, sparse_selection)
+
+
 MODELS = {
     "vit_b_16": (vit_b_16, ViT_B_16_Weights.IMAGENET1K_V1),
     "swin_t": (swin_t, Swin_T_Weights.IMAGENET1K_V1),
@@ -62,14 +60,14 @@ def load_model(name: str):
     return model, weights, layers
 
 
-def load_data(weights, samples_per_class: int, split: str, batch_size: int):
+def load_data(weights, samples_per_class: int, split: str, batch_size: int, holdout_offset: int = 0):
     cache = Path.home() / ".cache/tensor-inference-experiments/datasets"
     dataset = Imagenette(cache, split="val", size="160px", download=True,
                          transform=weights.transforms())
     generator = random.Random(20261122)
     indices = []
     # Reserve eight images/class for operator diagnostics, disjoint from task evaluation.
-    offset = 0 if split == "operator" else 8
+    offset = 0 if split == "operator" else 8 + holdout_offset
     for category in range(10):
         candidates = [index for index, (_, label) in enumerate(dataset._samples) if label == category]
         generator.shuffle(candidates)
@@ -90,10 +88,12 @@ def make_report(args, weights) -> dict:
     checkpoint = Path(torch.hub.get_dir()) / "checkpoints" / weights.url.rsplit("/", 1)[-1]
     return {
         "schema": 1, "created_utc": datetime.now(timezone.utc).isoformat(),
-        "settings": vars(args) | {"output": str(args.output)},
+        "settings": {key: str(value) if isinstance(value, Path) else value
+                     for key, value in vars(args).items()},
         "experiments": revision(ROOT), "engine": revision(ENGINE),
         "script_sha256": digest(Path(__file__)),
         "reference_sha256": digest(ENGINE / "src/selection_reference.py"),
+        "policy_sha256": digest(ROOT / "scripts/activation_policies.py"),
         "environment": {"python": platform.python_version(), "torch": torch.__version__,
                         "torchvision": torchvision.__version__, "cuda": torch.version.cuda,
                         "gpu": torch.cuda.get_device_name(), "dtype": "bfloat16",
@@ -125,14 +125,15 @@ def geometry(layers: dict) -> list:
     return results
 
 
-def capture_inputs(model, layers, loader, rows_per_image: int) -> dict:
+def capture_inputs(model, layers, loader, rows_per_image: int | None) -> dict:
     captured = {name: [] for name in layers}
 
     def hook(name):
         def capture(module, args):
             values = args[0].detach().reshape(args[0].shape[0], -1, args[0].shape[-1])
-            indices = torch.linspace(0, values.shape[1] - 1, rows_per_image,
-                                     device=values.device).long()
+            indices = (torch.arange(values.shape[1], device=values.device) if rows_per_image is None
+                       else torch.linspace(0, values.shape[1] - 1, rows_per_image,
+                                           device=values.device).long())
             captured[name].append(values[:, indices].reshape(-1, values.shape[-1]).cpu())
         return capture
 
@@ -151,6 +152,7 @@ def operator_measurements(layers, inputs, args):
     for name, layer in layers.items():
         weight = layer.weight.detach().t().contiguous().float()
         gram = selection.group_gram(weight)
+        packed = packed_gram(gram)
         x = inputs[name].float()
         target_energy = (x @ weight).square().sum().item()
         record = {"name": name, "rows": x.shape[0], "K": weight.shape[0],
@@ -161,7 +163,7 @@ def operator_measurements(layers, inputs, args):
             q = q.bfloat16().float()
             reference_indices = None
             for policy in POLICIES:
-                altered, indices = selection.select_2of4(x, q, gram, policy)
+                altered, indices = sparse_selection(x, q, gram, packed, policy, args.selector_backend)
                 error = altered - x
                 output_error = (error @ weight).square().sum(dim=-1)
                 group_error = selection.group_loss(error, gram).sum(dim=-1)
@@ -185,6 +187,7 @@ def quality_measurements(model, layers, loader, class_indices, args):
     """Paired whole-model evaluations; no thresholds fitted to these labels."""
     metadata = {name: selection.group_gram(layer.weight.detach().t().contiguous())
                 for name, layer in layers.items()}
+    packed = {name: packed_gram(gram) for name, gram in metadata.items()}
     batches = [(images.to(device="cuda", dtype=torch.bfloat16),
                 torch.tensor([class_indices[label] for label in labels], device="cuda"))
                for images, labels in loader]
@@ -192,20 +195,49 @@ def quality_measurements(model, layers, loader, class_indices, args):
     baseline_predictions = None
     for case in args.case:
         handles = []
+        mode_counts = torch.zeros(6, device="cuda", dtype=torch.int64)
+        mode_macs = torch.zeros_like(mode_counts)
+        common_calls = torch.zeros(2, device="cuda", dtype=torch.int64)
         if case != "baseline":
             policy, bits_text = case.split(":")
-            bits = int(bits_text)
-            if policy not in (*POLICIES, "dense") or bits not in (4, 8, 16):
+            adaptive = policy.startswith(("adaptive-", "precision-", "sparsity-", "common-"))
+            bits = 16 if adaptive else int(bits_text)
+            if not adaptive and (policy not in (*POLICIES, "dense") or bits not in (4, 8, 16)):
                 raise ValueError(f"unsupported case {case}")
 
             def hook(name):
                 def alter(module, inputs):
                     x = inputs[0]
+                    if policy.startswith("common-"):
+                        conditional = policy.startswith("common-adaptive-")
+                        if not conditional and bits_text != "16":
+                            raise ValueError("fixed common masks currently support BF16 only")
+                        score = policy.rsplit("-", 1)[1]
+                        q, counts, elements = common_representation(
+                            x, metadata[name], score, float(bits_text) if conditional else None)
+                        mode_counts.add_(counts)
+                        mode_macs.add_(elements * module.out_features)
+                        dense_k = (x.shape[-1] + 127) // 128
+                        sparse_k = (x.shape[-1] // 2 + 127) // 128
+                        n_tiles = (module.out_features + 127) // 128
+                        dense_windows, sparse_windows = counts[0] // dense_k, counts[5] // dense_k
+                        common_calls[0].add_((dense_windows + sparse_windows) * dense_k * n_tiles)
+                        common_calls[1].add_((dense_windows * dense_k + sparse_windows * sparse_k) * n_tiles)
+                        return (q.to(x.dtype), *inputs[1:])
+                    if adaptive:
+                        family, score = policy.split("-", 1)
+                        q, counts, elements = adaptive_representation(
+                            x, metadata[name], packed[name], family, score,
+                            float(bits_text), args)
+                        mode_counts.add_(counts)
+                        mode_macs.add_(elements * module.out_features)
+                        return (q.to(x.dtype), *inputs[1:])
                     q = (x.float() if bits == 16 else
                          selection.quantize_symmetric(x, bits, args.group_size))
                     q = q.bfloat16().float()
                     if policy != "dense":
-                        q, _ = selection.select_2of4(x, q, metadata[name], policy)
+                        q, _ = sparse_selection(x, q, metadata[name], packed[name],
+                                                policy, args.selector_backend)
                     return (q.to(x.dtype), *inputs[1:])
                 return alter
 
@@ -233,6 +265,13 @@ def quality_measurements(model, layers, loader, class_indices, args):
                   "top1_restricted10": sum(restricted_correct) / len(correct),
                   "predictions": predictions, "targets": targets,
                   "correct": correct}
+        if mode_counts.sum() > 0:
+            names = ["bf16_dense", "int8_dense", "int8_sparse", "int4_dense", "int4_sparse",
+                     "bf16_sparse"]
+            record["mode_tile_counts"] = dict(zip(names, mode_counts.cpu().tolist()))
+            record["mode_dense_equivalent_macs"] = dict(zip(names, mode_macs.cpu().tolist()))
+        if common_calls[0] > 0:
+            record["common_array_calls_dense_vs_selected"] = common_calls.cpu().tolist()
         if baseline_predictions is not None:
             record["agreement_with_baseline"] = sum(
                 a == b for a, b in zip(predictions, baseline_predictions)) / len(targets)
@@ -254,6 +293,13 @@ def parser():
     result.add_argument("--scope", choices=["all", "down"], default="all")
     result.add_argument("--case", action="append", default=None,
                         help="repeat baseline or POLICY:BITS; includes dense:4/8")
+    result.add_argument("--selector-backend", choices=["reference", "cuda"], default="reference")
+    result.add_argument("--holdout-offset", type=int, default=0,
+                        help="skip additional images/class after the eight diagnostic images")
+    result.add_argument("--mode-rows", type=int, choices=[16, 32, 64, 128], default=128,
+                        help="precision granularity; below128 requires different format support")
+    result.add_argument("--library", type=Path,
+                        default=ENGINE / "build/libtensor_inference_engine_torch.so")
     result.add_argument("--output", type=Path, required=True)
     return result
 
@@ -263,10 +309,17 @@ def main():
     args = parser().parse_args()
     if min(args.samples_per_class, args.rows_per_image, args.batch_size) <= 0:
         raise ValueError("sample, row and batch counts must be positive")
+    if args.holdout_offset < 0:
+        raise ValueError("holdout offset must be nonnegative")
     torch.manual_seed(20261122)
     torch.set_num_threads(8)
     torch.backends.cuda.matmul.allow_tf32 = False
     torch.backends.cuda.matmul.allow_bf16_reduced_precision_reduction = False
+    if args.selector_backend == "cuda":
+        torch.ops.load_library(str(args.library.resolve()))
+    if args.phase == "quality":
+        args.case = args.case or ["baseline", "dense:4", "diagonal:16", "gram:16",
+                                  "diagonal:4", "gram:4"]
     model, weights, layers = load_model(args.model)
     report = make_report(args, weights)
     report["layers"] = geometry(layers)
@@ -276,10 +329,8 @@ def main():
         inputs = capture_inputs(model, layers, loader, args.rows_per_image)
         report["operators"] = operator_measurements(layers, inputs, args)
     elif args.phase == "quality":
-        args.case = args.case or ["baseline", "dense:4", "diagonal:16", "gram:16",
-                                  "diagonal:4", "gram:4"]
         loader, class_indices, manifest = load_data(
-            weights, args.samples_per_class, "quality", args.batch_size)
+            weights, args.samples_per_class, "quality", args.batch_size, args.holdout_offset)
         report["dataset"]["manifest"] = manifest
         report["quality"] = quality_measurements(model, layers, loader, class_indices, args)
     write_json(args.output, report)
