@@ -1,5 +1,10 @@
 # Common-exponent integer accumulation headroom
 
+The historical square windows below are policy cohorts, not the native FP8
+array shape. The [matrix interface](matrix-unit-interface.md) has a K=256 FP8
+input and 128 FP32 outputs. Full-K coverage does not show that integer state
+can persist across emitted FP32 vectors; that requires a separate ISA contract.
+
 This diagnostic measures a sufficient bound on real pretrained MLP inputs. It
 is not a new-arithmetic claim, optimized kernel, hardware simulation or energy
 measurement. Run it with the existing pinned base environment:
