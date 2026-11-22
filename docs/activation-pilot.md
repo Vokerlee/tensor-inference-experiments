@@ -153,3 +153,18 @@ Stream reports additionally test sufficient interval decisions for precision
 at three fixed tolerances. Certified-choice agreement is checked against the
 explicit full local score; low certification rates do not imply a cheap path.
 No intervals here certify final network quality.
+
+## Targeted matrix-work inventory
+
+```sh
+.venv/bin/python scripts/profile_matrix_work.py --model vit_b_16 --output results/vit-work.json
+```
+
+Use `swin_t` or `dit` for the other supported models; DiT needs the optional
+pinned diffusion environment. This checks how much matrix/convolution work
+belongs to the selected MLP edges. It forces math attention and disables MHA
+fusion for the inventory only. Counted operators are mm/addmm/bmm/conv2d;
+other profiler FLOP categories are listed separately. One synthetic input
+provides shapes, not quality, bit activity, padded physical operations, a
+complete FLOP count, or an energy fraction. See the separate
+[systolic action ledger](systolic-actions.md) for execution-contract limits.
