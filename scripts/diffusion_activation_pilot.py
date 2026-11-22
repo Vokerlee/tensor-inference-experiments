@@ -2,6 +2,8 @@
 """Paired class-conditional DiT trajectories with runtime MLP transformations."""
 
 import argparse
+import json
+import shutil
 from pathlib import Path
 
 import diffusers
@@ -29,12 +31,24 @@ def main():
     parser.add_argument("--case", action="append", default=None)
     parser.add_argument("--low-format", choices=["int4", "affine4", "e2m1"], default="int4")
     parser.add_argument("--selector-backend", choices=["cuda", "cuda-tile"], default="cuda")
+    parser.add_argument("--reference-run", type=Path,
+                        help="reuse an identically configured baseline, only for paired diagnostics")
     args = parser.parse_args()
     args.case = args.case or ["baseline", "dense:4", "diagonal:4", "gram:4",
                               "adaptive-diagonal:0.01", "adaptive-gram:0.01"]
     args.group_size = 32
-    if args.case[0] != "baseline" or min(args.steps, args.batch_size) <= 0:
-        parser.error("baseline must be first; steps and batch size must be positive")
+    if (not args.reference_run and args.case[0] != "baseline") or min(args.steps, args.batch_size) <= 0:
+        parser.error("baseline must be first without --reference-run; steps and batch size must be positive")
+    reference = None
+    if args.reference_run:
+        reference = json.loads((args.reference_run / "report.json").read_text())
+        expected = {"steps": args.steps, "seed": args.seed, "classes": args.classes,
+                    "batch_size": args.batch_size}
+        if reference["revision"] != REVISION or any(
+                reference["settings"][key] != value for key, value in expected.items()):
+            parser.error("reference checkpoint, steps, seed, classes and batch size must match")
+        if "baseline" in args.case:
+            parser.error("omit baseline from cases when reusing --reference-run")
     if any(label < 0 or label > 999 for label in args.classes):
         parser.error("class indices must be in [0,999]")
     args.output.mkdir(parents=True, exist_ok=True)
@@ -70,6 +84,26 @@ def main():
                               "Input reconstruction followed by ordinary BF16 computation",
                               "No ASIC energy, throughput or calibration claim"]}
     baseline_images, baseline_states = None, None
+    if reference is not None:
+        scheduler = {key: value for key, value in report["scheduler"].items()
+                     if not key.startswith("_")}
+        reference_scheduler = {key: value for key, value in reference["scheduler"].items()
+                               if not key.startswith("_")}
+        if (reference["checkpoint_files"] != report["checkpoint_files"]
+                or reference["environment"] != report["environment"]
+                or reference_scheduler != scheduler):
+            raise ValueError("reference checkpoint bytes, environment and scheduler must match")
+        source = args.reference_run / "baseline.npz"
+        with np.load(source) as data:
+            baseline_images, baseline_states = data["images"], data["states"]
+        if baseline_images.shape[0] != len(args.classes) or baseline_states.shape[:2] != (
+                args.steps, len(args.classes)):
+            raise ValueError("reference image/trajectory counts do not match")
+        shutil.copyfile(source, args.output / "baseline.npz")
+        report["reference"] = {"report_sha256": digest(args.reference_run / "report.json"),
+                               "array_sha256": digest(source)}
+        report["cases"].append(next(case.copy() for case in reference["cases"]
+                                    if case["case"] == "baseline"))
     for case in args.case:
         handles = []
         counts = torch.zeros(6, device="cuda", dtype=torch.int64)
@@ -93,6 +127,13 @@ def main():
                             output = selection.quantize_affine(x, bits)
                         elif policy == "fp4":
                             output = selection.quantize_e2m1(x)
+                        elif policy in {"sparse-residual", "double-sparse", "double-sparse-p2"}:
+                            if bits != 4:
+                                raise ValueError("residual baselines require four-bit streams")
+                            parts = selection.sparse_residual_e2m1(
+                                x, both_sparse=policy != "sparse-residual",
+                                power_two=policy == "double-sparse-p2")
+                            output = parts.coarse + parts.residual
                         else:
                             mode = {"dense": 0, "diagonal": 1, "gram": 2}[policy]
                             output, _ = torch.ops.tensor_inference_engine.prepare_activations(
