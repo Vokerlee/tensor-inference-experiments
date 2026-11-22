@@ -137,3 +137,19 @@ and MAC counters separately from the kernel. Its model output remains a BF16
 reconstruction. The benchmark distinguishes a bare native controller from the
 same policy including counter collection; setup metadata regeneration has its
 own timing and is not assumed to occur on every inference.
+
+## Separating error and signal geometry
+
+Precision cases also accept `precision-gram-numerator:0.01` and
+`precision-gram-denominator:0.01`. The former uses full quartet geometry only
+for the four-bit error, with diagonal INT8 error and diagonal reference signal;
+the latter uses full geometry only for reference signal energy. These are
+separate policies, not algebraic rearrangements of the full score. Each uses
+18 quadratic terms/quartet rather than30; preparation, encoding, reductions and
+metadata still cost work. CUDA tile and numerical reference paths are checked
+against one another for all four geometry choices.
+
+Stream reports additionally test sufficient interval decisions for precision
+at three fixed tolerances. Certified-choice agreement is checked against the
+explicit full local score; low certification rates do not imply a cheap path.
+No intervals here certify final network quality.

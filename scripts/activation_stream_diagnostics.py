@@ -8,6 +8,7 @@ import torch
 
 from activation_pilot import (capture_inputs, load_data, load_model, make_report,
                               selection, write_json)
+from activation_policies import sum_mode_tiles
 
 
 def certificate(values, reconstructed, gram):
@@ -37,6 +38,38 @@ def prediction_statistics(values):
                         "ideal_bytes_saved_if_extra_raw_pass_exists": hit * 64 - (1 - hit) * 16,
                         "expensive_pass_saving_against_buffered_current_bin": 0}
     return result
+
+
+def precision_intervals(x, gram):
+    """Check sufficient block decisions from diagonal bounds, not task bounds."""
+    diagonal = gram.diagonal(dim1=-2, dim2=-1)
+    rho = selection.coherence(gram)
+    candidates = [selection.quantize_e2m1(x).bfloat16().float(),
+                  selection.quantize_symmetric(x, 8).bfloat16().float()]
+
+    def bounds(values):
+        score = (values.reshape(-1, gram.shape[0], 4).square() * diagonal).sum(-1)
+        return (sum_mode_tiles(score * (1 - rho)).clamp_min(0),
+                sum_mode_tiles(score * (1 + rho)))
+
+    lower_ref, upper_ref = bounds(x)
+    lower4, upper4 = bounds(candidates[0] - x)
+    lower8, upper8 = bounds(candidates[1] - x)
+    actual_ref = sum_mode_tiles(selection.group_loss(x, gram)).clamp_min(1e-30)
+    actual4 = sum_mode_tiles(selection.group_loss(candidates[0] - x, gram)) / actual_ref
+    actual8 = sum_mode_tiles(selection.group_loss(candidates[1] - x, gram)) / actual_ref
+    records = []
+    for tolerance in [.001, .01, .03]:
+        cheap4 = upper4 <= tolerance * lower_ref
+        cheap8 = (lower4 > tolerance * upper_ref) & (upper8 <= tolerance * lower_ref)
+        cheap16 = (lower4 > tolerance * upper_ref) & (lower8 > tolerance * upper_ref)
+        certified = cheap4 | cheap8 | cheap16
+        predicted = torch.where(cheap4, 0, torch.where(cheap8, 1, 2))
+        actual = torch.where(actual4 <= tolerance, 0, torch.where(actual8 <= tolerance, 1, 2))
+        records.append({"tolerance": tolerance, "tile_count": certified.numel(),
+                        "certified_tiles": certified.sum().item(),
+                        "certified_mode_mismatches": (certified & (predicted != actual)).sum().item()})
+    return records
 
 
 @torch.inference_mode()
@@ -70,6 +103,7 @@ def main():
         record = {"name": name, "rows": x.shape[0], "K": x.shape[1],
                   "certified_diagonal_fraction": certified.float().mean().item(),
                   "certified_objective_mismatches": violations.sum().item(),
+                  "precision_intervals": precision_intervals(x, gram),
                   "prediction": prediction_statistics(x)}
         report["layers"].append(record)
     write_json(args.output, report)
