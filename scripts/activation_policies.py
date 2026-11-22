@@ -83,17 +83,21 @@ def sum_mode_tiles(values: torch.Tensor, tile_rows: int = 128) -> torch.Tensor:
 
 def adaptive_representation(x, gram, packed, family, policy, tolerance, args):
     """Finite numerical mode menu; mode ordering is not a hardware energy model."""
-    if policy not in {"diagonal", "gram"} or tolerance <= 0:
+    if policy not in {"diagonal", "gram", "gram-numerator", "gram-denominator"} or tolerance <= 0:
         raise ValueError("adaptive cases need diagonal/gram and positive relative tolerance")
+    if policy.startswith("gram-") and family != "precision":
+        raise ValueError("hybrid geometry is only defined for precision-only policies")
     shape = x.shape
     if family == "precision" and args.selector_backend == "cuda-tile":
         flat = x.reshape(-1, shape[-1])
         low_format = getattr(args, "low_format", "int4")
-        if args.group_size != 32 or getattr(args, "mode_rows", 128) != 128 or low_format == "affine4":
+        if (args.group_size != 32 or getattr(args, "mode_rows", 128) != 128
+                or low_format == "affine4"):
             raise ValueError("native tile precision supports128 rows, group32 and INT4/E2M1")
-        output, modes = torch.ops.tensor_inference_engine.adaptive_precision(
+        geometry = {"gram": 0, "diagonal": 1, "gram-numerator": 2, "gram-denominator": 3}[policy]
+        output, modes = torch.ops.tensor_inference_engine.adaptive_precision_geometry(
             flat.contiguous(), packed, tolerance,
-            low_format == "e2m1", policy == "diagonal")
+            low_format == "e2m1", geometry)
         expanded = modes.repeat_interleave(128, 0).repeat_interleave(128, 1)
         expanded = expanded[:flat.shape[0], :flat.shape[1]]
         counts = torch.zeros(6, device=x.device, dtype=torch.int64)
@@ -122,16 +126,19 @@ def adaptive_representation(x, gram, packed, family, policy, tolerance, args):
     else:
         raise ValueError(f"unsupported family {family}")
 
-    def loss(error):
-        if policy == "gram":
+    def loss(error, signal=False, high=False):
+        full = policy in ({"gram", "gram-denominator"} if signal else {"gram", "gram-numerator"})
+        if high and policy == "gram-numerator":
+            full = False
+        if full:
             return selection.group_loss(error, gram)
         values = error.reshape(-1, gram.shape[0], 4)
         return (values.square() * gram.diagonal(dim1=-2, dim2=-1)).sum(-1)
 
     tile_rows = getattr(args, "mode_rows", 128)
-    denominator = sum_mode_tiles(loss(original), tile_rows).clamp_min(1e-30)
-    scores = torch.stack([sum_mode_tiles(loss(values - original), tile_rows) / denominator
-                          for _, values, _ in candidates])
+    denominator = sum_mode_tiles(loss(original, signal=True), tile_rows).clamp_min(1e-30)
+    scores = torch.stack([sum_mode_tiles(loss(values - original, high=mode == 1), tile_rows) / denominator
+                          for mode, values, _ in candidates])
     ranks = torch.tensor([rank for _, _, rank in candidates], device=x.device)[:, None, None]
     valid_ranks = torch.where(scores <= tolerance, ranks, torch.inf)
     best_rank = valid_ranks.amin(0)
