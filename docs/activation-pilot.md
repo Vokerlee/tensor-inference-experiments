@@ -55,3 +55,38 @@ Cases use the same image manifest. Reports retain predictions and correctness
 per image for paired comparisons. A small screening subset does not establish
 statistical significance or a general quality advantage. No calibration,
 fine-tuning or threshold selection from evaluation labels occurs.
+
+## Runtime mode policies
+
+`--selector-backend cuda` uses the engine's native mask evaluator; other
+reference policies remain explicit Torch operations. `--holdout-offset 20`
+skips the screening allocation before selecting the next100 images/class.
+
+Cases `precision-diagonal:0.01`, `adaptive-diagonal:0.01` and
+`sparsity-diagonal:0.01` select precision, both precision/masks, or BF16 masks.
+Replace `diagonal` with `gram` for local signed interactions. The number is a
+global relative group-error tolerance, never a task-quality guarantee. Format
+decisions cover128 rows by128 input channels by default. `--mode-rows 32`
+measures a different format-granularity requirement; it does not create free
+subarrays on an existing128-row array.
+
+The finite mode ordering uses nominal representation/work ranks, not measured
+hardware joules. Weights remain BF16, so cheaper integer MAC support is a
+separate architectural assumption.32-element scales require block-scaled
+arithmetic or explicit scaled partial products within a128-element reduction.
+The reference does not price either. Mode counts and dense-equivalent MACs
+are recorded separately; weighting every layer's input tile equally is wrong.
+
+`common-diagonal:16` and `common-gram:16` use one BF16 mask for each128 token
+rows across the input channels. Their `common-adaptive-*:0.01` variants retain
+the original input window when the global proxy fails, and disable compaction
+when fixed128-wide reductions would save no call. The selected weight rows can
+be gathered into a dense product; tests verify that product's numerical
+equivalence. This is distinct from splitting smaller row cohorts. Model runs
+inject zeros; counters describe prospective full128x128x128 matrix calls after
+compaction, not executed GPU sparse instructions. Gathering, buffering and
+physical scheduling remain additional costs.
+
+Hooks transform only the receiving MLP edge and preserve the original tensor
+for other consumers. A deployed dataflow needs equivalent tensor/version
+semantics and must charge any additional storage.
