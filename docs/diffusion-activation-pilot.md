@@ -56,3 +56,35 @@ against their conditioning class. Reports include top1/top5, target-class
 probabilities, predictions and input-array hashes. This supplements visual and
 trajectory inspection; it measures class consistency, not FID, perceptual
 quality or diversity. Repeated `--run` arguments score multiple completed runs.
+
+## Reusing a paired reference
+
+`--reference-run results/an-existing-run` loads its baseline images/states and
+skips baseline generation. Omit `--case baseline` in this mode. The checkpoint
+revision and bytes, seed, class list/order, steps, batch size, environment and
+scheduler settings must match. Private scheduler provenance keys are excluded
+from the semantic configuration comparison. The baseline archive is copied,
+and source report/archive hashes are retained. Its arrays are diagnostic
+references only: no selector receives baseline outputs or trajectories.
+
+Cases `precision-gram-numerator:0.01` and
+`precision-gram-denominator:0.01` separate the two uses of geometry as described
+in the classification guide. The native tile backend supports both.
+
+## Known-family residual baselines
+
+`sparse-residual:4` uses magnitude2:4 coarse FP4 plus dense FP4 residual;
+`double-sparse:4` uses two2:4 streams selected by quantization-error gain;
+`double-sparse-p2:4` additionally restricts the residual/coarse scale ratio to
+powers of two, shifts0..8, with current-value scaling. These are explicit
+adaptations, not full SharQ/VR-SparseQuant reproductions and not novel-algorithm
+claims. Their implementation belongs to the generic engine reference.
+
+The model hook sums the two reconstructions and casts once to BF16 before the
+ordinary product. This isolates representation error and does not reproduce
+rounding of separately accumulated products or measure sparse execution.
+Mode counters are not populated for these fixed two-stream policies. A real
+sparse+dense implementation has1.5 dense FP4 nonzero-product count; two2:4
+streams have1.0 before format/metadata/combination overhead. Without sparse
+support both may require two dense passes. Numerical improvement alone does
+not establish an energy improvement; retain that cost in comparisons.
