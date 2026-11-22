@@ -13,6 +13,7 @@ from pathlib import Path
 import torch
 import torchvision
 from torch.nn import functional as F
+from torch.utils._python_dispatch import TorchDispatchMode
 
 
 @dataclass(frozen=True)
@@ -92,7 +93,7 @@ def valid_axis(input_size: int, output_size: int, kernel: int,
 
 
 @contextmanager
-def attention_counter():
+def attention_counter(matrix=None):
     """Count QK and AV products in calls through Torch's SDPA interface."""
     original = F.scaled_dot_product_attention
     counts = {"macs": 0, "calls": 0}
@@ -103,7 +104,13 @@ def attention_counter():
         batches = math.prod(torch.broadcast_shapes(query.shape[:-2], key.shape[:-2], value.shape[:-2]))
         counts["macs"] += batches * query.shape[-2] * key.shape[-2] * (query.shape[-1] + value.shape[-1])
         counts["calls"] += 1
-        return original(query, key, value, *args, **kwargs)
+        if matrix is not None:
+            matrix.inside_sdpa += 1
+        try:
+            return original(query, key, value, *args, **kwargs)
+        finally:
+            if matrix is not None:
+                matrix.inside_sdpa -= 1
 
     F.scaled_dot_product_attention = count
     torch.backends.mha.set_fastpath_enabled(False)
@@ -112,6 +119,25 @@ def attention_counter():
     finally:
         F.scaled_dot_product_attention = original
         torch.backends.mha.set_fastpath_enabled(previous_fastpath)
+
+
+class MatrixCounter(TorchDispatchMode):
+    """Count explicit matrix products, excluding products already charged to SDPA."""
+
+    def __init__(self):
+        super().__init__()
+        self.macs = 0
+        self.inside_sdpa = 0
+
+    def __torch_dispatch__(self, function, types, args=(), kwargs=None):
+        if not self.inside_sdpa:
+            if function == torch.ops.aten.addmm.default:
+                left, right = args[1:3]
+                self.macs += left.shape[0] * left.shape[1] * right.shape[1]
+            elif function in (torch.ops.aten.mm.default, torch.ops.aten.bmm.default):
+                left, right = args[:2]
+                self.macs += math.prod(left.shape[:-2]) * left.shape[-2] * left.shape[-1] * right.shape[-1]
+        return function(*args, **(kwargs or {}))
 
 
 def inventory(model, execute) -> dict:
@@ -136,18 +162,22 @@ def inventory(model, execute) -> dict:
                for name, module in model.named_modules()
                if isinstance(module, (torch.nn.Conv2d, torch.nn.Linear))]
     try:
-        with attention_counter() as attention:
+        with MatrixCounter() as matrix, attention_counter(matrix) as attention:
             execute()
     finally:
         for handle in handles:
             handle.remove()
     conv_macs = sum(layer.macs for layer in convolutions)
-    denominator = conv_macs + linear_macs + attention["macs"]
+    if matrix.macs < linear_macs:
+        raise RuntimeError("dispatch inventory missed a linear matrix product")
+    other_matrix_macs = matrix.macs - linear_macs
+    denominator = conv_macs + matrix.macs + attention["macs"]
     return {
         "conv_macs": conv_macs,
         "linear_macs": linear_macs,
         "attention_macs": attention["macs"],
         "attention_calls": attention["calls"],
+        "other_explicit_matrix_macs": other_matrix_macs,
         "matrix_and_conv_macs": denominator,
         "conv_fraction_of_matrix_and_conv_macs": conv_macs / denominator,
         "spatial_conv_macs": sum(layer.macs for layer in convolutions
@@ -203,7 +233,7 @@ def main() -> None:
         "unet_config_sha256": config_hash,
         "limitations": [
             "Shape-only meta execution: no model quality, latency or energy measurement",
-            "MAC denominator covers Conv2d, Linear and observed SDPA QK/AV products, excluding other operators",
+            "MAC denominator covers Conv2d, explicit mm/addmm/bmm and SDPA QK/AV, excluding other operators",
             "K=128 BF16 and K=256 FP8 refer to LHS input length; output width is always 128 FP32",
             "INT8 and FP4 physical geometry is unspecified",
             "Mappings are alternatives, not a statement of current hardware stationarity or grouping",

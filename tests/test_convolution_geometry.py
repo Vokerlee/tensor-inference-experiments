@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import torch
 from torch.nn import functional as F
 
-from convolution_geometry import Convolution, attention_counter, valid_axis
+from convolution_geometry import Convolution, attention_counter, inventory, valid_axis
 
 
 def convolution(channels=64, outputs=128, groups=1):
@@ -47,3 +47,20 @@ def test_attention_counts_both_products_and_restores_function():
                                       torch.empty(2, 4, 5, 8))
     assert counts == {"macs": 2 * 4 * 3 * 5 * (8 + 8), "calls": 1}
     assert F.scaled_dot_product_attention is original
+
+
+def test_explicit_attention_and_sdpa_are_counted_without_double_counting():
+    with torch.device("meta"):
+        model = torch.nn.Linear(8, 8)
+        x = torch.empty(2, 3, 8)
+
+        def execute():
+            y = model(x)
+            manual = y @ y.transpose(-1, -2)
+            F.scaled_dot_product_attention(y, y, y)
+            return manual
+
+        report = inventory(model, execute)
+    assert report["linear_macs"] == 2 * 3 * 8 * 8
+    assert report["other_explicit_matrix_macs"] == 2 * 3 * 3 * 8
+    assert report["attention_macs"] == 2 * 3 * 3 * (8 + 8)
