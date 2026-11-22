@@ -36,3 +36,28 @@ Integer alignment/deferred conversion already occur in
 [Bucket Getter](https://doi.org/10.1145/3613424.3614249) and intermediate precision
 codesign in [MIAO](https://arxiv.org/abs/2611.19722v1). Passing this oracle is
 not evidence of novelty or a hardware energy advantage over those designs.
+
+## Paired classifier execution
+
+```sh
+.venv/bin/python scripts/primitive_accumulation_pilot.py --model vit_b_16 \
+    --k-slice 128 --width 24 --width 32 --samples-per-class 10 \
+    --output results/vit-primitive-accumulation.json
+```
+
+`--model swin_t` selects the other cached classifier. Use the existing pinned
+base environment. Both candidates use fixed INT8 weight codes and current-input
+INT8 activation codes; `--activation-format e2m1` changes only the latter.
+Source scales are explicit powers of two, not a complete OCP MX/NVFP4 recipe.
+
+The pilot first executes the unmodified BF16 model, then the group-FP32
+quantized reference, then each guarded variant on identical images. It replaces
+receiving MLP linears only, retains their bias and casts their final output back
+to the model's BF16 type. Other operators and graph consumers are preserved.
+The report records checkpoint/source hashes, exact images, local primitive
+differences and propagated final-logit/prediction differences separately.
+
+The fixed holdout offset separates these images from earlier screening inputs.
+Neither labels nor agreement with the reference choose scales or accumulator
+widths. Ten images/class is a small diagnostic subset; it cannot establish a
+general accuracy guarantee or a diffusion generation-quality result.
