@@ -202,7 +202,7 @@ def quality_measurements(model, layers, loader, class_indices, args):
             policy, bits_text = case.split(":")
             adaptive = policy.startswith(("adaptive-", "precision-", "sparsity-", "common-"))
             bits = 16 if adaptive else int(bits_text)
-            if not adaptive and (policy not in (*POLICIES, "dense") or bits not in (4, 8, 16)):
+            if not adaptive and (policy not in (*POLICIES, "dense", "affine", "fp4") or bits not in (4, 8, 16)):
                 raise ValueError(f"unsupported case {case}")
 
             def hook(name):
@@ -232,10 +232,21 @@ def quality_measurements(model, layers, loader, class_indices, args):
                         mode_counts.add_(counts)
                         mode_macs.add_(elements * module.out_features)
                         return (q.to(x.dtype), *inputs[1:])
+                    if (args.selector_backend == "cuda" and bits in (4, 8)
+                            and policy in {"dense", "diagonal", "gram"}):
+                        mode = {"dense": 0, "diagonal": 1, "gram": 2}[policy]
+                        q, _ = torch.ops.tensor_inference_engine.prepare_activations(
+                            x.reshape(-1, x.shape[-1]).contiguous(),
+                            None if mode == 0 else packed[name], bits, mode)
+                        return (q.reshape_as(x), *inputs[1:])
                     q = (x.float() if bits == 16 else
                          selection.quantize_symmetric(x, bits, args.group_size))
+                    if policy == "affine":
+                        q = selection.quantize_affine(x, bits, args.group_size)
+                    elif policy == "fp4":
+                        q = selection.quantize_e2m1(x, args.group_size)
                     q = q.bfloat16().float()
-                    if policy != "dense":
+                    if policy not in {"dense", "affine", "fp4"}:
                         q, _ = sparse_selection(x, q, metadata[name], packed[name],
                                                 policy, args.selector_backend)
                     return (q.to(x.dtype), *inputs[1:])
@@ -266,7 +277,8 @@ def quality_measurements(model, layers, loader, class_indices, args):
                   "predictions": predictions, "targets": targets,
                   "correct": correct}
         if mode_counts.sum() > 0:
-            names = ["bf16_dense", "int8_dense", "int8_sparse", "int4_dense", "int4_sparse",
+            names = ["bf16_dense", "int8_dense", "int8_sparse",
+                     f"{args.low_format}_dense", f"{args.low_format}_sparse",
                      "bf16_sparse"]
             record["mode_tile_counts"] = dict(zip(names, mode_counts.cpu().tolist()))
             record["mode_dense_equivalent_macs"] = dict(zip(names, mode_macs.cpu().tolist()))
@@ -298,6 +310,7 @@ def parser():
                         help="skip additional images/class after the eight diagnostic images")
     result.add_argument("--mode-rows", type=int, choices=[16, 32, 64, 128], default=128,
                         help="precision granularity; below128 requires different format support")
+    result.add_argument("--low-format", choices=["int4", "affine4", "e2m1"], default="int4")
     result.add_argument("--library", type=Path,
                         default=ENGINE / "build/libtensor_inference_engine_torch.so")
     result.add_argument("--output", type=Path, required=True)

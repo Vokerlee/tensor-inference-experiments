@@ -91,6 +91,11 @@ def adaptive_representation(x, gram, packed, family, policy, tolerance, args):
     if family in {"adaptive", "precision"}:
         for bits, dense_id, sparse_id, rank in [(8, 1, 2, .5), (4, 3, 4, .25)]:
             q = selection.quantize_symmetric(original, bits, args.group_size).bfloat16().float()
+            low_format = getattr(args, "low_format", "int4")
+            if bits == 4 and low_format == "affine4":
+                q = selection.quantize_affine(original, 4, args.group_size).bfloat16().float()
+            elif bits == 4 and low_format == "e2m1":
+                q = selection.quantize_e2m1(original, args.group_size).bfloat16().float()
             candidates.append((dense_id, q, rank))
             if family == "adaptive":
                 sparse, _ = sparse_selection(original, q, gram, packed, policy, args.selector_backend)
