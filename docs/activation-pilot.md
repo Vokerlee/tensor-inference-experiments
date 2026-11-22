@@ -90,3 +90,14 @@ physical scheduling remain additional costs.
 Hooks transform only the receiving MLP edge and preserve the original tensor
 for other consumers. A deployed dataflow needs equivalent tensor/version
 semantics and must charge any additional storage.
+
+## Alternative four-bit baselines
+
+Fixed cases `affine:4` and `fp4:4` compare integer-zero-point affine INT4 and
+E2M1 FP4. The latter uses FP32 scales and is not a complete NVFP4 recipe.
+`--low-format affine4` / `--low-format e2m1` changes the low-format candidates
+of runtime policies; the higher low-precision candidate stays symmetric INT8.
+Use the recorded mode names when comparing counts across different menus.
+Native fixed symmetric CUDA cases use the fused engine preparation kernel;
+affine/FP4 and multi-mode decisions use numerical references. Their GPU
+latencies are not comparable without accounting for these implementations.
