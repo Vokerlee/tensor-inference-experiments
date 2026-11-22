@@ -232,7 +232,7 @@ def quality_measurements(model, layers, loader, class_indices, args):
                         mode_counts.add_(counts)
                         mode_macs.add_(elements * module.out_features)
                         return (q.to(x.dtype), *inputs[1:])
-                    if (args.selector_backend == "cuda" and bits in (4, 8)
+                    if (args.selector_backend in {"cuda", "cuda-tile"} and bits in (4, 8)
                             and policy in {"dense", "diagonal", "gram"}):
                         mode = {"dense": 0, "diagonal": 1, "gram": 2}[policy]
                         q, _ = torch.ops.tensor_inference_engine.prepare_activations(
@@ -305,7 +305,7 @@ def parser():
     result.add_argument("--scope", choices=["all", "down"], default="all")
     result.add_argument("--case", action="append", default=None,
                         help="repeat baseline or POLICY:BITS; includes dense:4/8")
-    result.add_argument("--selector-backend", choices=["reference", "cuda"], default="reference")
+    result.add_argument("--selector-backend", choices=["reference", "cuda", "cuda-tile"], default="reference")
     result.add_argument("--holdout-offset", type=int, default=0,
                         help="skip additional images/class after the eight diagnostic images")
     result.add_argument("--mode-rows", type=int, choices=[16, 32, 64, 128], default=128,
@@ -328,7 +328,7 @@ def main():
     torch.set_num_threads(8)
     torch.backends.cuda.matmul.allow_tf32 = False
     torch.backends.cuda.matmul.allow_bf16_reduced_precision_reduction = False
-    if args.selector_backend == "cuda":
+    if args.selector_backend in {"cuda", "cuda-tile"}:
         torch.ops.load_library(str(args.library.resolve()))
     if args.phase == "quality":
         args.case = args.case or ["baseline", "dense:4", "diagonal:16", "gram:16",

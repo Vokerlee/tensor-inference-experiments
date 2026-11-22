@@ -8,7 +8,7 @@ import pytest
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from activation_policies import adaptive_representation, common_representation, selection
+from activation_policies import ENGINE, adaptive_representation, common_representation, packed_gram, selection
 
 
 @pytest.mark.parametrize("policy", ["diagonal", "gram"])
@@ -49,3 +49,20 @@ def test_strict_global_tolerance_retains_original_values(tile_rows, family):
     result, _, elements = adaptive_representation(x, gram, None, family, "gram", 1e-20, args)
     torch.testing.assert_close(result, x.float())
     assert elements.sum().item() == x.numel()
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA required")
+@pytest.mark.parametrize("low_format", ["int4", "e2m1"])
+def test_native_tile_policy_matches_reference(low_format):
+    torch.ops.load_library(str(ENGINE / "build/libtensor_inference_engine_torch.so"))
+    torch.manual_seed(29)
+    x = torch.randn(197, 256, device="cuda", dtype=torch.bfloat16)
+    gram = selection.group_gram(torch.randn(256, 31, device="cuda"))
+    packed = packed_gram(gram)
+    arguments = dict(group_size=32, mode_rows=128, low_format=low_format)
+    reference = adaptive_representation(x, gram, packed, "precision", "gram", .01,
+                                        SimpleNamespace(selector_backend="cuda", **arguments))
+    native = adaptive_representation(x, gram, packed, "precision", "gram", .01,
+                                     SimpleNamespace(selector_backend="cuda-tile", **arguments))
+    for actual, expected in zip(native, reference):
+        torch.testing.assert_close(actual.float(), expected.float(), rtol=0, atol=0)
