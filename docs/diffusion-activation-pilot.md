@@ -43,3 +43,16 @@ Different valid images can have low PSNR; high PSNR does not establish improved
 generation quality. Eight samples do not support FID, a distribution-quality
 claim, or a general ranking of methods. GPU timings and ASIC energy are not
 measured by this script. Thresholds are global and not fitted using labels.
+
+## Conditional-class diagnostic
+
+```sh
+.venv/bin/python scripts/score_diffusion_classes.py --run results/dit-trajectories \
+    --output results/dit-class-consistency.json
+```
+
+Two fixed, unmodified ImageNet classifiers evaluate generated float images
+against their conditioning class. Reports include top1/top5, target-class
+probabilities, predictions and input-array hashes. This supplements visual and
+trajectory inspection; it measures class consistency, not FID, perceptual
+quality or diversity. Repeated `--run` arguments score multiple completed runs.
