@@ -1,5 +1,9 @@
 # Grouped activation pilot
 
+The square decision windows below are software policy groups. See the
+[matrix interface](matrix-unit-interface.md) for the
+distinct K=128 BF16 / K=256 FP8 input lengths and fixed 128-wide FP32 output.
+
 Use the pinned environment and engine submodule. No additional Python package
 is required. The first download retrieves official Torchvision checkpoints and
 Imagenette2-160 into the user cache, outside Git.
@@ -67,8 +71,8 @@ Cases `precision-diagonal:0.01`, `adaptive-diagonal:0.01` and
 Replace `diagonal` with `gram` for local signed interactions. The number is a
 global relative group-error tolerance, never a task-quality guarantee. Format
 decisions cover128 rows by128 input channels by default. `--mode-rows 32`
-measures a different format-granularity requirement; it does not create free
-subarrays on an existing128-row array.
+measures a different policy granularity; it does not create free subarrays
+or establish a physical M dimension for the target matrix unit.
 
 The finite mode ordering uses nominal representation/work ranks, not measured
 hardware joules. Weights remain BF16, so cheaper integer MAC support is a

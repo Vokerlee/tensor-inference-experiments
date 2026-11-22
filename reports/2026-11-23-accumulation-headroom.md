@@ -4,6 +4,12 @@ A conservative integer-range guard accepts a substantial part of the sampled
 MLP work. This is a numerical-range screen; it does not yet execute changed
 accumulation, measure model quality or establish energy savings or novelty.
 
+Interface clarification: these historical full-K square-window results are
+not an evaluation of the target FP8 geometry, which has K=256 and 128 FP32
+outputs. See the [matrix interface](../docs/matrix-unit-interface.md). Retaining
+integer state across primitive outputs would be an explicitly costed extension;
+the original measured data and execution provenance below remain unchanged.
+
 ## Reproduction and scope
 
 Use the [diagnostic instructions](../docs/accumulation-scale-diagnostics.md).
