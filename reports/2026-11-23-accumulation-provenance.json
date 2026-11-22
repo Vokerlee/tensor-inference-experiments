@@ -1,0 +1,164 @@
+[
+  {
+    "source": "results/accumulation-scales-20261123/vit.json",
+    "source_sha256": "77e775d8a46ed3f01c093516fd39d38fe7cbd1638c63c8fb1e3fd9f60348d8c3",
+    "schema": 1,
+    "model": "vit_b_16",
+    "checkpoint": "https://download.pytorch.org/models/vit_b_16-c867db91.pth",
+    "experiments": {
+      "commit": "88f63beb0cd8f3579694f8bd0a1f34416fd2e61a",
+      "dirty": false
+    },
+    "engine": {
+      "commit": "cc46c60b62a050cb13941107ee1c631012d55229",
+      "dirty": false
+    },
+    "script_sha256": "7102f53792283c8349326deb1dd1b5c82bb47677cfa375cda605b5c577a81c06",
+    "manifest": [
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_3472.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_13390.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_2772.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_1152.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_18042.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_9881.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_4580.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_51680.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_20910.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_6550.JPEG",
+        "target": 0
+      }
+    ],
+    "settings": {
+      "batch_size": 10,
+      "group_size": 32,
+      "tile_sizes": [
+        128,
+        256
+      ],
+      "weight_format": "int8",
+      "widths": [
+        24,
+        32,
+        48
+      ]
+    },
+    "limitations": [
+      "One complete diagnostic batch, not an accuracy evaluation",
+      "Scales/operands hypothetical; original model forward is unchanged",
+      "Common-exponent integer headroom is not a hardware energy result",
+      "Zero-point, exceptional values and arbitrary scale formats excluded",
+      "Full-K lookahead and metadata/buffer retention must be priced",
+      "Window sizes are alternative contracts, not free hardware subarrays",
+      "Same matrix calls; no cycle savings inferred from fewer conversions"
+    ]
+  },
+  {
+    "source": "results/accumulation-scales-20261123/swin.json",
+    "source_sha256": "4c1ef94ab2c2f8bd948442219f340ba5e230fd559383a159de02b76387866ffe",
+    "schema": 1,
+    "model": "swin_t",
+    "checkpoint": "https://download.pytorch.org/models/swin_t-704ceda3.pth",
+    "experiments": {
+      "commit": "88f63beb0cd8f3579694f8bd0a1f34416fd2e61a",
+      "dirty": false
+    },
+    "engine": {
+      "commit": "cc46c60b62a050cb13941107ee1c631012d55229",
+      "dirty": false
+    },
+    "script_sha256": "7102f53792283c8349326deb1dd1b5c82bb47677cfa375cda605b5c577a81c06",
+    "manifest": [
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_3472.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_13390.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_2772.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_1152.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_18042.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_9881.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_4580.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_51680.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_20910.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_6550.JPEG",
+        "target": 0
+      }
+    ],
+    "settings": {
+      "batch_size": 10,
+      "group_size": 32,
+      "tile_sizes": [
+        128,
+        256
+      ],
+      "weight_format": "int8",
+      "widths": [
+        24,
+        32,
+        48
+      ]
+    },
+    "limitations": [
+      "One complete diagnostic batch, not an accuracy evaluation",
+      "Scales/operands hypothetical; original model forward is unchanged",
+      "Common-exponent integer headroom is not a hardware energy result",
+      "Zero-point, exceptional values and arbitrary scale formats excluded",
+      "Full-K lookahead and metadata/buffer retention must be priced",
+      "Window sizes are alternative contracts, not free hardware subarrays",
+      "Same matrix calls; no cycle savings inferred from fewer conversions"
+    ]
+  }
+]
