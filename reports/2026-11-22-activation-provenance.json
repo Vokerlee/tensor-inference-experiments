@@ -1,0 +1,901 @@
+{
+  "schema": 1,
+  "limitations": [
+    "Original execution provenance, including dirty flags, is retained verbatim",
+    "New reproductions have their own report hashes and execution revisions",
+    "The final reproduction snapshot can be newer than an exploratory run"
+  ],
+  "reports": [
+    {
+      "report": "vit-format-holdout.json",
+      "report_sha256": "21b46e65d3a5735e756efe365dcfad923506e53a0e74d94cd283db5cecb40b5a",
+      "experiments": {
+        "commit": "abd1be4fc93f06b1f45a7815fc6de6955492a88d",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "74585219d34de0d6c25a15f23e4eeb396c48ebbf",
+        "dirty": false
+      },
+      "script_sha256": "a8ebe41d13733f00c6f2ee53fe62d224e3cc68b5daebc08757efa6dd96133379",
+      "reference_sha256": "3b6d37e3a411aa4bd6ebe351d5f2ce1f37fb46aabb1fc164dfbeb2ee0297d01d",
+      "policy_sha256": "93e5d7f44a7ac1b40231cd96b8d9bb86d66b10f26b743fda685af30803275ae4",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/vit_b_16-c867db91.pth",
+        "sha256": "c867db91d3e12c6cbadabb610d73c24a546bf82d8c03a9fea34f43a712ddb0e9"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "vit_b_16",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "affine:4",
+          "fp4:4",
+          "precision-diagonal:0.01",
+          "precision-gram:0.01",
+          "adaptive-diagonal:0.01",
+          "adaptive-gram:0.01"
+        ],
+        "selector_backend": "cuda",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "e2m1"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[256]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "vit-native-policy.json",
+      "report_sha256": "3424a4d758ee94907b08168e22c04139634f08b6511faad0380cad2968be5eec",
+      "experiments": {
+        "commit": "3b510ae1bade5790e89f11a495a7a7bfb0e5e652",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "f85308a2c73633cb62517a4ae5cad7c4c7635d4a",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "458753810cf2a8acf838b4ecdfc0c223415ea92e3742d1ba4e758a620ad147d4",
+      "policy_sha256": "e6c0c8adc4e15a8d81a6306e978642aa1f52fb9b3e68173bc288707f4211c000",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/vit_b_16-c867db91.pth",
+        "sha256": "c867db91d3e12c6cbadabb610d73c24a546bf82d8c03a9fea34f43a712ddb0e9"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "vit_b_16",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "precision-diagonal:0.01",
+          "precision-gram:0.01"
+        ],
+        "selector_backend": "cuda-tile",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "e2m1"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[256]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "vit-geometry-ablation.json",
+      "report_sha256": "452ac3868b31cb14104d7ff9cf3367181074403bf36ffd715b672cd1827bfbe2",
+      "experiments": {
+        "commit": "60037302869ce858b65bba311841c0cb6993408d",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "49db6b9238d9026cfbe501927677c7f371c3ea68",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "1a0cc08d15360017b1faa8d502aa41c74223d1dc61d019097733a7111808daed",
+      "policy_sha256": "0f86166e21ce1cb51b0d5d83a87f9c5c788dbe2193d7a492ddb580b7577fcc51",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/vit_b_16-c867db91.pth",
+        "sha256": "c867db91d3e12c6cbadabb610d73c24a546bf82d8c03a9fea34f43a712ddb0e9"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "vit_b_16",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "precision-gram-numerator:0.01",
+          "precision-gram-denominator:0.01"
+        ],
+        "selector_backend": "cuda-tile",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "e2m1"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[256]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "vit-common-calls.json",
+      "report_sha256": "f4fefa28914df4a56bf73106229fe62039353accdb3171959127dde8c33df0aa",
+      "experiments": {
+        "commit": "8634a168f263c621f907c397c37fd290b370b5f8",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "49db6b9238d9026cfbe501927677c7f371c3ea68",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "1a0cc08d15360017b1faa8d502aa41c74223d1dc61d019097733a7111808daed",
+      "policy_sha256": "0f86166e21ce1cb51b0d5d83a87f9c5c788dbe2193d7a492ddb580b7577fcc51",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/vit_b_16-c867db91.pth",
+        "sha256": "c867db91d3e12c6cbadabb610d73c24a546bf82d8c03a9fea34f43a712ddb0e9"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "vit_b_16",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "common-adaptive-gram:0.01",
+          "common-adaptive-gram:0.03"
+        ],
+        "selector_backend": "cuda",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "int4"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[256]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "vit-forced-sparse.json",
+      "report_sha256": "22507795a1819efa77506b63ea34fa5d68306ec90398183d9ce1f6bf93d01ace",
+      "experiments": {
+        "commit": "fdce3a0cf6de0bc341b2ee446ada7d756d907ecd",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "49db6b9238d9026cfbe501927677c7f371c3ea68",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "1a0cc08d15360017b1faa8d502aa41c74223d1dc61d019097733a7111808daed",
+      "policy_sha256": "0f86166e21ce1cb51b0d5d83a87f9c5c788dbe2193d7a492ddb580b7577fcc51",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/vit_b_16-c867db91.pth",
+        "sha256": "c867db91d3e12c6cbadabb610d73c24a546bf82d8c03a9fea34f43a712ddb0e9"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "vit_b_16",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "gram:16"
+        ],
+        "selector_backend": "cuda",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "int4"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[256]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "vit-streams-refined.json",
+      "report_sha256": "a54fec399d043d387fa73e256beab933e2c658399dd4ba357cce4f772f4d0ab9",
+      "experiments": {
+        "commit": "477b66827b664eca922ce822345e4de6b99ef5b8",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "f85308a2c73633cb62517a4ae5cad7c4c7635d4a",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "458753810cf2a8acf838b4ecdfc0c223415ea92e3742d1ba4e758a620ad147d4",
+      "policy_sha256": "e6c0c8adc4e15a8d81a6306e978642aa1f52fb9b3e68173bc288707f4211c000",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/vit_b_16-c867db91.pth",
+        "sha256": "c867db91d3e12c6cbadabb610d73c24a546bf82d8c03a9fea34f43a712ddb0e9"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "vit_b_16"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[256]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+        "manifest_sha256": "c5bfbd402ccfdb077de1b367b03ac50e07535fe22c76ecdd6e3c27a42ffb9ada"
+      }
+    },
+    {
+      "report": "vit-work.json",
+      "report_sha256": "57a65830e8cea92ef5bb5a8cbb3a8b77951c25015b64413d15d92c074656b0dc"
+    },
+    {
+      "report": "swin-format-holdout.json",
+      "report_sha256": "b907d1121b6d1a62f17c818bc66dd40315a0b59d4d30360aa65209158f975be4",
+      "experiments": {
+        "commit": "d2d1d53d152fefaa510cea4587dc6309dce87b0b",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "74585219d34de0d6c25a15f23e4eeb396c48ebbf",
+        "dirty": false
+      },
+      "script_sha256": "a8ebe41d13733f00c6f2ee53fe62d224e3cc68b5daebc08757efa6dd96133379",
+      "reference_sha256": "3b6d37e3a411aa4bd6ebe351d5f2ce1f37fb46aabb1fc164dfbeb2ee0297d01d",
+      "policy_sha256": "93e5d7f44a7ac1b40231cd96b8d9bb86d66b10f26b743fda685af30803275ae4",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/swin_t-704ceda3.pth",
+        "sha256": "704ceda373461b0a224fcdddd75cd2a5e9f8064512ed47adbddef7f343fd147b"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "swin_t",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "affine:4",
+          "fp4:4",
+          "precision-diagonal:0.01",
+          "precision-gram:0.01",
+          "adaptive-diagonal:0.01",
+          "adaptive-gram:0.01"
+        ],
+        "selector_backend": "cuda",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "e2m1"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[232]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BICUBIC\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "swin-native-policy.json",
+      "report_sha256": "59f9301f6d78cbaeba768969ebe7e368c32abf5e1e44d66c76193b0257620aa5",
+      "experiments": {
+        "commit": "3b510ae1bade5790e89f11a495a7a7bfb0e5e652",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "f85308a2c73633cb62517a4ae5cad7c4c7635d4a",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "458753810cf2a8acf838b4ecdfc0c223415ea92e3742d1ba4e758a620ad147d4",
+      "policy_sha256": "e6c0c8adc4e15a8d81a6306e978642aa1f52fb9b3e68173bc288707f4211c000",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/swin_t-704ceda3.pth",
+        "sha256": "704ceda373461b0a224fcdddd75cd2a5e9f8064512ed47adbddef7f343fd147b"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "swin_t",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "precision-diagonal:0.01",
+          "precision-gram:0.01"
+        ],
+        "selector_backend": "cuda-tile",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "e2m1"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[232]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BICUBIC\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "swin-geometry-ablation.json",
+      "report_sha256": "feb501171a3de49e86e6c269278c2e0ade2545cdc329bff94a9f6df7abe6516e",
+      "experiments": {
+        "commit": "60037302869ce858b65bba311841c0cb6993408d",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "49db6b9238d9026cfbe501927677c7f371c3ea68",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "1a0cc08d15360017b1faa8d502aa41c74223d1dc61d019097733a7111808daed",
+      "policy_sha256": "0f86166e21ce1cb51b0d5d83a87f9c5c788dbe2193d7a492ddb580b7577fcc51",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/swin_t-704ceda3.pth",
+        "sha256": "704ceda373461b0a224fcdddd75cd2a5e9f8064512ed47adbddef7f343fd147b"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "swin_t",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "precision-gram-numerator:0.01",
+          "precision-gram-denominator:0.01"
+        ],
+        "selector_backend": "cuda-tile",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "e2m1"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[232]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BICUBIC\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "swin-common-calls.json",
+      "report_sha256": "5db4c3a616914d078d4b8605db1b4e337a76b89b612b0b37b079b001f75a752b",
+      "experiments": {
+        "commit": "8634a168f263c621f907c397c37fd290b370b5f8",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "49db6b9238d9026cfbe501927677c7f371c3ea68",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "1a0cc08d15360017b1faa8d502aa41c74223d1dc61d019097733a7111808daed",
+      "policy_sha256": "0f86166e21ce1cb51b0d5d83a87f9c5c788dbe2193d7a492ddb580b7577fcc51",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/swin_t-704ceda3.pth",
+        "sha256": "704ceda373461b0a224fcdddd75cd2a5e9f8064512ed47adbddef7f343fd147b"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "swin_t",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "common-adaptive-gram:0.01",
+          "common-adaptive-gram:0.03"
+        ],
+        "selector_backend": "cuda",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "int4"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[232]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BICUBIC\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "swin-forced-sparse.json",
+      "report_sha256": "e1c16a67d608c7a481f06a0a247c0b658a3b49e00eccd25fcd1b434bba93df51",
+      "experiments": {
+        "commit": "fdce3a0cf6de0bc341b2ee446ada7d756d907ecd",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "49db6b9238d9026cfbe501927677c7f371c3ea68",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "1a0cc08d15360017b1faa8d502aa41c74223d1dc61d019097733a7111808daed",
+      "policy_sha256": "0f86166e21ce1cb51b0d5d83a87f9c5c788dbe2193d7a492ddb580b7577fcc51",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/swin_t-704ceda3.pth",
+        "sha256": "704ceda373461b0a224fcdddd75cd2a5e9f8064512ed47adbddef7f343fd147b"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "swin_t",
+        "phase": "quality",
+        "samples_per_class": 100,
+        "rows_per_image": 8,
+        "batch_size": 16,
+        "bits": [
+          16,
+          8,
+          4
+        ],
+        "group_size": 32,
+        "scope": "all",
+        "case": [
+          "baseline",
+          "gram:16"
+        ],
+        "selector_backend": "cuda",
+        "holdout_offset": 20,
+        "mode_rows": 128,
+        "low_format": "int4"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[232]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BICUBIC\n)",
+        "manifest_sha256": "78429cc24f8ae39c6d77ba937db23677cd94ed4e3e24006a07de2cf77d015176"
+      }
+    },
+    {
+      "report": "swin-streams-refined.json",
+      "report_sha256": "cc9b6d00057e1c326d3d18b0ca141dc36ea15b69ae3d7fbb1ab780e782b0a58e",
+      "experiments": {
+        "commit": "477b66827b664eca922ce822345e4de6b99ef5b8",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "f85308a2c73633cb62517a4ae5cad7c4c7635d4a",
+        "dirty": false
+      },
+      "script_sha256": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+      "reference_sha256": "458753810cf2a8acf838b4ecdfc0c223415ea92e3742d1ba4e758a620ad147d4",
+      "policy_sha256": "e6c0c8adc4e15a8d81a6306e978642aa1f52fb9b3e68173bc288707f4211c000",
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/swin_t-704ceda3.pth",
+        "sha256": "704ceda373461b0a224fcdddd75cd2a5e9f8064512ed47adbddef7f343fd147b"
+      },
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "settings": {
+        "model": "swin_t"
+      },
+      "dataset": {
+        "name": "Imagenette2-160 validation",
+        "source_resolution": 160,
+        "archive_md5": "e793b78cc4c9e9a4ccc0c1155377a412",
+        "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[232]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BICUBIC\n)",
+        "manifest_sha256": "c5bfbd402ccfdb077de1b367b03ac50e07535fe22c76ecdd6e3c27a42ffb9ada"
+      }
+    },
+    {
+      "report": "swin-work.json",
+      "report_sha256": "3c400037482d2eae36896474765ac09398755c3fc823b0b5823d7fb191df8d88"
+    },
+    {
+      "report": "dit-40/report.json",
+      "report_sha256": "33a70f1976d90e712a52f94f2a12b0a1bdc4e85fa4b5a90551651a8d1a68590a",
+      "experiments": {
+        "commit": "d2d1d53d152fefaa510cea4587dc6309dce87b0b",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "74585219d34de0d6c25a15f23e4eeb396c48ebbf",
+        "dirty": false
+      },
+      "script_sha256": "7c70c7cd1bbf074e3a8cc785c69278441b4a86f7d8cacaaf501d8070cf435fa0",
+      "policy_sha256": "93e5d7f44a7ac1b40231cd96b8d9bb86d66b10f26b743fda685af30803275ae4",
+      "library_sha256": "f10cfbc4f4ff2510f8757cc8282216a8120840f9495540f56a9723915b0e33cb",
+      "checkpoint_files": {
+        "model_index.json": "685dd8124152d9126f07528b728253041c5719426458c43176bd2f96c6f39f70",
+        "transformer/config.json": "26f9e069aa6d89fbb1f97acce3dba1628a41b3030879c98c0407562595c84bc4",
+        "transformer/diffusion_pytorch_model.bin": "e592d64df5a579691e65d2b245641a00bb070b652e2c5ca775cce20a729ce9d9",
+        "vae/config.json": "44b0169010f4a071272f69d03ead58b0661415bb9c88702a5e0ac631b80f7ee2",
+        "vae/diffusion_pytorch_model.bin": "4ec99ed96663e2418dba665762930f9eae8884e6b0a223fd53507931e8446eba",
+        "scheduler/scheduler_config.json": "265b971d5a725e033ede706220f19bbdd4573804cc9b86deb470108674708742"
+      },
+      "revision": "eab87f77abd5aef071a632f08807fbaab0b704d0",
+      "environment": {
+        "torch": "2.11.0+cu128",
+        "diffusers": "0.35.2",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16"
+      },
+      "settings": {
+        "steps": 50,
+        "seed": 20261125,
+        "classes": [
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571,
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571,
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571,
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571,
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571
+        ],
+        "batch_size": 2,
+        "case": [
+          "baseline",
+          "dense:8",
+          "affine:4",
+          "fp4:4",
+          "precision-diagonal:0.01",
+          "precision-gram:0.01",
+          "adaptive-gram:0.01"
+        ],
+        "low_format": "e2m1",
+        "group_size": 32,
+        "selector_backend": "cuda"
+      }
+    },
+    {
+      "report": "dit-residual-40/report.json",
+      "report_sha256": "5eb613c1b8ff21725cc5f989ebe6a358ec2cc60f2a0e42e3bb4d373169b802b9",
+      "experiments": {
+        "commit": "477b66827b664eca922ce822345e4de6b99ef5b8",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "49db6b9238d9026cfbe501927677c7f371c3ea68",
+        "dirty": false
+      },
+      "script_sha256": "07bf703b2b3188c905f2714c689da862d32e3776adda04fa9b1e3e90c4b9338b",
+      "policy_sha256": "0f86166e21ce1cb51b0d5d83a87f9c5c788dbe2193d7a492ddb580b7577fcc51",
+      "library_sha256": "95cb7fb5b73d8ebd0db38417c3651cdf8b8fe7255bcadf314a5e91ce3765660a",
+      "checkpoint_files": {
+        "model_index.json": "685dd8124152d9126f07528b728253041c5719426458c43176bd2f96c6f39f70",
+        "transformer/config.json": "26f9e069aa6d89fbb1f97acce3dba1628a41b3030879c98c0407562595c84bc4",
+        "transformer/diffusion_pytorch_model.bin": "e592d64df5a579691e65d2b245641a00bb070b652e2c5ca775cce20a729ce9d9",
+        "vae/config.json": "44b0169010f4a071272f69d03ead58b0661415bb9c88702a5e0ac631b80f7ee2",
+        "vae/diffusion_pytorch_model.bin": "4ec99ed96663e2418dba665762930f9eae8884e6b0a223fd53507931e8446eba",
+        "scheduler/scheduler_config.json": "265b971d5a725e033ede706220f19bbdd4573804cc9b86deb470108674708742"
+      },
+      "revision": "eab87f77abd5aef071a632f08807fbaab0b704d0",
+      "environment": {
+        "torch": "2.11.0+cu128",
+        "diffusers": "0.35.2",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "dtype": "bfloat16"
+      },
+      "settings": {
+        "steps": 50,
+        "seed": 20261125,
+        "classes": [
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571,
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571,
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571,
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571,
+          0,
+          217,
+          482,
+          491,
+          497,
+          566,
+          569,
+          571
+        ],
+        "batch_size": 2,
+        "case": [
+          "precision-gram-numerator:0.01",
+          "sparse-residual:4",
+          "double-sparse:4",
+          "double-sparse-p2:4"
+        ],
+        "low_format": "e2m1",
+        "selector_backend": "cuda-tile",
+        "group_size": 32
+      }
+    },
+    {
+      "report": "dit-class-consistency-main.json",
+      "report_sha256": "28e50660db8a4d0a4cdf06921aa96cbe78f63cc766635b9f3acea48fdb7e4666",
+      "script_sha256": "8316884a0310d8f9859c6b1159f57412a99f9539bcf10a1a0c4d56512cf575a0"
+    },
+    {
+      "report": "dit-work.json",
+      "report_sha256": "e9a863350b292e9d34fd858446faf64afb1e442d1c602ab3597cf50d780b20e2"
+    },
+    {
+      "report": "final-selection-timing.json",
+      "report_sha256": "502b1b287bc5239a42df8c4bdce99eaf0c137dcc7dd5c80a65c2c048f6c5ec98",
+      "experiments": {
+        "commit": "37ceed6860810cffdbba32ba331e3b35963b5c2f",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "cc46c60b62a050cb13941107ee1c631012d55229",
+        "dirty": false
+      },
+      "script_sha256": "38f1f11a5479796a828d89303bf91ab0a48e8778dd05148c16453561ac784e57",
+      "library_sha256": "95cb7fb5b73d8ebd0db38417c3651cdf8b8fe7255bcadf314a5e91ce3765660a",
+      "settings": {
+        "warmup": 10,
+        "iterations": 50,
+        "trials": 5,
+        "mode": "graph",
+        "graph_batch": 10
+      }
+    },
+    {
+      "report": "systolic-actions.json",
+      "report_sha256": "fc900b61c8ed93c0b81f856360bf5335b37d601cd938445332f4a99257bbc862"
+    }
+  ]
+}
