@@ -73,6 +73,8 @@ def main():
             "native_diagonal_precision_kernel": lambda: torch.ops.tensor_inference_engine.adaptive_precision(
                 x, gram, .01, True, True),
             "native_gram_precision_kernel": lambda: torch.ops.tensor_inference_engine.adaptive_precision(x, gram),
+            "native_low_error_precision_kernel": lambda: torch.ops.tensor_inference_engine.adaptive_precision_geometry(
+                x, gram, .01, True, 2),
         }
         timings = {name: measure(function, settings) for name, function in functions.items()}
         record = {"M": m, "N": n, "K": k, "timings": timings,

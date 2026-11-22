@@ -34,6 +34,9 @@ def commands(output: Path, stage: str):
             ]:
                 yield command("activation_pilot.py", *common, "--selector-backend", backend,
                               *cases(selected), "--output", output / f"{prefix}-{name}.json")
+            yield command("activation_pilot.py", *common, "--selector-backend", "cuda",
+                          *cases(["baseline", "common-adaptive-gram:0.01", "common-adaptive-gram:0.03"]),
+                          "--output", output / f"{prefix}-common-calls.json")
     if stage in {"all", "diffusion"}:
         common = ["--seed", "20261125", "--steps", "50", "--batch-size", "2",
                   "--classes", *CLASSES, "--low-format", "e2m1"]
