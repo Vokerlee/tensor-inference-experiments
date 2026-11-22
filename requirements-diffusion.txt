@@ -1,0 +1,17 @@
+# Optional class-conditional DiT pilot; shared pins stay in their owner files.
+-r requirements.txt
+
+certifi==2026.11.20
+charset-normalizer==3.5.2
+diffusers==0.35.2
+hf-xet==1.8.0
+huggingface-hub==0.36.0
+idna==3.20
+importlib-metadata==10.2.0
+lazy-importer==0.1.0
+regex==2026.11.19
+requests==2.34.2
+safetensors==0.8.0
+tqdm==4.70.1
+urllib3==2.8.0
+zipp==4.1.2
