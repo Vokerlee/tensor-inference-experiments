@@ -61,3 +61,16 @@ The fixed holdout offset separates these images from earlier screening inputs.
 Neither labels nor agreement with the reference choose scales or accumulator
 widths. Ten images/class is a small diagnostic subset; it cannot establish a
 general accuracy guarantee or a diffusion generation-quality result.
+
+## Reused source statistics
+
+The guard accepts cached maximum/L1 statistics for the exact encoded source
+groups. The caller must preserve their association with codes through lowering.
+The default `min` bound uses the smaller of Amax times weight L1 and activation
+L1 times weight maximum. The `max` alternative uses only the first expression,
+so it needs no activation L1 reduction or L1 metadata. It may reject more vectors.
+Both are sufficient bounds and neither uses a receiving product as a predictor.
+
+Metadata movement, register reads and decision timing remain costs even when
+statistics are reused. A source maximum can be exposed by the quantizer; this
+Python oracle's explicit reductions do not establish free hardware collection.

@@ -48,13 +48,22 @@ def fits_bound(bound: torch.Tensor, shifts: torch.Tensor, width: int) -> torch.T
     return term_fits.all(-1) & (terms.sum(-1) <= limit)
 
 
-def guarded_rows(a_codes, a_exponents, w_codes, w_exponents, width, tile_size=128):
+def guarded_rows(a_codes, a_exponents, w_codes, w_exponents, width, tile_size=128,
+                 *, a_statistics=None, bound_kind="min"):
     """One guard/anchor per activation row and declared weight-column window."""
+    if bound_kind not in {"min", "max"}:
+        raise ValueError("bound kind must be min or max")
     rows, groups, _ = a_codes.shape
     columns = w_codes.shape[0]
     tiles = (columns + tile_size - 1) // tile_size
-    a_max = a_codes.abs().amax(-1)
-    a_l1 = a_codes.abs().sum(-1)
+    if a_statistics is None:
+        a_max = a_codes.abs().amax(-1)
+        a_l1 = a_codes.abs().sum(-1) if bound_kind == "min" else None
+    else:
+        a_max, a_l1 = a_statistics
+        if a_max.shape != a_codes.shape[:-1] or (
+                bound_kind == "min" and (a_l1 is None or a_l1.shape != a_max.shape)):
+            raise ValueError("cached statistics must match the represented activation groups")
     w_max = torch.nn.functional.pad(w_codes.abs().amax(-1), (0, 0, 0, (-columns) % tile_size))
     w_l1 = torch.nn.functional.pad(w_codes.abs().sum(-1), (0, 0, 0, (-columns) % tile_size))
     w_exp = torch.nn.functional.pad(w_exponents, (0, 0, 0, (-columns) % tile_size))
@@ -68,7 +77,9 @@ def guarded_rows(a_codes, a_exponents, w_codes, w_exponents, width, tile_size=12
     anchor = torch.where(active, lower, 10000).amin(-1)
     anchor = torch.where(active.any(-1), anchor, 0)
     shifts = a_exponents[:, None] + high[None] - anchor[..., None]
-    bound = torch.minimum(a_max[:, None] * w_l1[None], a_l1[:, None] * w_max[None])
+    bound = a_max[:, None] * w_l1[None]
+    if bound_kind == "min":
+        bound = torch.minimum(bound, a_l1[:, None] * w_max[None])
     return fits_bound(bound, shifts, width), anchor
 
 
