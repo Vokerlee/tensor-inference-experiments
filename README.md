@@ -49,3 +49,10 @@ experiment is implemented by this environment setup alone.
 
 See [build, validation and benchmark instructions](docs/benchmark-gemm.md) for
 running the custom engine operator against Torch with matched arithmetic.
+
+## Activation representation pilots
+
+See the [measured results](reports/2026-11-22-activation-representations.md),
+[reproduction pipeline](docs/reproduce-activation-pilots.md) and
+[systolic action assumptions](docs/systolic-actions.md). Numerical quality,
+CUDA preparation cost and prospective hardware actions are evaluated separately.
