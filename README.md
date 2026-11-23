@@ -52,6 +52,10 @@ running the custom engine operator against Torch with matched arithmetic.
 
 ## Activation representation pilots
 
+The [spatial feedback report](reports/2026-11-23-spatial-feedback.md) separates
+same-input convolution error from complete-model quality for source-group
+quantization with fixed and kernel-derived residual feedback.
+
 The [source-quantization and primitive-local accumulation report](reports/2026-11-23-primitive-accumulation.md)
 adds paired arithmetic execution, convolution geometry, exact-source replay and
 native planner timing. Action-count reductions and numerical quality are
