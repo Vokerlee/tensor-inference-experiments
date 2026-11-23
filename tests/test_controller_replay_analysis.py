@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from controller_replay_analysis import paired_summary
+from controller_replay_analysis import descriptor_summary, paired_summary
 
 
 def test_paired_statistics_keep_independent_inputs_and_zero_effect():
@@ -23,3 +23,23 @@ def test_paired_statistics_keep_independent_inputs_and_zero_effect():
 def test_invalid_independent_input_vector_rejected(values):
     with pytest.raises(ValueError):
         paired_summary(values)
+
+
+def test_descriptor_aggregation_keeps_paired_identities_and_rejects_duplicates():
+    records = []
+    for bits in (4, 8):
+        for backend, control in (("original", "live"), ("folded", "live"), ("folded", "frozen")):
+            for policy, error in (("first", 0.1), ("second", 0.2)):
+                for index in range(2):
+                    records.append({"bits": bits, "backend": backend, "control": control,
+                        "policy": policy, "bundle": "inputs", "bundle_input_index": index,
+                        "cosine_distance": error, "relative_mse": 2 * error})
+    report = {"status": "complete", "records": records, "references": [
+        {"bundle": "inputs", "bundle_input_index": index} for index in range(2)]}
+    result = descriptor_summary(report)
+    assert len(result) == 4
+    assert result[0]["inputs"] == 2
+    assert result[0]["pairwise"][0]["per_input"] == [-0.1, -0.1]
+    report["records"].append(records[0])
+    with pytest.raises(ValueError, match="duplicate"):
+        descriptor_summary(report)
