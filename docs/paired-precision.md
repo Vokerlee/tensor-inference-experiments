@@ -43,3 +43,30 @@ not automatically result-SRAM transactions. Counts assume a dense issue
 schedule; neither zero gating nor a free mixed-format weight schedule is
 provided. Internal accumulator precision/stationarity remain explicit target
 questions. Final-model quality must be evaluated separately from local bounds.
+
+## Modern model pilots and complete statistics
+
+```sh
+.venv/bin/python scripts/paired_precision_pilot.py --model dinov3-small \
+    --samples-per-class 10 --output results/paired-dinov3
+.venv/bin/python scripts/paired_precision_pilot.py --model convnextv2-tiny \
+    --samples-per-class 10 --output results/paired-convnextv2
+.venv/bin/python scripts/paired_precision_pilot.py --model sana-sprint \
+    --output results/paired-sana
+```
+
+Install the optional modern-model environment. DINOv3 returns descriptors;
+the pilot measures descriptor change and nearest-neighbor agreement, not
+classification accuracy. ConvNeXt-V2 retains its original1000-class head.
+SANA-Sprint uses paired prompt embeddings, initial seeds, two denoising steps
+and1024×1024 decoded images. Denoiser linears/dense1×1 convolutions with K>128
+are eligible; text encoder, VAE and other operators remain unchanged.
+
+Each case retains complete per-layer mode/vector counters, activation range,
+mean/RMS/zero statistics, deterministic-sample quantiles, scale/bound histograms,
+weight statistics, exact checkpoint/source identities and outputs or trajectory
+fingerprints. Raw numerical arrays/images stay under the output directory.
+Original-model and fixed-K128 custom-engine comparisons are separate from
+quantized policies. Paired image/feature similarity is a numerical diagnostic,
+not FID, GenEval or a downstream-task guarantee. None of these software
+executions is a target-hardware timing measurement.
