@@ -23,6 +23,8 @@ would justify another experiment rather than repeating the same measurement.
 | Adaptive feedback versus fixed feedback under backend changes | [Full replay study](2026-11-24-controller-replay.md) | Pixel/descriptor observers and declared implementations can disagree on the close ordering. All contrasts and unfavorable inputs remain visible. | A causal objective with a predeclared task metric and sufficient independent inputs; include implementation uncertainty rather than selecting a favorable observer. |
 | Interval scale filter with observed pairwise bounds | [Conditional guard](../docs/decision-stability.md), [all patch results](2026-11-24-controller-replay.patches.csv) | About99% local and93–94% global-bound certification is diagnostic selectivity because both trajectories were already computed. It certifies scales only. | Independently justified forward bounds, state/downstream treatment and a measured reference-work budget; compare established FLUCTUAT/PRECiSA principles. |
 
+| Source-group certification as a matrix-work saving estimate | [Convolution footprint](2026-11-24-controller-guard-footprint.md) | Roughly99% group certification still leaves81–85% of M128 cohorts flagged under one declared lowering; another lowering changes clustering. | A complete selective-reference implementation with explicit reduction order, stream batching, state/repair behavior and measured overhead; group rates alone are insufficient. |
+
 CUDA implementation cost is not target hardware time or energy. None of these
 variants is rejected because its experimental CUDA implementation is slow.
 An unavailable implementation/full text is not evidence that prior research
