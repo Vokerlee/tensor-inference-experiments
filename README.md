@@ -87,3 +87,7 @@ statistical archive for eight SANA-Sprint outputs.
 
 The [limitations and negative-results register](reports/limitations-and-negative-results.md)
 keeps unfavorable variants, supporting evidence and concrete revisit conditions.
+
+The [cost and arithmetic-contract study](reports/2026-11-24-contract-validation.md)
+separates hypothetical energy break-even conditions, constructed arithmetic
+witnesses and sampled live-controller divergence.

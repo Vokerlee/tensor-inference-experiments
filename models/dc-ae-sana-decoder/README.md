@@ -29,3 +29,8 @@ fidelity and MAC coverage do not establish generation quality or energy.
 validate the known nearest-neighbor transformation, coefficient precision and
 conversion before duplication, with complete per-branch statistics. Dense MAC
 reductions and pixel fidelity remain distinct from hardware energy/task quality.
+
+[Controller-path diagnostics](../../reports/2026-11-24-contract-validation.md)
+compare fixed/recomputed quantizer scales on24 predeclared patches of one layer
+across eight original/folded decoder trajectories. These local interventions
+are not full-policy accuracy or whole-layer failure-rate measurements.

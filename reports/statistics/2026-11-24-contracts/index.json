@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "accumulation-cost-envelope-20261124.json",
+      "archive": "accumulation-cost-envelope-20261124.json.gz",
+      "source_sha256": "f6cb4c5820c29f58b300fc694d6497cd2d3295a8613eafca820a05fa265db612",
+      "payload_sha256": "f6cb4c5820c29f58b300fc694d6497cd2d3295a8613eafca820a05fa265db612",
+      "archive_sha256": "d8ddd073ba8a5822ad459181472d5c3254fae486e783b3a5b30d8d158a3fde16",
+      "source_bytes": 3050771,
+      "payload_bytes": 3050771,
+      "archive_bytes": 173870,
+      "normalized_fields": []
+    },
+    {
+      "source": "arithmetic-contract-witnesses-20261124.json",
+      "archive": "arithmetic-contract-witnesses-20261124.json.gz",
+      "source_sha256": "98c78f1113991887492b5e05fe04c79d79be7a0cad0918357a81c256dbf34d22",
+      "payload_sha256": "98c78f1113991887492b5e05fe04c79d79be7a0cad0918357a81c256dbf34d22",
+      "archive_sha256": "2bdadb38aa2f13b915e97af84d4cf8960fd7a84d26be057f22302ab686d55f48",
+      "source_bytes": 248904,
+      "payload_bytes": 248904,
+      "archive_bytes": 4254,
+      "normalized_fields": [],
+      "experiments": {
+        "commit": "29d6e388f78765437be6615348a1246c3efca987",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "642089cbeeb77f6a6719c201330b6eb70e6534ff",
+        "dirty": false
+      }
+    },
+    {
+      "source": "decoder-control-path-20261124.json",
+      "archive": "decoder-control-path-20261124.json.gz",
+      "source_sha256": "d8a4292b055d0cfaa4d3ce597588732c68653e836f57d7ad8dd7b7f5e4c5e65a",
+      "payload_sha256": "d8a4292b055d0cfaa4d3ce597588732c68653e836f57d7ad8dd7b7f5e4c5e65a",
+      "archive_sha256": "e143bac4a1748ab2082a4ec7ec37e27a014f8e9e8078e2c2c90be8c6f045025f",
+      "source_bytes": 53578,
+      "payload_bytes": 53578,
+      "archive_bytes": 6898,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder",
+      "experiments": {
+        "commit": "039da48465beb8e6cfab477b906de37f79b20252",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "642089cbeeb77f6a6719c201330b6eb70e6534ff",
+        "dirty": false
+      }
+    },
+    {
+      "source": "decoder-control-path-preliminary-20261124.json",
+      "archive": "decoder-control-path-preliminary-20261124.json.gz",
+      "source_sha256": "35e8dd453726f183946c8c65f7a0e7cc726cd2ddec1836179339c3dab9158a9c",
+      "payload_sha256": "35e8dd453726f183946c8c65f7a0e7cc726cd2ddec1836179339c3dab9158a9c",
+      "archive_sha256": "0cc8fc79acb42eb9483dc7cbccf9b900ef805be3ae8b775ee4dd8bf618c7ce5d",
+      "source_bytes": 53577,
+      "payload_bytes": 53577,
+      "archive_bytes": 6903,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder",
+      "experiments": {
+        "commit": "039da48465beb8e6cfab477b906de37f79b20252",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "642089cbeeb77f6a6719c201330b6eb70e6534ff",
+        "dirty": false
+      }
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}
