@@ -16,6 +16,7 @@ from torch.nn import functional as F
 from activation_pilot import ENGINE, ROOT, digest, load_data, revision, write_json
 from modern_models import VISION, sana_pipeline, vision
 from paired_precision_reference import POLICIES, Counters, multiply, prepare_weight
+from precision_moment_diagnostics import MomentDiagnostics
 
 
 DEFAULT_CASES = ("original", "bf16", "fp8-paired", "fp8-split",
@@ -55,7 +56,7 @@ def activation_summary(values):
 
 
 @contextmanager
-def applied(layers, cache, case, cohort, minimum_fp8_rows=1):
+def applied(layers, cache, case, cohort, minimum_fp8_rows=1, diagnostics=None):
     policy, _, parameter = case.partition(":")
     tolerance = float(parameter) if parameter else 0.04
     counters = {name: Counters() for name in layers}
@@ -67,6 +68,8 @@ def applied(layers, cache, case, cohort, minimum_fp8_rows=1):
         def forward(values):
             traces[name].append(activation_summary(values))
             if policy == "original":
+                if diagnostics is not None:
+                    diagnostics.observe(name, module, values)
                 return originals[name](values)
             if values.dtype != torch.bfloat16 or module.weight.dtype != torch.bfloat16:
                 skipped[name] += 1
@@ -81,8 +84,10 @@ def applied(layers, cache, case, cohort, minimum_fp8_rows=1):
             current_policy = "bf16" if matrix.shape[0] < minimum_fp8_rows else policy
             prepared = None
             if current_policy != "bf16":
-                if name not in cache:
-                    cache[name] = prepare_weight(weight.detach())
+                with_moments = current_policy.startswith(("moment", "diagonal"))
+                if name not in cache or (with_moments and cache[name].moments is None):
+                    cache[name] = (prepare_weight(weight.detach(), with_moments=True) if with_moments
+                                   else prepare_weight(weight.detach()))
                 prepared = cache[name]
             output = multiply(matrix, weight, prepared, policy=current_policy, tolerance=tolerance,
                               cohort=cohort, counters=counters[name])
@@ -156,13 +161,15 @@ def main():
     parser.add_argument("--batch-size", type=int, default=10)
     parser.add_argument("--cohort", type=int, default=32)
     parser.add_argument("--minimum-fp8-rows", type=int, default=1)
+    parser.add_argument("--diagnostic-rows", type=int, default=0)
+    parser.add_argument("--diagnostic-calls", type=int, default=1)
     parser.add_argument("--steps", type=int, default=2)
     parser.add_argument("--seed", type=int, default=20261123)
     parser.add_argument("--prompt", action="append")
     args = parser.parse_args()
     cases = list(dict.fromkeys(["original", *(args.case or DEFAULT_CASES)]))
     if min(args.cohort, args.steps, args.samples_per_class, args.batch_size,
-           args.minimum_fp8_rows) < 1 or args.holdout_offset < 0:
+           args.minimum_fp8_rows, args.diagnostic_calls) < 1 or min(args.holdout_offset, args.diagnostic_rows) < 0:
         parser.error("positive sizes and nonnegative holdout offset required")
     for case in cases:
         policy, _, parameter = case.partition(":")
@@ -192,6 +199,7 @@ def main():
                    "preprocessing": str(data.transforms())}
     layers = receiving_layers(model)
     cache = {}
+    diagnostics = MomentDiagnostics(args.diagnostic_rows, args.diagnostic_calls) if args.diagnostic_rows else None
     report = {
         "schema": 1, "model": args.model, "checkpoint": checkpoint, "dataset": dataset,
         "case_order": cases,
@@ -199,7 +207,8 @@ def main():
         "settings": {key: value for key, value in vars(args).items() if key != "output"},
         "source_sha256": {name: digest(ROOT / "scripts" / name) for name in (
             "paired_precision_pilot.py", "paired_precision_reference.py", "modern_models.py",
-            "activation_pilot.py", "integer_segment_backend.py")},
+            "activation_pilot.py", "integer_segment_backend.py", "precision_moments.py",
+            "precision_moment_diagnostics.py")},
         "library_sha256": digest(ENGINE / "build/libtensor_inference_engine_torch.so"),
         "environment": {"python": platform.python_version(), "torch": torch.__version__,
                         "gpu": torch.cuda.get_device_name(), "cuda": torch.version.cuda,
@@ -218,7 +227,7 @@ def main():
     original = reference = None
     for case in cases:
         print("Running", args.model, case, flush=True)
-        with applied(layers, cache, case, args.cohort, args.minimum_fp8_rows) as (counters, traces, skipped):
+        with applied(layers, cache, case, args.cohort, args.minimum_fp8_rows, diagnostics) as (counters, traces, skipped):
             if args.model == "sana-sprint":
                 values = generation_outputs(pipe, embeddings, args, args.output / case.replace(":", "-"))
             else:
@@ -262,6 +271,8 @@ def main():
                 record["nearest_neighbor_agreement"] = float((similarities.argmax(-1) == baseline.argmax(-1)).float().mean())
             np.savez_compressed(args.output / f"{case.replace(':', '-')}.npz", outputs=values.numpy())
         report["cases"].append(record)
+        if diagnostics is not None:
+            report["local_moment_diagnostics"] = diagnostics.records
         write_json(args.output / "report.json", report)
         print(case, {key: value for key, value in record.items() if key not in (
             "layers", "activation_summaries", "predictions", "skipped_dtype_calls")}, flush=True)
@@ -269,7 +280,8 @@ def main():
         name: {"shape": list(prepared.reconstructed.shape),
                "original_window_l1": prepared.l1.cpu().tolist(),
                "error_window_l1": prepared.error_l1.cpu().tolist(),
-               "scale_exponents": prepared.exponent_histogram}
+               "scale_exponents": prepared.exponent_histogram,
+               "receiver_moments": prepared.moments.cpu().tolist() if prepared.moments is not None else None}
         for name, prepared in cache.items()}
     write_json(args.output / "report.json", report)
 

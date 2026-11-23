@@ -63,6 +63,7 @@ def summarize(report: dict, *, record_sha256: str | None = None) -> tuple[list[d
                 **{key: counters[key] for key in COUNTERS},
                 "activation_scale_exponents": json.dumps(counters["activation_scale_exponents"], sort_keys=True),
                 "normalized_bound_histogram": json.dumps(counters["normalized_bound_histogram"], sort_keys=True),
+                "normalized_moment_score_histogram": json.dumps(counters.get("normalized_moment_score_histogram", {}), sort_keys=True),
                 "activation_calls": len(traces),
                 "observed_activation_elements": sum(trace["elements"] for trace in traces),
                 "observed_zero_elements": sum(trace["zero_elements"] for trace in traces),
