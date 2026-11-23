@@ -24,3 +24,8 @@ are in the [full statistical archive](../../reports/statistics/2026-11-23-adapti
 cover eight1024px outputs, BF16/INT8 weights, INT4/INT8 activations and a causal
 row-statistic controller ablation. Full JSON statistics are archived; pixel
 fidelity and MAC coverage do not establish generation quality or energy.
+
+[Resize folding and source-placement results](../../reports/2026-11-23-resize-folding.md)
+validate the known nearest-neighbor transformation, coefficient precision and
+conversion before duplication, with complete per-branch statistics. Dense MAC
+reductions and pixel fidelity remain distinct from hardware energy/task quality.
