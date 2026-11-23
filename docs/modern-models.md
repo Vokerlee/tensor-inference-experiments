@@ -22,3 +22,20 @@ Meta adapters execute shapes with no model weights or numerical quality
 evaluation. Checkpoint revisions are still pinned for configuration identity.
 Numerical pilots must explicitly use pretrained weights and retain exact
 image/prompt/noise settings, model outputs and changed operator coverage.
+
+```sh
+.venv/bin/python scripts/modern_model_geometry.py --model dinov3-small \
+    --output results/dinov3-geometry.json
+.venv/bin/python scripts/modern_model_geometry.py --model convnextv2-tiny \
+    --output results/convnextv2-geometry.json
+.venv/bin/python scripts/modern_model_geometry.py --model sana-sprint \
+    --output results/sana-sprint-geometry.json
+```
+
+The meta inventory records all dense linear and1×1-convolution matrix shapes,
+plus the complete matrix/convolution MAC denominator. SANA counts cover one
+denoiser invocation at1024×1024 image resolution with300 text tokens, excluding
+text encoding and VAE decoding. Interface capacities compare BF16 K128 with
+FP8 K256, both producing128 FP32 outputs from256-byte LHS vectors. The FP8
+counts assume every targeted product can use that mode; they neither establish
+its numerical validity nor measure SRAM traffic, cycles or energy.
