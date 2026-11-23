@@ -6,7 +6,7 @@ import gzip
 import json
 from pathlib import Path
 
-from summarize_primitive_pilots import fraction, verify_sources, write_csv
+from summarize_primitive_pilots import digest, fraction, verify_sources, write_csv
 
 
 COUNTERS = (
@@ -16,13 +16,20 @@ COUNTERS = (
 )
 
 
-def summarize(report: dict) -> tuple[list[dict], list[dict]]:
+def summarize(report: dict, *, record_sha256: str | None = None) -> tuple[list[dict], list[dict]]:
     verify_sources(report)
     if [case["case"] for case in report["cases"]] != report["case_order"]:
         raise ValueError("incomplete paired precision case sequence")
     if "prepared_weight_statistics" not in report:
         raise ValueError("missing final prepared-weight statistics")
     expected = set(report["target_layers"])
+    context = {
+        "model": report["model"],
+        "record_sha256": record_sha256 or digest(json.dumps(report, sort_keys=True).encode()),
+        "experiments_commit": report.get("experiments", {}).get("commit"),
+        "minimum_fp8_rows": report.get("settings", {}).get("minimum_fp8_rows", 1),
+        "cohort": report.get("settings", {}).get("cohort"),
+    }
     rows, layers = [], []
     for case in report["cases"]:
         if any(set(case[key]) != expected for key in (
@@ -32,7 +39,7 @@ def summarize(report: dict) -> tuple[list[dict], list[dict]]:
         removed = totals["reference_vectors"] - totals["selected_vectors"]
         if removed < 0 or totals["fp8_products"] > totals["useful_products"]:
             raise ValueError("invalid logical work counts")
-        row = {"model": report["model"], "case": case["case"],
+        row = {**context, "case": case["case"],
                "inputs": len(report["dataset"].get("prompts", report["dataset"].get("manifest", []))),
                **totals,
                "fp8_product_fraction": fraction(totals["fp8_products"], totals["useful_products"]),
@@ -52,7 +59,7 @@ def summarize(report: dict) -> tuple[list[dict], list[dict]]:
         for name, counters in case["layers"].items():
             traces = case["activation_summaries"][name]
             layers.append({
-                "model": report["model"], "case": case["case"], "layer": name,
+                **context, "case": case["case"], "layer": name,
                 **{key: counters[key] for key in COUNTERS},
                 "activation_scale_exponents": json.dumps(counters["activation_scale_exponents"], sort_keys=True),
                 "normalized_bound_histogram": json.dumps(counters["normalized_bound_histogram"], sort_keys=True),
@@ -75,7 +82,7 @@ def main() -> None:
         raw = path.read_bytes()
         if path.suffix == ".gz":
             raw = gzip.decompress(raw)
-        current_rows, current_layers = summarize(json.loads(raw))
+        current_rows, current_layers = summarize(json.loads(raw), record_sha256=digest(raw))
         rows.extend(current_rows)
         layers.extend(current_layers)
     args.output_prefix.parent.mkdir(parents=True, exist_ok=True)

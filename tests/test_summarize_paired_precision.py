@@ -28,6 +28,11 @@ def test_summaries_weight_work_counts_and_preserve_histograms(monkeypatch):
     assert rows[0]["output_vector_reduction_fraction"] == 0.3
     assert len(details) == 2
     assert details[0]["activation_scale_exponents"] == '{"-8": 17}'
+    report["settings"] = {"minimum_fp8_rows": 2, "cohort": 32}
+    ablation_rows, ablation_layers = summary.summarize(report)
+    assert ablation_rows[0]["minimum_fp8_rows"] == 2
+    assert ablation_rows[0]["record_sha256"] != rows[0]["record_sha256"]
+    assert ablation_layers[0]["record_sha256"] == ablation_rows[0]["record_sha256"]
     report["case_order"].append("unfinished")
     with pytest.raises(ValueError, match="incomplete"):
         summary.summarize(report)
