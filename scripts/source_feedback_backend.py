@@ -40,7 +40,7 @@ class SourceFeedback:
 
 
 def quantize_source(values: torch.Tensor, coefficient: torch.Tensor, *, bits: int = 4,
-                    preserve_zeros: bool = False) -> SourceFeedback:
+                    preserve_zeros: bool = False, fixed_exponents: torch.Tensor | None = None) -> SourceFeedback:
     """Keep graph consumers independent: return a new reconstructed source.
 
     Coefficients are caller-prepared FP32. The native primitive scans width,
@@ -52,9 +52,13 @@ def quantize_source(values: torch.Tensor, coefficient: torch.Tensor, *, bits: in
         raise ValueError("expected a four-dimensional NCHW source")
     batch, channels, height, width = values.shape
     source = values.permute(0, 2, 3, 1).contiguous().reshape(batch * height, width, channels)
+    if fixed_exponents is not None:
+        if fixed_exponents.shape != (batch, height, width, channels // 32):
+            raise ValueError("fixed exponents must match N,H,W,C/32")
+        fixed_exponents = fixed_exponents.reshape(batch * height, width, channels // 32).contiguous()
     load_native()
     output, terminal, exponents, counts = torch.ops.tensor_inference_engine.source_feedback(
-        source, coefficient, bits, preserve_zeros, False)
+        source, coefficient, bits, preserve_zeros, False, fixed_exponents)
     return SourceFeedback(
         output.reshape(batch, height, width, channels).permute(0, 3, 1, 2),
         terminal.reshape(batch, height, channels),
