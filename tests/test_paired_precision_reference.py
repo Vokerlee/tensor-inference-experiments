@@ -96,3 +96,19 @@ def test_zero_rows_and_exact_fp8_codes_accept_without_nan_scores():
     assert selected.all() and (score == 0).all()
     actual = multiply(a, w, prepared, tolerance=0, cohort=2)
     assert torch.equal(actual, a.float() @ w.float().T)
+
+
+@torch.inference_mode()
+@pytest.mark.parametrize("policy", ["moment-paired", "diagonal-paired"])
+def test_moment_policy_extremes_match_declared_bf16_and_fp8_contracts(policy):
+    a, w = matrices(512)
+    prepared = prepare_weight(w, with_moments=True)
+    rejected, accepted = Counters(), Counters()
+    high = multiply(a, w, prepared, policy=policy, tolerance=0, cohort=3, counters=rejected)
+    low = multiply(a, w, prepared, policy=policy, tolerance=1000, cohort=3, counters=accepted)
+    assert torch.equal(high, multiply(a, w, policy="bf16"))
+    assert torch.equal(low, multiply(a, w, prepared, policy="fp8-paired"))
+    assert rejected.fp8_products == 0
+    assert accepted.fp8_products == accepted.useful_products
+    assert accepted.normalized_moment_score_histogram
+    assert not accepted.normalized_bound_histogram

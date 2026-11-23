@@ -11,9 +11,11 @@ import torch
 from torch.nn import functional as F
 
 from integer_segment_backend import load_native
+import precision_moments
 
 
-POLICIES = ("bf16", "fp8-paired", "fp8-split", "adaptive-paired", "adaptive-split")
+POLICIES = ("bf16", "fp8-paired", "fp8-split", "adaptive-paired", "adaptive-split",
+            "moment-paired", "moment-split", "diagonal-paired", "diagonal-split")
 
 
 @dataclass
@@ -22,6 +24,7 @@ class PreparedWeight:
     l1: torch.Tensor
     error_l1: torch.Tensor
     exponent_histogram: dict
+    moments: torch.Tensor | None = None
 
 
 @dataclass
@@ -37,6 +40,7 @@ class Counters:
     candidate_activation_rows: int = 0
     activation_scale_exponents: dict = field(default_factory=dict)
     normalized_bound_histogram: dict = field(default_factory=dict)
+    normalized_moment_score_histogram: dict = field(default_factory=dict)
 
 
 def add_histogram(destination: dict, values: torch.Tensor) -> None:
@@ -69,19 +73,22 @@ def window_maximum(values: torch.Tensor):
     return F.pad(values, (0, (-values.numel()) % 128)).reshape(-1, 128).amax(-1)
 
 
-def prepare_weight(weight: torch.Tensor) -> PreparedWeight:
+def prepare_weight(weight: torch.Tensor, *, with_moments=False) -> PreparedWeight:
     if weight.ndim != 2 or weight.dtype != torch.bfloat16 or min(weight.shape) < 1:
         raise ValueError("expected nonempty BF16 [outputs,reduction] weights")
     reconstructed = torch.empty_like(weight)
-    norms, errors, histogram = [], [], {}
+    norms, errors, histogram, moments = [], [], {}, []
     for begin in range(0, weight.shape[1], 256):
         original = weight[:, begin:begin + 256]
         current, exponent = encode_fp8(original)
         reconstructed[:, begin:begin + 256] = current
         norms.append(window_maximum(original.float().abs().sum(-1)))
         errors.append(window_maximum((original.float() - current.float()).abs().sum(-1)))
+        if with_moments:
+            moments.append(precision_moments.weight_statistics(original, current))
         add_histogram(histogram, exponent)
-    return PreparedWeight(reconstructed, torch.stack(norms), torch.stack(errors), histogram)
+    return PreparedWeight(reconstructed, torch.stack(norms), torch.stack(errors), histogram,
+                          torch.stack(moments) if with_moments else None)
 
 
 def select_cohorts(values, reconstructed, weight_l1, weight_error_l1, *, tolerance, cohort):
@@ -117,6 +124,10 @@ def multiply(values, weight, prepared=None, *, policy="adaptive-paired", toleran
     if prepared is not None and (prepared.reconstructed.shape != weight.shape
                                  or prepared.reconstructed.device != weight.device):
         raise ValueError("prepared weight shape/device differs")
+    moment_policy = policy.startswith(("moment", "diagonal"))
+    adaptive_policy = moment_policy or policy.startswith("adaptive")
+    if moment_policy and prepared.moments is None:
+        raise ValueError("moment policies require prepared receiver statistics")
     load_native()
     counters = counters if counters is not None else Counters()
     rows, reduction = values.shape
@@ -137,14 +148,21 @@ def multiply(values, weight, prepared=None, *, policy="adaptive-paired", toleran
         original = values[:, begin:stop]
         original_weight = weight[:, begin:stop]
         shape = (len(row_counts), windows)
-        if policy == "bf16" or (policy.startswith("adaptive") and width <= 128):
+        if policy == "bf16" or (adaptive_policy and width <= 128):
             selected = torch.zeros(shape, device=values.device, dtype=torch.bool)
         else:
             quantized, exponent = encode_fp8(original)
             quantized_weight = prepared.reconstructed[:, begin:stop]
             counters.candidate_activation_rows += rows
             add_histogram(counters.activation_scale_exponents, exponent)
-            if policy.startswith("adaptive"):
+            if moment_policy:
+                selected, relative = precision_moments.select_cohorts(
+                    original, quantized, prepared.moments[pair], tolerance=tolerance,
+                    cohort=cohort, centered=policy.startswith("moment"))
+                bins = torch.bucketize(relative.flatten(), torch.tensor(
+                    [0, 0.01, 0.02, 0.04, 0.08, 0.16, 1], device=values.device))
+                add_histogram(counters.normalized_moment_score_histogram, bins)
+            elif policy.startswith("adaptive"):
                 selected, relative = select_cohorts(
                     original, quantized, prepared.l1[pair], prepared.error_l1[pair],
                     tolerance=tolerance, cohort=cohort)
