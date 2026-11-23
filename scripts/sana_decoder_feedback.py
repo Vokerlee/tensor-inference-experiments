@@ -14,6 +14,7 @@ from PIL import Image
 
 from activation_pilot import ENGINE, ROOT, digest, revision, write_json
 from modern_models import SANA, provenance, sana_pipeline, snapshot
+from live_source_feedback import quantize_live_rows, weight_metadata
 from paired_precision_pilot import PROMPTS
 from source_feedback_backend import quantize_source, quantize_weights
 from spatial_feedback_reference import kernel_coefficient
@@ -21,7 +22,8 @@ from spatial_feedback_reference import kernel_coefficient
 
 CASES = ("original", "none8", "coarse8", "kernel8", "none4", "coarse4", "kernel4")
 SOURCES = ("sana_decoder_feedback.py", "source_feedback_backend.py",
-           "spatial_feedback_reference.py", "modern_models.py", "activation_pilot.py")
+           "spatial_feedback_reference.py", "modern_models.py", "activation_pilot.py",
+           "live_source_feedback.py")
 
 
 def environment() -> dict:
@@ -66,6 +68,8 @@ def eligible_layers(decoder, scope: str) -> dict:
 
 
 def coefficient(layer, case: str) -> torch.Tensor:
+    if case.startswith("live"):
+        return weight_metadata(layer.weight)
     if case.startswith("none"):
         return torch.zeros(layer.in_channels, device=layer.weight.device)
     return kernel_coefficient(layer.weight, coarse=case.startswith("coarse"))
@@ -77,14 +81,18 @@ def modified(layers: dict, coefficients: dict, case: str, records: list):
 
     def replace(name, layer):
         def forward(values):
-            result = quantize_source(values, coefficients[name], bits=int(case[-1]))
+            if case.startswith("live"):
+                result, dynamic = quantize_live_rows(values, coefficients[name], bits=int(case[-1]))
+            else:
+                result = quantize_source(values, coefficients[name], bits=int(case[-1]))
+                dynamic = None
             stats = result.statistics()  # Reject invalid events before the consumer runs.
             layout = (torch.channels_last if values.is_contiguous(memory_format=torch.channels_last)
                       else torch.contiguous_format)
             reconstructed = result.reconstructed.contiguous(memory_format=layout)
             output = layer._conv_forward(reconstructed, layer.weight, layer.bias)
             records.append({"layer": name, "input_shape": list(values.shape),
-                            "output_shape": list(output.shape), **stats})
+                            "output_shape": list(output.shape), "dynamic": dynamic, **stats})
             return output
         return forward
 
@@ -247,7 +255,9 @@ def run(args):
             for i, value in enumerate(raw)]
         record.update(save_outputs(args.output / case, raw))
         record["coefficients"] = {
-            name: value.cpu().tolist() for name, value in coeff.items()
+            name: ({key: tensor.cpu().tolist() for key, tensor in value.items()}
+                   if isinstance(value, dict) else value.cpu().tolist())
+            for name, value in coeff.items()
         } if case not in ("original", "weights-only") else {}
         report["cases"].append(record)
         write_json(report_path, report)
@@ -270,7 +280,7 @@ def main():
     replay.add_argument("--inputs", type=Path, required=True)
     replay.add_argument("--scope", choices=("spatial", "all"), default="spatial")
     replay.add_argument("--weight-bits", type=int, choices=(4, 8))
-    replay.add_argument("--case", action="append", choices=CASES)
+    replay.add_argument("--case", action="append", choices=(*CASES, "live4", "live8"))
     replay.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if not torch.cuda.is_available():

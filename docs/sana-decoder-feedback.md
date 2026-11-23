@@ -57,3 +57,25 @@ matrix products. CUDA time and these numerical results do not determine target
 hardware latency, SRAM transactions, energy or controller overhead. The kernel
 feedback criterion assumes independent white residuals; actual network errors
 may violate that approximation. No novelty claim follows from this pilot.
+
+## Causal terminal-statistic ablation
+
+Optional `--case live4` / `--case live8` uses the residual already returned at
+the end of each spatial row. For each consumer and image, reset statistics.
+Process32-row blocks; choose the NEXT block's coefficient from an exponential
+mean/second moment of the preceding block's terminal samples (smoothing1/4).
+Each individual row still resets its feedback carry. Cold start uses the coarse
+kernel coefficient. No future row, target image or extra receiving product is
+used by the selector.
+
+The scalar surrogate includes a normalized kernel DC gain and lag correlation.
+It separates a squared-mean term from centered variance and chooses the nearest
+half-step mode within[-1/2,1/2]. This approximation omits cross-channel bias and
+spatial residual correlation. Finite terminal samples can suggest bias even for
+centered noise, and row ends can differ from row interiors. Statistics change
+when the mode changes. Consequently even minimizing this surrogate does not
+guarantee lower actual convolution or final-image error.
+
+Reports retain mode counts in channel-rows, coefficient switches, update blocks
+and terminal sample counts. The experiment uses FP32 state and vector arithmetic;
+it does not establish a fixed-point hardware implementation or its cost.
