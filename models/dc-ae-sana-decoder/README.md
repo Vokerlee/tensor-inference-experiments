@@ -41,3 +41,8 @@ per INT4/INT8 precision and all decision/sensor traces. Original-backend replay
 is bit-exact. Close fixed/live feedback comparisons remain unresolved on these
 eight curated inputs. Conditional guard selectivity does not establish saved
 reference work, energy or target-hardware correctness.
+
+[Convolution uncertainty footprint](../../reports/2026-11-24-controller-guard-footprint.md)
+retains both chosen dense lowerings and all row-cohort alternatives for the
+predeclared local patches. High group certification does not imply proportional
+reference-matrix savings; actual target im2col mapping is not asserted.

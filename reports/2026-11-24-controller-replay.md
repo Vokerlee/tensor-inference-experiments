@@ -146,6 +146,12 @@ forward bound, controller-state treatment, downstream recomputation and a
 reference-budget comparison are still required for a useful selective emulator.
 Unchanged scales alone do not certify unchanged codes or model outputs.
 
+The [matrix-granularity follow-up](2026-11-24-controller-guard-footprint.md)
+shows why these source-group percentages are not reference-work savings:
+under one declared lowering, remaining local uncertainty touches81–85% of
+128-row cohorts. A different lowering changes both vector and cohort coverage.
+Actual target im2col ordering remains unspecified.
+
 ## What the evidence supports
 
 Decision/state instrumentation exposes differences hidden by tensor-only or

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "controller-guard-footprint-20261124.json",
+      "archive": "controller-guard-footprint-20261124.json.gz",
+      "source_sha256": "7ccab3ee46717b955aaab6712138953e8e7c5f6332d203a3e1b8a8b544242e22",
+      "payload_sha256": "7ccab3ee46717b955aaab6712138953e8e7c5f6332d203a3e1b8a8b544242e22",
+      "archive_sha256": "a8594368fe1cc9010a6d8a361763f5fbb6cca29f84c3737ab3fa7e723ade5e96",
+      "source_bytes": 27612657,
+      "payload_bytes": 27612657,
+      "archive_bytes": 463763,
+      "normalized_fields": [],
+      "experiments": {
+        "commit": "7500a85d4f5cb5954c9f1d20025ae85000867549",
+        "dirty": false
+      }
+    },
+    {
+      "source": "controller-guard-footprint-preliminary-20261124.json",
+      "archive": "controller-guard-footprint-preliminary-20261124.json.gz",
+      "source_sha256": "06d2d96e748300ca460fc04e90ff6f2f03153a0f30352ff39b7f93e1a6e9f560",
+      "payload_sha256": "06d2d96e748300ca460fc04e90ff6f2f03153a0f30352ff39b7f93e1a6e9f560",
+      "archive_sha256": "7bb9856db267cefc78dac47b5f705458e2c8e8060ac09afd112cefba855a4b20",
+      "source_bytes": 10273717,
+      "payload_bytes": 10273717,
+      "archive_bytes": 143764,
+      "normalized_fields": [],
+      "experiments": {
+        "commit": "328c3b4b1e48207cae6fa240c91f272c5fd1de36",
+        "dirty": false
+      }
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}
