@@ -80,3 +80,7 @@ See the [measured results](reports/2026-11-22-activation-representations.md),
 [reproduction pipeline](docs/reproduce-activation-pilots.md) and
 [systolic action assumptions](docs/systolic-actions.md). Numerical quality,
 CUDA preparation cost and prospective hardware actions are evaluated separately.
+
+The [modern decoder feedback report](reports/2026-11-23-decoder-feedback.md)
+adds exact final-latent replay, fixed/live feedback comparisons and the complete
+statistical archive for eight SANA-Sprint outputs.

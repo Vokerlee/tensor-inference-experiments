@@ -56,3 +56,8 @@ weights/quality are not evaluated by this profile.
 [Extended numerical and schedule evidence](../../reports/statistics/2026-11-23-adaptive/README.md)
 retains all moment/cohort/phase-trace comparisons, including unfavorable results.
 See the separate [DC-AE decoder card](../dc-ae-sana-decoder/README.md).
+
+[Exact-input decoder feedback results](../../reports/2026-11-23-decoder-feedback.md)
+cover eight1024px outputs, BF16/INT8 weights, INT4/INT8 activations and a causal
+row-statistic controller ablation. Full JSON statistics are archived; pixel
+fidelity and MAC coverage do not establish generation quality or energy.
