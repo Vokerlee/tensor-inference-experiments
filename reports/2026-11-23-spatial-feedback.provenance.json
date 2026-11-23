@@ -1,0 +1,2757 @@
+{
+  "schema": 1,
+  "runs": {
+    "spatial-feedback-r18-int4-100": {
+      "model": "resnet18",
+      "settings": {
+        "model": "resnet18",
+        "bits": 4,
+        "policy": null,
+        "samples_per_class": 10,
+        "holdout_offset": 20,
+        "batch_size": 10,
+        "skip_local": false
+      },
+      "policies": [
+        "none",
+        "unit",
+        "half",
+        "kernel",
+        "kernel-coarse",
+        "kernel-coarse-zero"
+      ],
+      "experiments": {
+        "commit": "04e64341361974bf8550022b7a07d5a423c3e8b2",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      },
+      "source_sha256": {
+        "spatial_feedback_pilot.py": "ddd0571a817075d541dc495baaaab61d21d524477f38264dadd30af7da09e8e6",
+        "spatial_feedback_reference.py": "9ba1faa8a1ad6e8105a92fd1f1e833104633b1cfcd63f088b2c9778da9687b1f",
+        "activation_pilot.py": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+        "primitive_accumulation_pilot.py": "3a7818b7acc7349728f3cea747e1c0cbde04e7e7982fd7f20d73c6c2f5e2d9c6"
+      },
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/resnet18-f37072fd.pth",
+        "sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"
+      },
+      "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[256]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "layers": {
+        "layer1.0.conv1": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.029154207557439804,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.59375
+        },
+        "layer1.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": -0.09688340872526169,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.6875
+        },
+        "layer1.1.conv1": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": -0.1459408551454544,
+          "coefficient_max": 0.4947352111339569,
+          "coarse_nonzero_fraction": 0.53125
+        },
+        "layer1.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.017731469124555588,
+          "coefficient_max": 0.46333548426628113,
+          "coarse_nonzero_fraction": 0.609375
+        },
+        "layer2.0.conv1": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": -0.0923142209649086,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.53125
+        },
+        "layer2.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.08951258659362793,
+          "coefficient_max": 0.4261108934879303,
+          "coarse_nonzero_fraction": 0.84375
+        },
+        "layer2.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.1.conv1": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": -0.004096425604075193,
+          "coefficient_max": 0.4076261520385742,
+          "coarse_nonzero_fraction": 0.40625
+        },
+        "layer2.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.03307098150253296,
+          "coefficient_max": 0.49665603041648865,
+          "coarse_nonzero_fraction": 0.734375
+        },
+        "layer3.0.conv1": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.3244125247001648,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 1.0
+        },
+        "layer3.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.162891685962677,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.96484375
+        },
+        "layer3.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.1.conv1": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.19600863754749298,
+          "coefficient_max": 0.49434664845466614,
+          "coarse_nonzero_fraction": 0.91796875
+        },
+        "layer3.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0090235136449337,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.8984375
+        },
+        "layer4.0.conv1": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.23257999122142792,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.99609375
+        },
+        "layer4.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.09803218394517899,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.88671875
+        },
+        "layer4.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.1.conv1": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.09657281637191772,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.990234375
+        },
+        "layer4.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.5,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 1.0
+        }
+      },
+      "limitations": [
+        "Reconstructed activation codes with unchanged BF16 weights and Torch convolutions",
+        "No integer or systolic execution, hardware timing or energy measurement",
+        "Kernel autocorrelation criterion assumes white independent equal-variance residuals",
+        "Actual residuals need not satisfy that approximation",
+        "Small exploratory Imagenette subset, not full ImageNet accuracy",
+        "Unaligned and grouped convolutions are unchanged",
+        "Static weight statistics and live residuals; no activation calibration or retraining"
+      ],
+      "raw_sha256": "e07d4c492d13b67beaf43ea15c85b13e39db51fbd0d8e2356b570d9bbe2c854d",
+      "image_manifest": "b1cc8833cbdc52406e6271790f96b808e5ba1f29e2c80aedde258b95bca784a6",
+      "predictions": {
+        "baseline": [
+          726,
+          0,
+          778,
+          491,
+          232,
+          663,
+          569,
+          566,
+          663,
+          217,
+          827,
+          497,
+          212,
+          569,
+          574,
+          566,
+          101,
+          569,
+          482,
+          701,
+          856,
+          571,
+          701,
+          482,
+          217,
+          232,
+          663,
+          571,
+          634,
+          469,
+          220,
+          701,
+          497,
+          482,
+          587,
+          747,
+          164,
+          571,
+          574,
+          494,
+          743,
+          0,
+          701,
+          701,
+          701,
+          0,
+          663,
+          394,
+          566,
+          482,
+          541,
+          566,
+          663,
+          708,
+          569,
+          482,
+          449,
+          701,
+          522,
+          566,
+          217,
+          701,
+          574,
+          217,
+          586,
+          574,
+          482,
+          566,
+          574,
+          566,
+          810,
+          675,
+          574,
+          264,
+          0,
+          654,
+          574,
+          574,
+          498,
+          771,
+          485,
+          491,
+          747,
+          335,
+          848,
+          854,
+          0,
+          0,
+          571,
+          781,
+          0,
+          569,
+          802,
+          0,
+          875,
+          0,
+          663,
+          726,
+          0,
+          701
+        ],
+        "none": [
+          783,
+          0,
+          778,
+          491,
+          232,
+          497,
+          569,
+          566,
+          497,
+          217,
+          827,
+          497,
+          217,
+          569,
+          574,
+          566,
+          491,
+          569,
+          482,
+          65,
+          856,
+          571,
+          701,
+          848,
+          217,
+          232,
+          663,
+          571,
+          830,
+          361,
+          220,
+          701,
+          497,
+          481,
+          535,
+          775,
+          212,
+          571,
+          574,
+          494,
+          465,
+          0,
+          701,
+          701,
+          701,
+          0,
+          497,
+          394,
+          566,
+          482,
+          0,
+          566,
+          663,
+          335,
+          569,
+          482,
+          449,
+          701,
+          522,
+          566,
+          217,
+          472,
+          574,
+          217,
+          586,
+          574,
+          482,
+          566,
+          574,
+          566,
+          810,
+          569,
+          574,
+          232,
+          0,
+          654,
+          574,
+          574,
+          498,
+          771,
+          754,
+          214,
+          747,
+          206,
+          848,
+          854,
+          0,
+          0,
+          571,
+          692,
+          0,
+          569,
+          802,
+          0,
+          875,
+          0,
+          663,
+          726,
+          0,
+          701
+        ],
+        "unit": [
+          599,
+          0,
+          590,
+          491,
+          232,
+          497,
+          569,
+          566,
+          497,
+          217,
+          827,
+          497,
+          217,
+          569,
+          574,
+          566,
+          830,
+          569,
+          482,
+          65,
+          820,
+          571,
+          701,
+          848,
+          217,
+          232,
+          663,
+          571,
+          634,
+          599,
+          218,
+          701,
+          497,
+          481,
+          763,
+          775,
+          164,
+          571,
+          574,
+          494,
+          465,
+          0,
+          599,
+          710,
+          701,
+          0,
+          663,
+          465,
+          566,
+          481,
+          691,
+          566,
+          743,
+          733,
+          569,
+          482,
+          743,
+          879,
+          522,
+          566,
+          217,
+          472,
+          574,
+          217,
+          586,
+          574,
+          754,
+          566,
+          574,
+          566,
+          574,
+          569,
+          574,
+          232,
+          0,
+          860,
+          433,
+          574,
+          498,
+          478,
+          688,
+          491,
+          747,
+          335,
+          848,
+          762,
+          0,
+          389,
+          571,
+          692,
+          0,
+          569,
+          803,
+          0,
+          875,
+          0,
+          497,
+          912,
+          0,
+          767
+        ],
+        "half": [
+          677,
+          0,
+          778,
+          491,
+          232,
+          497,
+          569,
+          566,
+          497,
+          217,
+          827,
+          497,
+          217,
+          569,
+          574,
+          566,
+          101,
+          569,
+          482,
+          65,
+          820,
+          571,
+          701,
+          848,
+          217,
+          217,
+          663,
+          571,
+          917,
+          361,
+          218,
+          701,
+          497,
+          481,
+          477,
+          775,
+          212,
+          571,
+          574,
+          494,
+          465,
+          0,
+          599,
+          710,
+          701,
+          0,
+          663,
+          394,
+          566,
+          481,
+          744,
+          566,
+          442,
+          335,
+          569,
+          482,
+          698,
+          701,
+          522,
+          566,
+          217,
+          472,
+          574,
+          217,
+          586,
+          574,
+          754,
+          566,
+          574,
+          566,
+          712,
+          569,
+          574,
+          232,
+          0,
+          654,
+          574,
+          574,
+          498,
+          771,
+          754,
+          830,
+          456,
+          43,
+          848,
+          854,
+          0,
+          0,
+          571,
+          692,
+          0,
+          569,
+          491,
+          0,
+          875,
+          0,
+          497,
+          912,
+          0,
+          701
+        ],
+        "kernel": [
+          783,
+          0,
+          778,
+          491,
+          232,
+          497,
+          569,
+          566,
+          497,
+          217,
+          827,
+          497,
+          217,
+          569,
+          574,
+          566,
+          491,
+          569,
+          482,
+          746,
+          569,
+          674,
+          701,
+          848,
+          217,
+          217,
+          663,
+          571,
+          634,
+          489,
+          220,
+          701,
+          497,
+          481,
+          535,
+          456,
+          212,
+          571,
+          574,
+          498,
+          743,
+          0,
+          701,
+          701,
+          701,
+          0,
+          663,
+          394,
+          566,
+          482,
+          413,
+          566,
+          663,
+          335,
+          569,
+          482,
+          698,
+          701,
+          522,
+          566,
+          217,
+          701,
+          574,
+          217,
+          586,
+          574,
+          754,
+          566,
+          574,
+          566,
+          574,
+          569,
+          574,
+          232,
+          0,
+          860,
+          574,
+          574,
+          498,
+          886,
+          754,
+          491,
+          456,
+          335,
+          848,
+          762,
+          0,
+          0,
+          571,
+          800,
+          0,
+          569,
+          802,
+          0,
+          875,
+          0,
+          663,
+          726,
+          0,
+          701
+        ],
+        "kernel-coarse": [
+          677,
+          0,
+          778,
+          491,
+          232,
+          497,
+          569,
+          566,
+          663,
+          217,
+          827,
+          497,
+          212,
+          569,
+          574,
+          566,
+          101,
+          569,
+          482,
+          65,
+          856,
+          571,
+          701,
+          848,
+          217,
+          232,
+          663,
+          571,
+          830,
+          280,
+          220,
+          701,
+          657,
+          481,
+          535,
+          456,
+          164,
+          571,
+          574,
+          687,
+          465,
+          0,
+          701,
+          701,
+          701,
+          0,
+          663,
+          394,
+          566,
+          482,
+          744,
+          566,
+          663,
+          413,
+          569,
+          482,
+          698,
+          701,
+          522,
+          566,
+          217,
+          472,
+          574,
+          217,
+          586,
+          574,
+          482,
+          566,
+          574,
+          566,
+          810,
+          569,
+          574,
+          232,
+          0,
+          654,
+          574,
+          574,
+          498,
+          771,
+          754,
+          830,
+          456,
+          335,
+          848,
+          854,
+          0,
+          0,
+          571,
+          692,
+          0,
+          569,
+          803,
+          0,
+          875,
+          0,
+          497,
+          726,
+          0,
+          701
+        ],
+        "kernel-coarse-zero": [
+          677,
+          0,
+          778,
+          491,
+          232,
+          497,
+          569,
+          566,
+          497,
+          217,
+          827,
+          497,
+          217,
+          569,
+          574,
+          566,
+          491,
+          569,
+          482,
+          65,
+          856,
+          674,
+          701,
+          848,
+          217,
+          217,
+          663,
+          571,
+          830,
+          280,
+          218,
+          701,
+          497,
+          481,
+          535,
+          456,
+          212,
+          571,
+          574,
+          687,
+          683,
+          0,
+          701,
+          701,
+          701,
+          0,
+          663,
+          394,
+          566,
+          482,
+          744,
+          566,
+          663,
+          335,
+          569,
+          482,
+          497,
+          701,
+          522,
+          566,
+          217,
+          472,
+          574,
+          217,
+          586,
+          574,
+          482,
+          566,
+          574,
+          566,
+          712,
+          569,
+          574,
+          232,
+          0,
+          654,
+          574,
+          574,
+          498,
+          771,
+          593,
+          830,
+          456,
+          335,
+          848,
+          762,
+          0,
+          0,
+          571,
+          692,
+          0,
+          569,
+          491,
+          0,
+          875,
+          0,
+          663,
+          726,
+          0,
+          701
+        ]
+      }
+    },
+    "spatial-feedback-r50-int4-10": {
+      "model": "resnet50",
+      "settings": {
+        "model": "resnet50",
+        "bits": 4,
+        "policy": null,
+        "samples_per_class": 1,
+        "holdout_offset": 20,
+        "batch_size": 10,
+        "skip_local": false
+      },
+      "policies": [
+        "none",
+        "unit",
+        "half",
+        "kernel",
+        "kernel-coarse",
+        "kernel-coarse-zero"
+      ],
+      "experiments": {
+        "commit": "04e64341361974bf8550022b7a07d5a423c3e8b2",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      },
+      "source_sha256": {
+        "spatial_feedback_pilot.py": "ddd0571a817075d541dc495baaaab61d21d524477f38264dadd30af7da09e8e6",
+        "spatial_feedback_reference.py": "9ba1faa8a1ad6e8105a92fd1f1e833104633b1cfcd63f088b2c9778da9687b1f",
+        "activation_pilot.py": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+        "primitive_accumulation_pilot.py": "3a7818b7acc7349728f3cea747e1c0cbde04e7e7982fd7f20d73c6c2f5e2d9c6"
+      },
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/resnet50-11ad3fa6.pth",
+        "sha256": "11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca"
+      },
+      "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[232]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "layers": {
+        "layer1.0.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": -0.15965479612350464,
+          "coefficient_max": 0.4585508704185486,
+          "coarse_nonzero_fraction": 0.328125
+        },
+        "layer1.0.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.1.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": -0.2740224301815033,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.234375
+        },
+        "layer1.1.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.2.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.2.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": -0.34389156103134155,
+          "coefficient_max": 0.3583858907222748,
+          "coarse_nonzero_fraction": 0.0625
+        },
+        "layer1.2.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.0.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.2990240454673767,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 1.0
+        },
+        "layer2.0.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.1.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": -0.06920932978391647,
+          "coefficient_max": 0.4897376000881195,
+          "coarse_nonzero_fraction": 0.4140625
+        },
+        "layer2.1.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.2.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.2.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.008914079517126083,
+          "coefficient_max": 0.46313706040382385,
+          "coarse_nonzero_fraction": 0.390625
+        },
+        "layer2.2.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.3.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.3.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": -0.0507451593875885,
+          "coefficient_max": 0.42280441522598267,
+          "coarse_nonzero_fraction": 0.25
+        },
+        "layer2.3.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.0.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.3130173683166504,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 1.0
+        },
+        "layer3.0.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.1.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.05901139974594116,
+          "coefficient_max": 0.4933422803878784,
+          "coarse_nonzero_fraction": 0.7890625
+        },
+        "layer3.1.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.2.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.2.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": -0.0029486799612641335,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.47265625
+        },
+        "layer3.2.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.3.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.3.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": -0.0346609503030777,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.67578125
+        },
+        "layer3.3.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.4.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.4.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": -0.012544001452624798,
+          "coefficient_max": 0.49749162793159485,
+          "coarse_nonzero_fraction": 0.82421875
+        },
+        "layer3.4.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.5.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.5.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.016109880059957504,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.90234375
+        },
+        "layer3.5.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.0.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.04131743311882019,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.994140625
+        },
+        "layer4.0.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.1.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 2048,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 512,
+          "coefficient_min": -0.0635395273566246,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.951171875
+        },
+        "layer4.1.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.2.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 2048,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.2.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 512,
+          "coefficient_min": -0.44136667251586914,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.91796875
+        },
+        "layer4.2.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        }
+      },
+      "limitations": [
+        "Reconstructed activation codes with unchanged BF16 weights and Torch convolutions",
+        "No integer or systolic execution, hardware timing or energy measurement",
+        "Kernel autocorrelation criterion assumes white independent equal-variance residuals",
+        "Actual residuals need not satisfy that approximation",
+        "Small exploratory Imagenette subset, not full ImageNet accuracy",
+        "Unaligned and grouped convolutions are unchanged",
+        "Static weight statistics and live residuals; no activation calibration or retraining"
+      ],
+      "raw_sha256": "f026c741996612ce33635d08d4a81c26a4f9b1bb13be9f772c228078df539607",
+      "image_manifest": "fa4e61a85457fe2e884882c810dc5f0bdb48ce39420ab09d9dac6ffe690dad4d",
+      "predictions": {
+        "baseline": [
+          217,
+          571,
+          482,
+          574,
+          569,
+          577,
+          701,
+          854,
+          663,
+          0
+        ],
+        "none": [
+          714,
+          794,
+          916,
+          522,
+          5,
+          917,
+          801,
+          470,
+          917,
+          917
+        ],
+        "unit": [
+          117,
+          499,
+          499,
+          611,
+          499,
+          499,
+          499,
+          611,
+          499,
+          885
+        ],
+        "half": [
+          221,
+          499,
+          499,
+          522,
+          5,
+          499,
+          499,
+          611,
+          499,
+          364
+        ],
+        "kernel": [
+          152,
+          743,
+          916,
+          522,
+          917,
+          917,
+          917,
+          470,
+          497,
+          0
+        ],
+        "kernel-coarse": [
+          917,
+          794,
+          916,
+          522,
+          917,
+          917,
+          879,
+          470,
+          917,
+          0
+        ],
+        "kernel-coarse-zero": [
+          714,
+          794,
+          916,
+          522,
+          917,
+          917,
+          879,
+          470,
+          497,
+          0
+        ]
+      }
+    },
+    "spatial-feedback-r50-int8-10": {
+      "model": "resnet50",
+      "settings": {
+        "model": "resnet50",
+        "bits": 8,
+        "policy": null,
+        "samples_per_class": 1,
+        "holdout_offset": 20,
+        "batch_size": 10,
+        "skip_local": false
+      },
+      "policies": [
+        "none",
+        "unit",
+        "half",
+        "kernel",
+        "kernel-coarse",
+        "kernel-coarse-zero"
+      ],
+      "experiments": {
+        "commit": "04e64341361974bf8550022b7a07d5a423c3e8b2",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      },
+      "source_sha256": {
+        "spatial_feedback_pilot.py": "ddd0571a817075d541dc495baaaab61d21d524477f38264dadd30af7da09e8e6",
+        "spatial_feedback_reference.py": "9ba1faa8a1ad6e8105a92fd1f1e833104633b1cfcd63f088b2c9778da9687b1f",
+        "activation_pilot.py": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+        "primitive_accumulation_pilot.py": "3a7818b7acc7349728f3cea747e1c0cbde04e7e7982fd7f20d73c6c2f5e2d9c6"
+      },
+      "checkpoint": {
+        "url": "https://download.pytorch.org/models/resnet50-11ad3fa6.pth",
+        "sha256": "11ad3fa62ca79e40addfd354a8ec4b7c75143b3038b8d2a807fbc68deab379ca"
+      },
+      "preprocessing": "ImageClassification(\n    crop_size=[224]\n    resize_size=[232]\n    mean=[0.485, 0.456, 0.406]\n    std=[0.229, 0.224, 0.225]\n    interpolation=InterpolationMode.BILINEAR\n)",
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "torchvision": "0.26.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false
+      },
+      "layers": {
+        "layer1.0.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": -0.15965479612350464,
+          "coefficient_max": 0.4585508704185486,
+          "coarse_nonzero_fraction": 0.328125
+        },
+        "layer1.0.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.1.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": -0.2740224301815033,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.234375
+        },
+        "layer1.1.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.2.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer1.2.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 64,
+          "coefficient_min": -0.34389156103134155,
+          "coefficient_max": 0.3583858907222748,
+          "coarse_nonzero_fraction": 0.0625
+        },
+        "layer1.2.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 64,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.0.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.2990240454673767,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 1.0
+        },
+        "layer2.0.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.1.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": -0.06920932978391647,
+          "coefficient_max": 0.4897376000881195,
+          "coarse_nonzero_fraction": 0.4140625
+        },
+        "layer2.1.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.2.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.2.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.008914079517126083,
+          "coefficient_max": 0.46313706040382385,
+          "coarse_nonzero_fraction": 0.390625
+        },
+        "layer2.2.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.3.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer2.3.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 128,
+          "coefficient_min": -0.0507451593875885,
+          "coefficient_max": 0.42280441522598267,
+          "coarse_nonzero_fraction": 0.25
+        },
+        "layer2.3.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 128,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.0.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.3130173683166504,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 1.0
+        },
+        "layer3.0.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.1.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.05901139974594116,
+          "coefficient_max": 0.4933422803878784,
+          "coarse_nonzero_fraction": 0.7890625
+        },
+        "layer3.1.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.2.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.2.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": -0.0029486799612641335,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.47265625
+        },
+        "layer3.2.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.3.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.3.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": -0.0346609503030777,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.67578125
+        },
+        "layer3.3.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.4.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.4.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": -0.012544001452624798,
+          "coefficient_max": 0.49749162793159485,
+          "coarse_nonzero_fraction": 0.82421875
+        },
+        "layer3.4.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.5.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer3.5.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.016109880059957504,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.90234375
+        },
+        "layer3.5.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 256,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.0.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.0.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.04131743311882019,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.994140625
+        },
+        "layer4.0.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.0.downsample.0": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 1024,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.1.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 2048,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.1.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 512,
+          "coefficient_min": -0.0635395273566246,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.951171875
+        },
+        "layer4.1.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.2.conv1": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 2048,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        },
+        "layer4.2.conv2": {
+          "kernel_size": [
+            3,
+            3
+          ],
+          "input_channels": 512,
+          "coefficient_min": -0.44136667251586914,
+          "coefficient_max": 0.5,
+          "coarse_nonzero_fraction": 0.91796875
+        },
+        "layer4.2.conv3": {
+          "kernel_size": [
+            1,
+            1
+          ],
+          "input_channels": 512,
+          "coefficient_min": 0.0,
+          "coefficient_max": 0.0,
+          "coarse_nonzero_fraction": 0.0
+        }
+      },
+      "limitations": [
+        "Reconstructed activation codes with unchanged BF16 weights and Torch convolutions",
+        "No integer or systolic execution, hardware timing or energy measurement",
+        "Kernel autocorrelation criterion assumes white independent equal-variance residuals",
+        "Actual residuals need not satisfy that approximation",
+        "Small exploratory Imagenette subset, not full ImageNet accuracy",
+        "Unaligned and grouped convolutions are unchanged",
+        "Static weight statistics and live residuals; no activation calibration or retraining"
+      ],
+      "raw_sha256": "869279b4097b946ce7d14c9600ba963a3dcdab0206c940f2ce8bb1531101d7c3",
+      "image_manifest": "fa4e61a85457fe2e884882c810dc5f0bdb48ce39420ab09d9dac6ffe690dad4d",
+      "predictions": {
+        "baseline": [
+          217,
+          571,
+          482,
+          574,
+          569,
+          577,
+          701,
+          854,
+          663,
+          0
+        ],
+        "none": [
+          217,
+          571,
+          482,
+          574,
+          569,
+          413,
+          701,
+          854,
+          663,
+          0
+        ],
+        "unit": [
+          217,
+          571,
+          848,
+          574,
+          569,
+          413,
+          701,
+          854,
+          663,
+          0
+        ],
+        "half": [
+          217,
+          571,
+          848,
+          574,
+          569,
+          577,
+          701,
+          854,
+          663,
+          0
+        ],
+        "kernel": [
+          217,
+          571,
+          482,
+          574,
+          569,
+          413,
+          701,
+          854,
+          663,
+          0
+        ],
+        "kernel-coarse": [
+          217,
+          571,
+          482,
+          574,
+          569,
+          413,
+          701,
+          854,
+          663,
+          0
+        ],
+        "kernel-coarse-zero": [
+          217,
+          571,
+          482,
+          574,
+          569,
+          413,
+          701,
+          854,
+          663,
+          0
+        ]
+      }
+    }
+  },
+  "image_manifests": {
+    "b1cc8833cbdc52406e6271790f96b808e5ba1f29e2c80aedde258b95bca784a6": [
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_16481.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_8150.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_5411.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_11552.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_4350.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_2942.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_26951.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_60232.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_37021.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_2641.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_15441.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_30450.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_4020.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_29342.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_3722.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_62451.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_400.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_212.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_11861.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_17801.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_19862.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_8670.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/ILSVRC2012_val_00025121.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_5841.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_3062.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_5881.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_11401.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_21350.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_1082.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_3280.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_6622.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_39021.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_28432.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_10912.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_27052.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/ILSVRC2012_val_00031412.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_6081.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_27462.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_8060.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/ILSVRC2012_val_00003682.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_30460.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_12881.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_22330.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_2740.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_19531.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_6870.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_13021.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_4042.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_47212.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_13950.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_12370.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_11030.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_9500.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_15400.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/ILSVRC2012_val_00022172.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_7060.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_15111.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_31921.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_1072.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_40160.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_3950.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_13100.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_12490.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_6912.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_8192.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_15131.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_600.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_30231.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_1002.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_42690.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_5932.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_6420.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_482.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_5060.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_1232.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_21211.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_10401.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_10442.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_15002.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_12962.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_9131.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_15202.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_10131.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_14112.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_26451.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_44060.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_8611.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_7591.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_14600.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_14030.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_6751.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_10121.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_8081.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_6410.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_33942.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_11190.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/n03028079_8161.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_29900.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_7701.JPEG",
+        "target": 0
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_36831.JPEG",
+        "target": 701
+      }
+    ],
+    "fa4e61a85457fe2e884882c810dc5f0bdb48ce39420ab09d9dac6ffe690dad4d": [
+      {
+        "path": "imagenette2-160/val/n02102040/n02102040_6912.JPEG",
+        "target": 217
+      },
+      {
+        "path": "imagenette2-160/val/n03425413/n03425413_12962.JPEG",
+        "target": 571
+      },
+      {
+        "path": "imagenette2-160/val/n02979186/n02979186_26451.JPEG",
+        "target": 482
+      },
+      {
+        "path": "imagenette2-160/val/n03445777/n03445777_1072.JPEG",
+        "target": 574
+      },
+      {
+        "path": "imagenette2-160/val/n03417042/n03417042_29342.JPEG",
+        "target": 569
+      },
+      {
+        "path": "imagenette2-160/val/n03000684/n03000684_12370.JPEG",
+        "target": 491
+      },
+      {
+        "path": "imagenette2-160/val/n03888257/n03888257_17801.JPEG",
+        "target": 701
+      },
+      {
+        "path": "imagenette2-160/val/n03394916/n03394916_44060.JPEG",
+        "target": 566
+      },
+      {
+        "path": "imagenette2-160/val/n03028079/ILSVRC2012_val_00003682.JPEG",
+        "target": 497
+      },
+      {
+        "path": "imagenette2-160/val/n01440764/n01440764_8150.JPEG",
+        "target": 0
+      }
+    ]
+  },
+  "exporter": {
+    "revision": "f5fbe5c82f231f699ba7ad03141d095c12fc196f",
+    "sha256": "764dc26a6ad5f23a17b9f08b4270d7d2a0d75a1ba4d179eb4bf66246869189b0",
+    "verification_helper_sha256": "d6e6a73019a265e7e13ff920bff329eabe5c11120db376815afd4169ed9013da"
+  }
+}
