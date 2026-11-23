@@ -84,11 +84,14 @@ def main():
         "source_sha256": {name: digest(ROOT / "scripts" / name) for name in (
             "modern_model_geometry.py", "modern_models.py", "convolution_geometry.py")},
         "image_size": image_size, "scope": "denoiser only" if args.model == "sana-sprint" else "vision model",
+        "parameter_elements": sum(parameter.numel() for parameter in model.parameters()),
+        "parameter_bytes_if_bf16": sum(parameter.numel() * 2 for parameter in model.parameters()),
         "geometry": geometry, "matrix_shapes": matrices,
         "target_matrix_macs": sum(row["macs"] for row in matrices),
         "limitations": [
             "Meta execution: no pretrained weights or numerical quality evaluation",
             "MAC inventory excludes elementwise work and is not an energy breakdown",
+            "BF16 parameter bytes exclude buffers, activations, workspace and quantized copies",
             "BF16 K128 / FP8 K256 both have128outputs and256-byte LHS vectors",
             "FP8 counts are a hypothetical all-FP8 contract, not validated format selection",
             "FP32 output capacity is not an SRAM transaction count or per-clock cadence",
