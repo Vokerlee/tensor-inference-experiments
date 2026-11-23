@@ -67,7 +67,8 @@ def rows(report: dict, source: str) -> tuple[list[dict], list[dict], list[dict]]
 
 def write_csv(path: Path, records: list[dict]):
     with path.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(records[0]))
+        fields = list(dict.fromkeys(key for record in records for key in record))
+        writer = csv.DictWriter(stream, fieldnames=fields)
         writer.writeheader()
         writer.writerows(records)
 

@@ -1,6 +1,7 @@
 """Prevent incomplete or corrupted decoder evidence from entering summaries."""
 
 import copy
+import csv
 import json
 import sys
 from pathlib import Path
@@ -8,7 +9,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from summarize_decoder_feedback import load_report, rows
+from summarize_decoder_feedback import load_report, rows, write_csv
 
 
 def fixture():
@@ -52,3 +53,13 @@ def test_inadmissible_reports_are_rejected(tmp_path, corruption):
     path.write_text(json.dumps(report))
     with pytest.raises(ValueError):
         load_report(path)
+
+
+def test_mixed_fixed_and_dynamic_call_schemas_keep_new_statistics(tmp_path):
+    path = tmp_path / "mixed.csv"
+    write_csv(path, [{"layer": "a", "groups": 2},
+                     {"layer": "b", "groups": 3, "dynamic": "full-controller-statistics"}])
+    with path.open() as stream:
+        records = list(csv.DictReader(stream))
+    assert records[0]["dynamic"] == ""
+    assert records[1]["dynamic"] == "full-controller-statistics"
