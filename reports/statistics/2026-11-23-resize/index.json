@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "sana-resize-20261123/report.json",
+      "archive": "sana-resize-20261123/report.json.gz",
+      "source_sha256": "0991ad12622763e50481ac929dce53e6524a63df6f5a1e67661b85e6926d1e9b",
+      "payload_sha256": "0991ad12622763e50481ac929dce53e6524a63df6f5a1e67661b85e6926d1e9b",
+      "archive_sha256": "04e62f151fbc0de2d764b7c4d32a8c9786f375bdb6c29ad587995d69648f8c9c",
+      "source_bytes": 892076,
+      "payload_bytes": 892076,
+      "archive_bytes": 33741,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    },
+    {
+      "source": "sana-resize-holdout-20261123/report.json",
+      "archive": "sana-resize-holdout-20261123/report.json.gz",
+      "source_sha256": "25988007a2d292fe76dace09d446d816af6bf2332b6a55c8172cb787120391ef",
+      "payload_sha256": "25988007a2d292fe76dace09d446d816af6bf2332b6a55c8172cb787120391ef",
+      "archive_sha256": "f8f58253660052cefe59adc41d7bd6a7e00458eaa4d4ff87798bcc921830c1ad",
+      "source_bytes": 890684,
+      "payload_bytes": 890684,
+      "archive_bytes": 33807,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}
