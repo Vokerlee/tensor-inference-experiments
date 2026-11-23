@@ -14,11 +14,12 @@ from accumulation_scale_diagnostics import encode
 from activation_pilot import (ENGINE, ROOT, digest, load_data, load_model,
                               revision, write_json)
 from primitive_accumulation_reference import Counters, multiply
+from convolution_accumulation_reference import convolve, encode_weight
 
 
 @contextmanager
-def arithmetic(layers, prepared, activation_format, reduction_width, width):
-    """Replace only receiving MLP linears, retaining every other graph edge."""
+def arithmetic(layers, prepared, activation_format, reduction_width, width, bound_kind="min"):
+    """Replace selected receiving operators, retaining every other graph edge."""
     original = {name: layer.forward for name, layer in layers.items()}
     counters = {name: Counters() for name in layers}
 
@@ -26,11 +27,15 @@ def arithmetic(layers, prepared, activation_format, reduction_width, width):
         codes, exponents = prepared[name]
 
         def forward(values):
+            if isinstance(layer, torch.nn.Conv2d):
+                return convolve(values, layer, prepared[name],
+                                activation_format=activation_format, reduction_width=reduction_width,
+                                accumulator_width=width, counters=counters[name], bound_kind=bound_kind)
             shape = values.shape
             activation, exponent = encode(values.reshape(-1, shape[-1]), activation_format)
             result = multiply(activation, exponent, codes, exponents,
                               reduction_width=reduction_width,
-                              accumulator_width=width, counters=counters[name])
+                              accumulator_width=width, counters=counters[name], bound_kind=bound_kind)
             if layer.bias is not None:
                 result += layer.bias.float()
             return result.to(values.dtype).reshape(*shape[:-1], layer.out_features)
@@ -61,9 +66,10 @@ def differences(values: torch.Tensor, reference: torch.Tensor) -> dict:
 @torch.inference_mode()
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", choices=("vit_b_16", "swin_t"), required=True)
+    parser.add_argument("--model", choices=("vit_b_16", "swin_t", "resnet18"), required=True)
     parser.add_argument("--activation-format", choices=("int8", "e2m1"), default="int8")
     parser.add_argument("--k-slice", type=int, choices=(128, 256), default=128)
+    parser.add_argument("--bound-kind", choices=("min", "max"), default="min")
     parser.add_argument("--width", type=int, action="append", choices=(20, 24, 32, 48))
     parser.add_argument("--samples-per-class", type=int, default=1)
     parser.add_argument("--holdout-offset", type=int, default=20)
@@ -76,14 +82,22 @@ def main() -> None:
     torch.set_num_threads(8)
     torch.backends.cuda.matmul.allow_tf32 = False
     torch.backends.cuda.matmul.allow_bf16_reduced_precision_reduction = False
-    model, weights, layers = load_model(args.model)
+    if args.model == "resnet18":
+        weights = torchvision.models.ResNet18_Weights.IMAGENET1K_V1
+        model = torchvision.models.resnet18(weights=weights).eval().to(device="cuda", dtype=torch.bfloat16)
+        layers = {name: layer for name, layer in model.named_modules()
+                  if isinstance(layer, torch.nn.Conv2d) and layer.groups == 1
+                  and layer.in_channels % 32 == 0 and layer.padding_mode == "zeros"}
+    else:
+        model, weights, layers = load_model(args.model)
     loader, class_indices, manifest = load_data(
         weights, args.samples_per_class, "quality", args.batch_size, args.holdout_offset)
     batches = [(images.to(device="cuda", dtype=torch.bfloat16),
                 torch.tensor([class_indices[label] for label in labels], device="cuda"))
                for images, labels in loader]
     targets = torch.cat([labels for _, labels in batches])
-    prepared = {name: encode(layer.weight.detach(), "int8") for name, layer in layers.items()}
+    prepared = {name: encode_weight(layer) if isinstance(layer, torch.nn.Conv2d)
+                else encode(layer.weight.detach(), "int8") for name, layer in layers.items()}
     checkpoint = Path(torch.hub.get_dir()) / "checkpoints" / weights.url.rsplit("/", 1)[-1]
     report = {
         "schema": 1, "model": args.model,
@@ -92,7 +106,10 @@ def main() -> None:
         "experiments": revision(ROOT), "engine": revision(ENGINE),
         "source_sha256": {name: digest(ROOT / "scripts" / name) for name in (
             "primitive_accumulation_pilot.py", "primitive_accumulation_reference.py",
-            "accumulation_scale_diagnostics.py", "activation_pilot.py", "activation_policies.py")},
+            "accumulation_scale_diagnostics.py", "activation_pilot.py", "activation_policies.py",
+            "convolution_geometry.py")},
+        "convolution_reference_sha256": digest(ROOT / "scripts/convolution_accumulation_reference.py"),
+        "target_layers": {name: type(layer).__name__ for name, layer in layers.items()},
         "checkpoint": {"url": weights.url, "sha256": digest(checkpoint)},
         "manifest": manifest, "preprocessing": str(weights.transforms()),
         "environment": {"python": platform.python_version(), "torch": torch.__version__,
@@ -100,7 +117,10 @@ def main() -> None:
                         "gpu": torch.cuda.get_device_name(), "tf32": False,
                         "bf16_reduced_precision_reduction": False},
         "limitations": [
-            "MLP edges only; fixed group32 INT8 weight encoding; current-input power-of-two activation scales",
+            "ViT/Swin MLPs or aligned dense ResNet18 convolutions only; unaligned/depthwise convolutions remain unchanged",
+            "Fixed group32 INT8 weight encoding; current-input power-of-two activation scales",
+            "Convolution source grouping is an inference-only baseline inspired by pre-lowering microscaling, not a full MicroQonv reproduction",
+            "Torch convolution oracle materializes lowering; streaming buffers and metadata traffic need separate costing",
             "No calibration, label-based policy selection or retraining",
             "Explicit integer design contracts, not current native FP8/INT8 hardware support",
             "Fixed FP32 primitive outputs on both paths; no retained integer state across K slices",
@@ -119,7 +139,7 @@ def main() -> None:
             outputs = torch.cat([model(images).float() for images, _ in batches])
             counters = {}
         else:
-            with arithmetic(layers, prepared, args.activation_format, args.k_slice, width) as counts:
+            with arithmetic(layers, prepared, args.activation_format, args.k_slice, width, args.bound_kind) as counts:
                 outputs = []
                 for index, (images, _) in enumerate(batches):
                     outputs.append(model(images).float())

@@ -40,3 +40,24 @@ Tests verify that cached statistics agree with lowered codes for strided,
 dilated and boundary windows, that reconstructed source values survive
 lowering, and that both K contracts reproduce direct integer-valued Torch
 convolution including a partial output-column vector.
+
+## Paired model execution
+
+```sh
+.venv/bin/python scripts/primitive_accumulation_pilot.py --model resnet18 \
+    --batch-size 1 --samples-per-class 10 --k-slice 128 --width 24 --width 32 \
+    --bound-kind max --output results/resnet18-source-accumulation.json
+```
+
+Use the pinned base environment. The first execution downloads the official
+Torchvision checkpoint. The first convolution has three input channels and
+remains unchanged. All selected dense convolutions use fixed encoded weights
+and online source-group scales. The final classifier and remaining operations
+retain the original model behavior.
+
+The group-FP32 and guarded cases share the same source quantization. Their
+comparison isolates additional effects of changing accumulation. The original
+BF16 case measures their combined quantization/arithmetic difference. Reports
+retain the exact target layer names, image manifest, checkpoint and source
+hashes, and per-layer counters. `--bound-kind min` is a separate guard-cost
+ablation, not a precision threshold fitted from evaluation labels.
