@@ -48,9 +48,9 @@ def fits_bound(bound: torch.Tensor, shifts: torch.Tensor, width: int) -> torch.T
     return term_fits.all(-1) & (terms.sum(-1) <= limit)
 
 
-def guarded_rows(a_codes, a_exponents, w_codes, w_exponents, width, tile_size=128,
-                 *, a_statistics=None, bound_kind="min"):
-    """One guard/anchor per activation row and declared weight-column window."""
+def conservative_group_bounds(a_codes, a_exponents, w_codes, w_exponents, tile_size=128,
+                              *, a_statistics=None, bound_kind="min"):
+    """Absolute bounds and exponent intervals per row, output window and group."""
     if bound_kind not in {"min", "max"}:
         raise ValueError("bound kind must be min or max")
     rows, groups, _ = a_codes.shape
@@ -74,13 +74,28 @@ def guarded_rows(a_codes, a_exponents, w_codes, w_exponents, width, tile_size=12
     w_l1 = w_l1.reshape(tiles, tile_size, groups).amax(1)
     active = (a_max[:, None] > 0) & (w_max[None] > 0)
     lower = a_exponents[:, None] + low[None]
-    anchor = torch.where(active, lower, 10000).amin(-1)
-    anchor = torch.where(active.any(-1), anchor, 0)
-    shifts = a_exponents[:, None] + high[None] - anchor[..., None]
+    upper = a_exponents[:, None] + high[None]
     bound = a_max[:, None] * w_l1[None]
     if bound_kind == "min":
         bound = torch.minimum(bound, a_l1[:, None] * w_max[None])
-    return fits_bound(bound, shifts, width), anchor
+    return bound, torch.where(active, lower, 0), torch.where(active, upper, 0)
+
+
+def guarded_rows(a_codes, a_exponents, w_codes, w_exponents, width, tile_size=128,
+                 *, a_statistics=None, bound_kind="min"):
+    """One guard/anchor per activation row and declared weight-column window."""
+    bound, lower, upper = conservative_group_bounds(
+        a_codes, a_exponents, w_codes, w_exponents, tile_size,
+        a_statistics=a_statistics, bound_kind=bound_kind)
+    return guard_group_bounds(bound, lower, upper, width)
+
+
+def guard_group_bounds(bound, lower, upper, width):
+    """Select one common anchor for already prepared conservative group bounds."""
+    active = bound > 0
+    anchor = torch.where(active, lower, 10000).amin(-1)
+    anchor = torch.where(active.any(-1), anchor, 0)
+    return fits_bound(bound, upper - anchor[..., None], width), anchor
 
 
 def summarize_guard(fits, rows, columns, reduction, tile_size=128):
