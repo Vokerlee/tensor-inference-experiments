@@ -43,3 +43,21 @@ benefit is measured by selected chunk count and remaining group merges, not
 by that coverage. Both raw merge counts and a comparator that bypasses zero
 FP32 group outputs are recorded. All-zero inputs must show zero saving against
 that zero-gated comparator. These are action counts, not joules or skipped MACs.
+
+```sh
+.venv/bin/python scripts/primitive_accumulation_pilot.py --model resnet18 \
+    --strategy greedy --bound-kind max --k-slice 128 --width 24 \
+    --samples-per-class 10 --output results/resnet18-greedy-chunks.json
+```
+
+Use the same images and code format for the `--strategy whole` comparator.
+`--model vit_b_16` and `--model swin_t` exercise MLP consumers instead. Each run
+includes the unchanged model and the same group-FP32 quantized reference. Fixed
+INT8 weights and online INT8 activation scales remain the default. The model
+is modified during these executions; this is more than a range-only screen.
+
+`zero_gated_whole_slice_merges` records the whole-slice fallback comparator on
+the **same represented inputs** used by the selected execution. This permits
+an action comparison without silently changing the input trajectory. The counts
+concern useful output scalars; padded interface capacity and common clocks,
+registers, SRAM activity and control remain separate hardware costs.

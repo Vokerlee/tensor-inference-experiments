@@ -33,6 +33,7 @@ class Counters:
     selected_chunks: int = 0
     zero_gated_reference_merges: int = 0
     zero_gated_selected_merges: int = 0
+    zero_gated_whole_slice_merges: int = 0
 
 
 def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
@@ -160,4 +161,8 @@ def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
                 counters.selected_chunks += int(chunks.sum()) * (stop - column)
                 counters.zero_gated_reference_merges += int((nonzero_groups - 1).clamp_min(0).sum())
                 counters.zero_gated_selected_merges += int((selected_nonzero - 1).clamp_min(0).sum())
+                whole_merges = (nonzero_groups - 1).clamp_min(0)
+                if accumulator_width is not None:
+                    whole_merges = torch.where(accepted[:, None], 0, whole_merges)
+                counters.zero_gated_whole_slice_merges += int(whole_merges.sum())
     return output

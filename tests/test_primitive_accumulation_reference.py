@@ -12,14 +12,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from primitive_accumulation_reference import Counters, multiply
 
 
-def test_guarded_result_matches_rational_oracle_with_column_tail():
+@pytest.mark.parametrize("strategy", ["whole", "greedy"])
+def test_guarded_result_matches_rational_oracle_with_column_tail(strategy):
     generator = torch.Generator().manual_seed(147)
     a = torch.randint(-12, 13, (3, 4, 32), generator=generator)
     w = torch.randint(-12, 13, (131, 4, 32), generator=generator)
     ae = torch.randint(-5, 1, (3, 4), generator=generator, dtype=torch.int32)
     we = torch.randint(-5, 1, (131, 4), generator=generator, dtype=torch.int32)
     counts = Counters()
-    actual = multiply(a, ae, w, we, accumulator_width=32, counters=counts)
+    actual = multiply(a, ae, w, we, accumulator_width=32, counters=counts, strategy=strategy)
     for row in range(3):
         for column in range(131):
             exact = sum(Fraction(int((a[row, group] * w[column, group]).sum()))
@@ -39,7 +40,8 @@ def test_rejected_width_uses_the_identical_group_float_baseline():
     assert counts.accepted_vectors == 0
 
 
-def test_each_primitive_emits_fp32_instead_of_retaining_exact_whole_k_state():
+@pytest.mark.parametrize("strategy", ["whole", "greedy"])
+def test_each_primitive_emits_fp32_instead_of_retaining_exact_whole_k_state(strategy):
     # The first primitive emits 2^24 after rounding 2^24+1; the second emits -2^24.
     a = torch.zeros(1, 8, 32, dtype=torch.int64)
     w = torch.zeros_like(a)
@@ -49,8 +51,8 @@ def test_each_primitive_emits_fp32_instead_of_retaining_exact_whole_k_state():
     w[0, 4, 0] = -1
     ae = torch.tensor([[24, 0, 0, 0, 24, 0, 0, 0]], dtype=torch.int32)
     we = torch.zeros_like(ae)
-    sliced = multiply(a, ae, w, we, accumulator_width=32, reduction_width=128)
-    whole = multiply(a, ae, w, we, accumulator_width=32, reduction_width=256)
+    sliced = multiply(a, ae, w, we, accumulator_width=32, reduction_width=128, strategy=strategy)
+    whole = multiply(a, ae, w, we, accumulator_width=32, reduction_width=256, strategy=strategy)
     assert sliced.item() == 0
     assert whole.item() == 1
 
