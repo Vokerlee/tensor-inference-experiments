@@ -45,6 +45,11 @@ planned baseline uses CUDA 12.8. Model checkpoints, datasets, and the native
 toolchain are versioned separately from Python dependencies. No inference
 experiment is implemented by this environment setup alone.
 
+For the optional timm vision backbones and text-conditioned diffusion pilots,
+install `requirements-modern-models.txt`. It includes the existing shared and
+diffusion pins, then fixes the additional model/tokenizer packages and their
+dependencies; it does not duplicate the engine environment.
+
 ## CUDA GEMM baseline
 
 See [build, validation and benchmark instructions](docs/benchmark-gemm.md) for
