@@ -25,6 +25,36 @@ def matrix_interface(rows: int, reduction: int, columns: int) -> dict:
     return result
 
 
+def profile_matrices(model, execute):
+    """Record executed dense projection shapes alongside complete operator MACs."""
+    matrices = []
+
+    def capture(name):
+        def hook(module, args, output):
+            if isinstance(module, torch.nn.Linear):
+                reduction, columns = module.in_features, module.out_features
+                rows = output.numel() // columns
+            elif module.kernel_size == (1, 1) and module.groups == 1:
+                reduction, columns = module.in_channels, module.out_channels
+                rows = output.numel() // columns
+            else:
+                return
+            matrices.append({"name": name, "kind": type(module).__name__, "M": rows,
+                             "K": reduction, "N": columns, "macs": rows * reduction * columns,
+                             "interface": matrix_interface(rows, reduction, columns)})
+        return hook
+
+    handles = [module.register_forward_hook(capture(name))
+               for name, module in model.named_modules()
+               if isinstance(module, (torch.nn.Linear, torch.nn.Conv2d))]
+    try:
+        geometry = inventory(model, execute)
+    finally:
+        for handle in handles:
+            handle.remove()
+    return geometry, matrices
+
+
 @torch.inference_mode()
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -53,31 +83,7 @@ def main():
         def execute():
             return model(inputs)
 
-    matrices = []
-
-    def capture(name):
-        def hook(module, args, output):
-            if isinstance(module, torch.nn.Linear):
-                reduction, columns = module.in_features, module.out_features
-                rows = output.numel() // columns
-            elif module.kernel_size == (1, 1) and module.groups == 1:
-                reduction, columns = module.in_channels, module.out_channels
-                rows = output.numel() // columns
-            else:
-                return
-            matrices.append({"name": name, "kind": type(module).__name__, "M": rows,
-                             "K": reduction, "N": columns, "macs": rows * reduction * columns,
-                             "interface": matrix_interface(rows, reduction, columns)})
-        return hook
-
-    handles = [module.register_forward_hook(capture(name))
-               for name, module in model.named_modules()
-               if isinstance(module, (torch.nn.Linear, torch.nn.Conv2d))]
-    try:
-        geometry = inventory(model, execute)
-    finally:
-        for handle in handles:
-            handle.remove()
+    geometry, matrices = profile_matrices(model, execute)
     report = {
         "schema": 1, "model": args.model, "checkpoint": checkpoint,
         "experiments": revision(ROOT), "engine": revision(ENGINE), "torch": torch.__version__,
