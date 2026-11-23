@@ -1,0 +1,2666 @@
+{
+  "schema": 1,
+  "model": "convnextv2-tiny",
+  "checkpoint": {
+    "repository": "timm/convnextv2_tiny.fcmae_ft_in22k_in1k",
+    "revision": "b1dd46230e80bf4cc3fa0c3c905db2c3ec53a817",
+    "config_sha256": "a9adf5b660f85c08af085b19a80a47b942f574e62211f7af6c3c7b6fe2a88eb6",
+    "weights_loaded": false,
+    "timm": "1.0.22",
+    "num_classes": 1000,
+    "preprocessing": {
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "interpolation": "bicubic",
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "crop_pct": 0.875,
+      "crop_mode": "center"
+    }
+  },
+  "experiments": {
+    "commit": "a388fed29314647e7fc2908eaf4bdafcc4a900fe",
+    "dirty": false
+  },
+  "engine": {
+    "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+    "dirty": false
+  },
+  "torch": "2.11.0+cu128",
+  "source_sha256": {
+    "modern_model_geometry.py": "c4f1c22fc359d9091ad3ee5c2e192101cc380c12a8c3302221cd62ea7c119a1d",
+    "modern_models.py": "96679b4c1d049e5a077b55c5dc973375aa630bae50d27f7615aacbe5a43b7d39",
+    "convolution_geometry.py": "5196c1d30c8324a1608148a892644bff3ae05bfdc422f7b9d99f708078ee486a"
+  },
+  "image_size": 224,
+  "scope": "vision model",
+  "parameter_elements": 28635496,
+  "parameter_bytes_if_bf16": 57270992,
+  "geometry": {
+    "conv_macs": 292965120,
+    "linear_macs": 4162566144,
+    "attention_macs": 0,
+    "attention_calls": 0,
+    "other_explicit_matrix_macs": 0,
+    "matrix_and_conv_macs": 4455531264,
+    "conv_fraction_of_matrix_and_conv_macs": 0.0657531285589022,
+    "spatial_conv_macs": 292965120,
+    "depthwise_conv_macs": 105106176,
+    "short_full_reduction_macs_k_le_25": 0,
+    "layers": [
+      {
+        "name": "stem.0",
+        "batch": 1,
+        "input_channels": 3,
+        "output_channels": 96,
+        "groups": 1,
+        "input_height": 224,
+        "input_width": 224,
+        "output_height": 56,
+        "output_width": 56,
+        "kernel_height": 4,
+        "kernel_width": 4,
+        "stride_height": 4,
+        "stride_width": 4,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 0,
+        "pad_left": 0,
+        "K": 48,
+        "M": 3136,
+        "N_per_group": 96,
+        "macs": 14450688,
+        "valid_macs": 14450688,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 3136,
+            "scheduled_product_slots": 51380224,
+            "dense_product_utilization": 0.28125,
+            "valid_product_utilization": 0.28125,
+            "lhs_capacity_bytes": 802816,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 1605632
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 3,
+            "vector_issue_groups": 9408,
+            "scheduled_product_slots": 154140672,
+            "dense_product_utilization": 0.09375,
+            "valid_product_utilization": 0.09375,
+            "lhs_capacity_bytes": 2408448,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 4816896
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 3136,
+            "scheduled_product_slots": 102760448,
+            "dense_product_utilization": 0.140625,
+            "valid_product_utilization": 0.140625,
+            "lhs_capacity_bytes": 802816,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 1605632
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 3,
+            "vector_issue_groups": 9408,
+            "scheduled_product_slots": 308281344,
+            "dense_product_utilization": 0.046875,
+            "valid_product_utilization": 0.046875,
+            "lhs_capacity_bytes": 2408448,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 4816896
+          }
+        ]
+      },
+      {
+        "name": "stages.0.blocks.0.conv_dw",
+        "batch": 1,
+        "input_channels": 96,
+        "output_channels": 96,
+        "groups": 96,
+        "input_height": 56,
+        "input_width": 56,
+        "output_height": 56,
+        "output_width": 56,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 3136,
+        "N_per_group": 1,
+        "macs": 14751744,
+        "valid_macs": 13862400,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002810419822225765,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002810419822225765,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 9865003008,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0014052099111128826,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 9865003008,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0014052099111128826,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          }
+        ]
+      },
+      {
+        "name": "stages.0.blocks.1.conv_dw",
+        "batch": 1,
+        "input_channels": 96,
+        "output_channels": 96,
+        "groups": 96,
+        "input_height": 56,
+        "input_width": 56,
+        "output_height": 56,
+        "output_width": 56,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 3136,
+        "N_per_group": 1,
+        "macs": 14751744,
+        "valid_macs": 13862400,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002810419822225765,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002810419822225765,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 9865003008,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0014052099111128826,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 9865003008,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0014052099111128826,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          }
+        ]
+      },
+      {
+        "name": "stages.0.blocks.2.conv_dw",
+        "batch": 1,
+        "input_channels": 96,
+        "output_channels": 96,
+        "groups": 96,
+        "input_height": 56,
+        "input_width": 56,
+        "output_height": 56,
+        "output_width": 56,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 3136,
+        "N_per_group": 1,
+        "macs": 14751744,
+        "valid_macs": 13862400,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002810419822225765,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002810419822225765,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 9865003008,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0014052099111128826,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 301056,
+            "scheduled_product_slots": 9865003008,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0014052099111128826,
+            "lhs_capacity_bytes": 77070336,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 154140672
+          }
+        ]
+      },
+      {
+        "name": "stages.1.downsample.1",
+        "batch": 1,
+        "input_channels": 96,
+        "output_channels": 192,
+        "groups": 1,
+        "input_height": 56,
+        "input_width": 56,
+        "output_height": 28,
+        "output_width": 28,
+        "kernel_height": 2,
+        "kernel_width": 2,
+        "stride_height": 2,
+        "stride_width": 2,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 0,
+        "pad_left": 0,
+        "K": 384,
+        "M": 784,
+        "N_per_group": 192,
+        "macs": 57802752,
+        "valid_macs": 57802752,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 3,
+            "vector_issue_groups": 4704,
+            "scheduled_product_slots": 77070336,
+            "dense_product_utilization": 0.75,
+            "valid_product_utilization": 0.75,
+            "lhs_capacity_bytes": 1204224,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 2408448
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 96,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.0234375,
+            "valid_product_utilization": 0.0234375,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 2,
+            "vector_issue_groups": 3136,
+            "scheduled_product_slots": 102760448,
+            "dense_product_utilization": 0.5625,
+            "valid_product_utilization": 0.5625,
+            "lhs_capacity_bytes": 802816,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 1605632
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 96,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.01171875,
+            "valid_product_utilization": 0.01171875,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          }
+        ]
+      },
+      {
+        "name": "stages.1.blocks.0.conv_dw",
+        "batch": 1,
+        "input_channels": 192,
+        "output_channels": 192,
+        "groups": 192,
+        "input_height": 28,
+        "input_width": 28,
+        "output_height": 28,
+        "output_width": 28,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 784,
+        "N_per_group": 1,
+        "macs": 7375872,
+        "valid_macs": 6500352,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0026357222576530613,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0026357222576530613,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0013178611288265306,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0013178611288265306,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          }
+        ]
+      },
+      {
+        "name": "stages.1.blocks.1.conv_dw",
+        "batch": 1,
+        "input_channels": 192,
+        "output_channels": 192,
+        "groups": 192,
+        "input_height": 28,
+        "input_width": 28,
+        "output_height": 28,
+        "output_width": 28,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 784,
+        "N_per_group": 1,
+        "macs": 7375872,
+        "valid_macs": 6500352,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0026357222576530613,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0026357222576530613,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0013178611288265306,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0013178611288265306,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          }
+        ]
+      },
+      {
+        "name": "stages.1.blocks.2.conv_dw",
+        "batch": 1,
+        "input_channels": 192,
+        "output_channels": 192,
+        "groups": 192,
+        "input_height": 28,
+        "input_width": 28,
+        "output_height": 28,
+        "output_width": 28,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 784,
+        "N_per_group": 1,
+        "macs": 7375872,
+        "valid_macs": 6500352,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0026357222576530613,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0026357222576530613,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0013178611288265306,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 150528,
+            "scheduled_product_slots": 4932501504,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0013178611288265306,
+            "lhs_capacity_bytes": 38535168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 77070336
+          }
+        ]
+      },
+      {
+        "name": "stages.2.downsample.1",
+        "batch": 1,
+        "input_channels": 192,
+        "output_channels": 384,
+        "groups": 1,
+        "input_height": 28,
+        "input_width": 28,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 2,
+        "kernel_width": 2,
+        "stride_height": 2,
+        "stride_width": 2,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 0,
+        "pad_left": 0,
+        "K": 768,
+        "M": 196,
+        "N_per_group": 384,
+        "macs": 57802752,
+        "valid_macs": 57802752,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 6,
+            "vector_issue_groups": 3528,
+            "scheduled_product_slots": 57802752,
+            "dense_product_utilization": 1.0,
+            "valid_product_utilization": 1.0,
+            "lhs_capacity_bytes": 903168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 1806336
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 192,
+            "vector_issue_groups": 112896,
+            "scheduled_product_slots": 1849688064,
+            "dense_product_utilization": 0.03125,
+            "valid_product_utilization": 0.03125,
+            "lhs_capacity_bytes": 28901376,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 57802752
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 3,
+            "vector_issue_groups": 1764,
+            "scheduled_product_slots": 57802752,
+            "dense_product_utilization": 1.0,
+            "valid_product_utilization": 1.0,
+            "lhs_capacity_bytes": 451584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 903168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 192,
+            "vector_issue_groups": 112896,
+            "scheduled_product_slots": 3699376128,
+            "dense_product_utilization": 0.015625,
+            "valid_product_utilization": 0.015625,
+            "lhs_capacity_bytes": 28901376,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 57802752
+          }
+        ]
+      },
+      {
+        "name": "stages.2.blocks.0.conv_dw",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 384,
+        "groups": 384,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 196,
+        "N_per_group": 1,
+        "macs": 3687936,
+        "valid_macs": 2840064,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          }
+        ]
+      },
+      {
+        "name": "stages.2.blocks.1.conv_dw",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 384,
+        "groups": 384,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 196,
+        "N_per_group": 1,
+        "macs": 3687936,
+        "valid_macs": 2840064,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          }
+        ]
+      },
+      {
+        "name": "stages.2.blocks.2.conv_dw",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 384,
+        "groups": 384,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 196,
+        "N_per_group": 1,
+        "macs": 3687936,
+        "valid_macs": 2840064,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          }
+        ]
+      },
+      {
+        "name": "stages.2.blocks.3.conv_dw",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 384,
+        "groups": 384,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 196,
+        "N_per_group": 1,
+        "macs": 3687936,
+        "valid_macs": 2840064,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          }
+        ]
+      },
+      {
+        "name": "stages.2.blocks.4.conv_dw",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 384,
+        "groups": 384,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 196,
+        "N_per_group": 1,
+        "macs": 3687936,
+        "valid_macs": 2840064,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          }
+        ]
+      },
+      {
+        "name": "stages.2.blocks.5.conv_dw",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 384,
+        "groups": 384,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 196,
+        "N_per_group": 1,
+        "macs": 3687936,
+        "valid_macs": 2840064,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          }
+        ]
+      },
+      {
+        "name": "stages.2.blocks.6.conv_dw",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 384,
+        "groups": 384,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 196,
+        "N_per_group": 1,
+        "macs": 3687936,
+        "valid_macs": 2840064,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          }
+        ]
+      },
+      {
+        "name": "stages.2.blocks.7.conv_dw",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 384,
+        "groups": 384,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 196,
+        "N_per_group": 1,
+        "macs": 3687936,
+        "valid_macs": 2840064,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          }
+        ]
+      },
+      {
+        "name": "stages.2.blocks.8.conv_dw",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 384,
+        "groups": 384,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 14,
+        "output_width": 14,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 196,
+        "N_per_group": 1,
+        "macs": 3687936,
+        "valid_macs": 2840064,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.002303142936862245,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 75264,
+            "scheduled_product_slots": 2466250752,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0011515714684311226,
+            "lhs_capacity_bytes": 19267584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 38535168
+          }
+        ]
+      },
+      {
+        "name": "stages.3.downsample.1",
+        "batch": 1,
+        "input_channels": 384,
+        "output_channels": 768,
+        "groups": 1,
+        "input_height": 14,
+        "input_width": 14,
+        "output_height": 7,
+        "output_width": 7,
+        "kernel_height": 2,
+        "kernel_width": 2,
+        "stride_height": 2,
+        "stride_width": 2,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 0,
+        "pad_left": 0,
+        "K": 1536,
+        "M": 49,
+        "N_per_group": 768,
+        "macs": 57802752,
+        "valid_macs": 57802752,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 12,
+            "vector_issue_groups": 3528,
+            "scheduled_product_slots": 57802752,
+            "dense_product_utilization": 1.0,
+            "valid_product_utilization": 1.0,
+            "lhs_capacity_bytes": 903168,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 1806336
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 384,
+            "vector_issue_groups": 112896,
+            "scheduled_product_slots": 1849688064,
+            "dense_product_utilization": 0.03125,
+            "valid_product_utilization": 0.03125,
+            "lhs_capacity_bytes": 28901376,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 57802752
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 6,
+            "vector_issue_groups": 1764,
+            "scheduled_product_slots": 57802752,
+            "dense_product_utilization": 1.0,
+            "valid_product_utilization": 1.0,
+            "lhs_capacity_bytes": 451584,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 903168
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 384,
+            "vector_issue_groups": 112896,
+            "scheduled_product_slots": 3699376128,
+            "dense_product_utilization": 0.015625,
+            "valid_product_utilization": 0.015625,
+            "lhs_capacity_bytes": 28901376,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 57802752
+          }
+        ]
+      },
+      {
+        "name": "stages.3.blocks.0.conv_dw",
+        "batch": 1,
+        "input_channels": 768,
+        "output_channels": 768,
+        "groups": 768,
+        "input_height": 7,
+        "input_width": 7,
+        "output_height": 7,
+        "output_width": 7,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 49,
+        "N_per_group": 1,
+        "macs": 1843968,
+        "valid_macs": 1051392,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 616562688,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0017052475286989796,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 616562688,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0017052475286989796,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0008526237643494898,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0008526237643494898,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          }
+        ]
+      },
+      {
+        "name": "stages.3.blocks.1.conv_dw",
+        "batch": 1,
+        "input_channels": 768,
+        "output_channels": 768,
+        "groups": 768,
+        "input_height": 7,
+        "input_width": 7,
+        "output_height": 7,
+        "output_width": 7,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 49,
+        "N_per_group": 1,
+        "macs": 1843968,
+        "valid_macs": 1051392,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 616562688,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0017052475286989796,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 616562688,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0017052475286989796,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0008526237643494898,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0008526237643494898,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          }
+        ]
+      },
+      {
+        "name": "stages.3.blocks.2.conv_dw",
+        "batch": 1,
+        "input_channels": 768,
+        "output_channels": 768,
+        "groups": 768,
+        "input_height": 7,
+        "input_width": 7,
+        "output_height": 7,
+        "output_width": 7,
+        "kernel_height": 7,
+        "kernel_width": 7,
+        "stride_height": 1,
+        "stride_width": 1,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 3,
+        "pad_left": 3,
+        "K": 49,
+        "M": 49,
+        "N_per_group": 1,
+        "macs": 1843968,
+        "valid_macs": 1051392,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 616562688,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0017052475286989796,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 616562688,
+            "dense_product_utilization": 0.00299072265625,
+            "valid_product_utilization": 0.0017052475286989796,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0008526237643494898,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 1,
+            "vector_issue_groups": 37632,
+            "scheduled_product_slots": 1233125376,
+            "dense_product_utilization": 0.001495361328125,
+            "valid_product_utilization": 0.0008526237643494898,
+            "lhs_capacity_bytes": 9633792,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 19267584
+          }
+        ]
+      }
+    ]
+  },
+  "matrix_shapes": [
+    {
+      "name": "stages.0.blocks.0.mlp.fc1",
+      "kind": "Linear",
+      "M": 3136,
+      "K": 96,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 308281344
+        }
+      }
+    },
+    {
+      "name": "stages.0.blocks.0.mlp.fc2",
+      "kind": "Linear",
+      "M": 3136,
+      "K": 384,
+      "N": 96,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6272,
+          "lhs_capacity_bytes": 1605632,
+          "fp32_output_capacity_bytes": 3211264,
+          "product_slots": 205520896
+        }
+      }
+    },
+    {
+      "name": "stages.0.blocks.1.mlp.fc1",
+      "kind": "Linear",
+      "M": 3136,
+      "K": 96,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 308281344
+        }
+      }
+    },
+    {
+      "name": "stages.0.blocks.1.mlp.fc2",
+      "kind": "Linear",
+      "M": 3136,
+      "K": 384,
+      "N": 96,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6272,
+          "lhs_capacity_bytes": 1605632,
+          "fp32_output_capacity_bytes": 3211264,
+          "product_slots": 205520896
+        }
+      }
+    },
+    {
+      "name": "stages.0.blocks.2.mlp.fc1",
+      "kind": "Linear",
+      "M": 3136,
+      "K": 96,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 308281344
+        }
+      }
+    },
+    {
+      "name": "stages.0.blocks.2.mlp.fc2",
+      "kind": "Linear",
+      "M": 3136,
+      "K": 384,
+      "N": 96,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6272,
+          "lhs_capacity_bytes": 1605632,
+          "fp32_output_capacity_bytes": 3211264,
+          "product_slots": 205520896
+        }
+      }
+    },
+    {
+      "name": "stages.1.blocks.0.mlp.fc1",
+      "kind": "Linear",
+      "M": 784,
+      "K": 192,
+      "N": 768,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.1.blocks.0.mlp.fc2",
+      "kind": "Linear",
+      "M": 784,
+      "K": 768,
+      "N": 192,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.1.blocks.1.mlp.fc1",
+      "kind": "Linear",
+      "M": 784,
+      "K": 192,
+      "N": 768,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.1.blocks.1.mlp.fc2",
+      "kind": "Linear",
+      "M": 784,
+      "K": 768,
+      "N": 192,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.1.blocks.2.mlp.fc1",
+      "kind": "Linear",
+      "M": 784,
+      "K": 192,
+      "N": 768,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.1.blocks.2.mlp.fc2",
+      "kind": "Linear",
+      "M": 784,
+      "K": 768,
+      "N": 192,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9408,
+          "lhs_capacity_bytes": 2408448,
+          "fp32_output_capacity_bytes": 4816896,
+          "product_slots": 154140672
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.0.mlp.fc1",
+      "kind": "Linear",
+      "M": 196,
+      "K": 384,
+      "N": 1536,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.0.mlp.fc2",
+      "kind": "Linear",
+      "M": 196,
+      "K": 1536,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.1.mlp.fc1",
+      "kind": "Linear",
+      "M": 196,
+      "K": 384,
+      "N": 1536,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.1.mlp.fc2",
+      "kind": "Linear",
+      "M": 196,
+      "K": 1536,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.2.mlp.fc1",
+      "kind": "Linear",
+      "M": 196,
+      "K": 384,
+      "N": 1536,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.2.mlp.fc2",
+      "kind": "Linear",
+      "M": 196,
+      "K": 1536,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.3.mlp.fc1",
+      "kind": "Linear",
+      "M": 196,
+      "K": 384,
+      "N": 1536,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.3.mlp.fc2",
+      "kind": "Linear",
+      "M": 196,
+      "K": 1536,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.4.mlp.fc1",
+      "kind": "Linear",
+      "M": 196,
+      "K": 384,
+      "N": 1536,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.4.mlp.fc2",
+      "kind": "Linear",
+      "M": 196,
+      "K": 1536,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.5.mlp.fc1",
+      "kind": "Linear",
+      "M": 196,
+      "K": 384,
+      "N": 1536,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.5.mlp.fc2",
+      "kind": "Linear",
+      "M": 196,
+      "K": 1536,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.6.mlp.fc1",
+      "kind": "Linear",
+      "M": 196,
+      "K": 384,
+      "N": 1536,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.6.mlp.fc2",
+      "kind": "Linear",
+      "M": 196,
+      "K": 1536,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.7.mlp.fc1",
+      "kind": "Linear",
+      "M": 196,
+      "K": 384,
+      "N": 1536,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.7.mlp.fc2",
+      "kind": "Linear",
+      "M": 196,
+      "K": 1536,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.8.mlp.fc1",
+      "kind": "Linear",
+      "M": 196,
+      "K": 384,
+      "N": 1536,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4704,
+          "lhs_capacity_bytes": 1204224,
+          "fp32_output_capacity_bytes": 2408448,
+          "product_slots": 154140672
+        }
+      }
+    },
+    {
+      "name": "stages.2.blocks.8.mlp.fc2",
+      "kind": "Linear",
+      "M": 196,
+      "K": 1536,
+      "N": 384,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.3.blocks.0.mlp.fc1",
+      "kind": "Linear",
+      "M": 49,
+      "K": 768,
+      "N": 3072,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.3.blocks.0.mlp.fc2",
+      "kind": "Linear",
+      "M": 49,
+      "K": 3072,
+      "N": 768,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.3.blocks.1.mlp.fc1",
+      "kind": "Linear",
+      "M": 49,
+      "K": 768,
+      "N": 3072,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.3.blocks.1.mlp.fc2",
+      "kind": "Linear",
+      "M": 49,
+      "K": 3072,
+      "N": 768,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.3.blocks.2.mlp.fc1",
+      "kind": "Linear",
+      "M": 49,
+      "K": 768,
+      "N": 3072,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "stages.3.blocks.2.mlp.fc2",
+      "kind": "Linear",
+      "M": 49,
+      "K": 3072,
+      "N": 768,
+      "macs": 115605504,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7056,
+          "lhs_capacity_bytes": 1806336,
+          "fp32_output_capacity_bytes": 3612672,
+          "product_slots": 115605504
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 3528,
+          "lhs_capacity_bytes": 903168,
+          "fp32_output_capacity_bytes": 1806336,
+          "product_slots": 115605504
+        }
+      }
+    },
+    {
+      "name": "head.fc",
+      "kind": "Linear",
+      "M": 1,
+      "K": 768,
+      "N": 1000,
+      "macs": 768000,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 48,
+          "lhs_capacity_bytes": 12288,
+          "fp32_output_capacity_bytes": 24576,
+          "product_slots": 786432
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 24,
+          "lhs_capacity_bytes": 6144,
+          "fp32_output_capacity_bytes": 12288,
+          "product_slots": 786432
+        }
+      }
+    }
+  ],
+  "target_matrix_macs": 4162566144,
+  "limitations": [
+    "Meta execution: no pretrained weights or numerical quality evaluation",
+    "MAC inventory excludes elementwise work and is not an energy breakdown",
+    "BF16 parameter bytes exclude buffers, activations, workspace and quantized copies",
+    "BF16 K128 / FP8 K256 both have128outputs and256-byte LHS vectors",
+    "FP8 counts are a hypothetical all-FP8 contract, not validated format selection",
+    "FP32 output capacity is not an SRAM transaction count or per-clock cadence",
+    "Mode switches, weight delivery, buffering and array filling/draining are unpriced"
+  ]
+}

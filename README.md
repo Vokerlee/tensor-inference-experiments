@@ -3,6 +3,10 @@
 Reproducible inference experiments: model adapters, data pipelines, evaluation,
 and automated report generation.
 
+The [model knowledge base](models/README.md) indexes short model cards,
+checkpoint identities, complete condition-specific profiles and numerical
+experiment reports. Shape statistics and quality measurements remain separate.
+
 ## Engine dependency
 
 The execution engine is included as a submodule at `deps/tensor-inference-engine`.
