@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "controller-descriptor-fidelity-20261124.json",
+      "archive": "controller-descriptor-fidelity-20261124.json.gz",
+      "source_sha256": "bd178889c371174d62639fa3b4d5d129237be3f1154e8c4333621d5cd14c6a8f",
+      "payload_sha256": "bd178889c371174d62639fa3b4d5d129237be3f1154e8c4333621d5cd14c6a8f",
+      "archive_sha256": "ac3cf1a366baf3e880b792142def8b2b2154d7dda09e7811b93e7b30ad2ba90c",
+      "source_bytes": 2723464,
+      "payload_bytes": 2723464,
+      "archive_bytes": 709278,
+      "normalized_fields": [],
+      "experiments": {
+        "commit": "0e1ed11e592c62a2c0d19cb8b9ebc9e77e71309c",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "aba8a998291b6129f6e39bffc3bad09dd0097d3e",
+        "dirty": false
+      }
+    },
+    {
+      "source": "controller-replay-a4-20261124/report.json",
+      "archive": "controller-replay-a4-20261124/report.json.gz",
+      "source_sha256": "c4bf129e1bce4a8344dcecfafc991da8bec7838ee664e7e1d456d7006c80314b",
+      "payload_sha256": "c4bf129e1bce4a8344dcecfafc991da8bec7838ee664e7e1d456d7006c80314b",
+      "archive_sha256": "67a60c760f13232d1aa842c31629ffdea944ee2b39d42fa193467f05344965df",
+      "source_bytes": 3581656,
+      "payload_bytes": 3581656,
+      "archive_bytes": 262602,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    },
+    {
+      "source": "controller-replay-a8-20261124/report.json",
+      "archive": "controller-replay-a8-20261124/report.json.gz",
+      "source_sha256": "73a792a50aa780f81956eeecc6c6c0b546ab310cdadd7ddc50b4a1839ac6e518",
+      "payload_sha256": "73a792a50aa780f81956eeecc6c6c0b546ab310cdadd7ddc50b4a1839ac6e518",
+      "archive_sha256": "f5014dcfd32de752f4db4e966dfb72a5c2ba7e92980c14977a98270de0a3228c",
+      "source_bytes": 3444236,
+      "payload_bytes": 3444236,
+      "archive_bytes": 214993,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    },
+    {
+      "source": "controller-replay-analysis-20261124.json",
+      "archive": "controller-replay-analysis-20261124.json.gz",
+      "source_sha256": "c17095ac2eb97fe3b45d2c1340070b0b86f9b626a606fa2107e8640b5084d88f",
+      "payload_sha256": "c17095ac2eb97fe3b45d2c1340070b0b86f9b626a606fa2107e8640b5084d88f",
+      "archive_sha256": "4ffbfeebf9c5505d291ad9164a8577f4f8fe64d08813e89f119fbc1dec09f7a9",
+      "source_bytes": 97283,
+      "payload_bytes": 97283,
+      "archive_bytes": 14048,
+      "normalized_fields": []
+    },
+    {
+      "source": "controller-replay-analysis-preliminary-20261124.json",
+      "archive": "controller-replay-analysis-preliminary-20261124.json.gz",
+      "source_sha256": "ec5425ba298b95004fbd5d2a34302e703246bad343b1cb6d1dce8d7f3f13f518",
+      "payload_sha256": "ec5425ba298b95004fbd5d2a34302e703246bad343b1cb6d1dce8d7f3f13f518",
+      "archive_sha256": "ef27c9f43d2d70e703aa6d21a3a30fb591757aaf1d698689832a6843cdd8441b",
+      "source_bytes": 65014,
+      "payload_bytes": 65014,
+      "archive_bytes": 7961,
+      "normalized_fields": []
+    },
+    {
+      "source": "scale-stability-20261124.json",
+      "archive": "scale-stability-20261124.json.gz",
+      "source_sha256": "feef542d82712b9aad4d1d7c1d4ebff0bf8848321329bd78ac401288e5d12ef1",
+      "payload_sha256": "feef542d82712b9aad4d1d7c1d4ebff0bf8848321329bd78ac401288e5d12ef1",
+      "archive_sha256": "03a675c51de43410e476645edc7a3c0756ba2a218733fcc8d4d4228f43840e36",
+      "source_bytes": 11844336,
+      "payload_bytes": 11844336,
+      "archive_bytes": 460442,
+      "normalized_fields": [],
+      "experiments": {
+        "commit": "96eca307368d611c8e5cb92e909799c6fb6eb534",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "aba8a998291b6129f6e39bffc3bad09dd0097d3e",
+        "dirty": false
+      }
+    },
+    {
+      "source": "scale-stability-preliminary-20261124.json",
+      "archive": "scale-stability-preliminary-20261124.json.gz",
+      "source_sha256": "468707afc84695fe3c91a594c14ca7c8f3135cfd3f9b7b9e923b699a691564b7",
+      "payload_sha256": "468707afc84695fe3c91a594c14ca7c8f3135cfd3f9b7b9e923b699a691564b7",
+      "archive_sha256": "3dfb5a711f27d8fdfdb113b635b5b3ce7033d7c7ed3a4bc7a0adb01f4a7cbac0",
+      "source_bytes": 10368976,
+      "payload_bytes": 10368976,
+      "archive_bytes": 437588,
+      "normalized_fields": [],
+      "experiments": {
+        "commit": "0e1ed11e592c62a2c0d19cb8b9ebc9e77e71309c",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "aba8a998291b6129f6e39bffc3bad09dd0097d3e",
+        "dirty": false
+      }
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}
