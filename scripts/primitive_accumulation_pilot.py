@@ -18,7 +18,8 @@ from convolution_accumulation_reference import convolve, encode_weight
 
 
 @contextmanager
-def arithmetic(layers, prepared, activation_format, reduction_width, width, bound_kind="min"):
+def arithmetic(layers, prepared, activation_format, reduction_width, width,
+               bound_kind="min", strategy="whole"):
     """Replace selected receiving operators, retaining every other graph edge."""
     original = {name: layer.forward for name, layer in layers.items()}
     counters = {name: Counters() for name in layers}
@@ -30,12 +31,14 @@ def arithmetic(layers, prepared, activation_format, reduction_width, width, boun
             if isinstance(layer, torch.nn.Conv2d):
                 return convolve(values, layer, prepared[name],
                                 activation_format=activation_format, reduction_width=reduction_width,
-                                accumulator_width=width, counters=counters[name], bound_kind=bound_kind)
+                                accumulator_width=width, counters=counters[name],
+                                bound_kind=bound_kind, strategy=strategy)
             shape = values.shape
             activation, exponent = encode(values.reshape(-1, shape[-1]), activation_format)
             result = multiply(activation, exponent, codes, exponents,
                               reduction_width=reduction_width,
-                              accumulator_width=width, counters=counters[name], bound_kind=bound_kind)
+                              accumulator_width=width, counters=counters[name],
+                              bound_kind=bound_kind, strategy=strategy)
             if layer.bias is not None:
                 result += layer.bias.float()
             return result.to(values.dtype).reshape(*shape[:-1], layer.out_features)
@@ -70,6 +73,7 @@ def main() -> None:
     parser.add_argument("--activation-format", choices=("int8", "e2m1"), default="int8")
     parser.add_argument("--k-slice", type=int, choices=(128, 256), default=128)
     parser.add_argument("--bound-kind", choices=("min", "max"), default="min")
+    parser.add_argument("--strategy", choices=("whole", "greedy"), default="whole")
     parser.add_argument("--width", type=int, action="append", choices=(20, 24, 32, 48))
     parser.add_argument("--samples-per-class", type=int, default=1)
     parser.add_argument("--holdout-offset", type=int, default=20)
@@ -107,7 +111,7 @@ def main() -> None:
         "source_sha256": {name: digest(ROOT / "scripts" / name) for name in (
             "primitive_accumulation_pilot.py", "primitive_accumulation_reference.py",
             "accumulation_scale_diagnostics.py", "activation_pilot.py", "activation_policies.py",
-            "convolution_geometry.py")},
+            "convolution_geometry.py", "accumulation_segments.py")},
         "convolution_reference_sha256": digest(ROOT / "scripts/convolution_accumulation_reference.py"),
         "target_layers": {name: type(layer).__name__ for name, layer in layers.items()},
         "checkpoint": {"url": weights.url, "sha256": digest(checkpoint)},
@@ -124,6 +128,8 @@ def main() -> None:
             "No calibration, label-based policy selection or retraining",
             "Explicit integer design contracts, not current native FP8/INT8 hardware support",
             "Fixed FP32 primitive outputs on both paths; no retained integer state across K slices",
+            "Greedy chunks change float parentheses; whole-slice acceptance and merge savings are distinct",
+            "Zero-gated merge counts bypass zero group outputs; they do not include all hardware energy costs",
             "FP64 represents bounded integers in the oracle, not a deployed arithmetic proposal",
             "Local changes use identical represented inputs; whole-model changes include propagation",
             "Classifier uses all 1000 ImageNet classes on an Imagenette subset",
@@ -139,7 +145,8 @@ def main() -> None:
             outputs = torch.cat([model(images).float() for images, _ in batches])
             counters = {}
         else:
-            with arithmetic(layers, prepared, args.activation_format, args.k_slice, width, args.bound_kind) as counts:
+            with arithmetic(layers, prepared, args.activation_format, args.k_slice,
+                            width, args.bound_kind, args.strategy) as counts:
                 outputs = []
                 for index, (images, _) in enumerate(batches):
                     outputs.append(model(images).float())
