@@ -74,3 +74,16 @@ Both are sufficient bounds and neither uses a receiving product as a predictor.
 Metadata movement, register reads and decision timing remain costs even when
 statistics are reused. A source maximum can be exposed by the quantizer; this
 Python oracle's explicit reductions do not establish free hardware collection.
+
+## Exporting paired measurements
+
+`scripts/summarize_primitive_pilots.py` accepts complete `--input` JSON reports,
+optional `--geometry` reports and an `--output-prefix`. It writes case/layer
+CSVs, a geometry CSV and provenance JSON with source revisions, image manifests,
+checkpoint fingerprints, settings and paired predictions. For U-Net geometry,
+pass its recorded repository/revision/file JSON as `--unet-source`.
+
+The exporter verifies source hashes against the executed Git objects and checks
+the engine gitlink. It rejects dirty arithmetic executions and incomplete runs.
+Raw action counts and zero-output-gated comparisons remain separate, and older
+runs without the latter have empty fields rather than inferred measurements.
