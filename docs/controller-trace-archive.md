@@ -28,3 +28,9 @@ hashes, lengths, delta dependencies and every referenced NPY member without mode
 weights or CUDA. Keep the full archive, its index and complete producer reports
 together when publishing results. Restored counterfactual tapes remain diagnostic
 interventions; storage does not establish numerical or scientific validity.
+
+A completed archive can be split with `--split SOURCE_ARCHIVE --report ...
+--output NEW_DIRECTORY`. The original reports define input identities across
+precisions. Every generated `input-NNN` shard includes all required delta anchors
+and can be verified/restored independently. This supports one complete input per
+data commit while preserving the parent index hash and every original member.
