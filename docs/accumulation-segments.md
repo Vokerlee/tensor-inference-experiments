@@ -61,3 +61,21 @@ the **same represented inputs** used by the selected execution. This permits
 an action comparison without silently changing the input trajectory. The counts
 concern useful output scalars; padded interface capacity and common clocks,
 registers, SRAM activity and control remain separate hardware costs.
+
+## Native planner cross-check
+
+`scripts/integer_segment_backend.py` prepares output-window statistics and
+calls the engine's fused CUDA planner. Python metadata preparation and model
+selection stay in this repository; the engine contains only the generic
+scalar and CUDA interfaces. The engine revision is pinned by the submodule.
+
+```sh
+.venv/bin/python -m pytest -q tests/test_integer_segments_cuda.py
+```
+
+Build the optional engine Torch adapter first, as in the GEMM instructions.
+These checks compare byte masks against independently constructed tensor
+bounds, including tail slices, both norm modes, zero groups and fallback.
+They also exercise streams, graph capture and the Meta interface. They validate
+planning only: the numerical oracle still executes the selected arithmetic
+separately, and source-statistics preparation is not free.
