@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from decision_stability import ScaleTable
+from decision_stability import ScaleTable, observed_group_bounds
 
 
 def test_guard_includes_boundary_and_excludes_changed_decisions_exhaustively():
@@ -37,3 +37,15 @@ def test_vector_bound_and_nonmonotonic_zero_region_are_handled():
 def test_invalid_contract_inputs_rejected(maximum, bound):
     with pytest.raises(ValueError):
         ScaleTable([0, 1, 2], [0, 0, 1]).stable(maximum, bound)
+
+
+def test_observed_bounds_enclose_exact_differences_across_bf16_exponent_range():
+    from fractions import Fraction
+
+    first = np.array([[2.0 ** 127, 2.0 ** -133], [-2.0 ** 127, 0], [1, 2]])
+    second = np.array([[2.0 ** -133, 2.0 ** 127], [2.0 ** -133, 0], [1, 2]])
+    bounds = observed_group_bounds(first, second)
+    for a, b, bound in zip(first, second, bounds):
+        exact = max(abs(Fraction(float(x)) - Fraction(float(y))) for x, y in zip(a, b))
+        assert Fraction(float(bound)) >= exact
+    assert bounds[-1] == 0

@@ -9,7 +9,7 @@ import numpy as np
 import torch
 
 from activation_pilot import ENGINE, ROOT, digest, revision, write_json
-from decision_stability import ScaleTable, grouped_sources
+from decision_stability import ScaleTable, grouped_sources, observed_group_bounds
 from decoder_control_path_probe import LAYER
 from integer_segment_backend import load_native
 from modern_models import SANA, provenance, snapshot
@@ -52,7 +52,7 @@ def compare(original, candidate, tables):
     first, second = grouped_sources(original), grouped_sources(candidate)
     maximum = np.abs(first).max(-1)
     changed_maximum = np.abs(second).max(-1)
-    bounds = np.abs(second - first).max(-1)
+    bounds = observed_group_bounds(first, second)
     records = []
     for bits, table in tables.items():
         before = table.exponents[np.searchsorted(table.maxima, maximum)]
