@@ -43,3 +43,9 @@ def test_descriptor_aggregation_keeps_paired_identities_and_rejects_duplicates()
     report["records"].append(records[0])
     with pytest.raises(ValueError, match="duplicate"):
         descriptor_summary(report)
+
+
+def test_sign_flip_ties_survive_catastrophic_float_cancellation():
+    result = paired_summary([1e16, 1, -1e16, 2])
+    assert result["mean"] == 0.75
+    assert result["exact_sign_flip_p"] == 0.75

@@ -4,6 +4,7 @@
 import argparse
 import itertools
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -21,12 +22,17 @@ def paired_summary(values, *, samples=20000, seed=20261124):
         raise ValueError("expected 1..16 finite paired observations")
     rng = np.random.default_rng(seed)
     means = values[rng.integers(values.size, size=(samples, values.size))].mean(1)
-    observed = abs(float(values.mean()))
-    permutation = [abs(float(np.dot(signs, values) / values.size))
-                   for signs in itertools.product((-1, 1), repeat=values.size)]
-    return {"n": values.size, "mean": float(values.mean()),
+    # Binary64 observations are exact dyadic rationals. Compare permutation
+    # sums as integers so cancellation cannot lose boundary/tie permutations.
+    ratios = [float(value).as_integer_ratio() for value in values]
+    denominator = max(bottom for _, bottom in ratios)
+    integers = [top * (denominator // bottom) for top, bottom in ratios]
+    observed = abs(sum(integers))
+    extreme = sum(abs(sum(sign * value for sign, value in zip(signs, integers))) >= observed
+                  for signs in itertools.product((-1, 1), repeat=values.size))
+    return {"n": values.size, "mean": math.fsum(values) / values.size,
             "bootstrap_percentile_95": np.quantile(means, [0.025, 0.975]).tolist(),
-            "exact_sign_flip_p": sum(value >= observed for value in permutation) / len(permutation),
+            "exact_sign_flip_p": extreme / (1 << values.size),
             "negative": int((values < 0).sum()), "zero": int((values == 0).sum()),
             "positive": int((values > 0).sum()), "per_input": values.tolist()}
 
