@@ -25,7 +25,9 @@ limitation. FP8 K256 capacity is hypothetical: its numerical suitability is
 not established by this shape profile. Output-vector capacity is not SRAM
 traffic or output cadence.
 
-Numerical experiment reports will be linked here as they are recorded.
+[Paired precision numerical report](../../reports/2026-11-23-paired-precision.md)
+records the fixed-K128 baseline, uniform FP8 and live-bound policies. Complete
+statistics, exact input/checkpoint conditions and limitations accompany the report.
 
 [Preserved scientific statistics](../../reports/statistics/2026-11-23/models.md#dinov3-small)
 include the complete dated records available at this snapshot, including earlier

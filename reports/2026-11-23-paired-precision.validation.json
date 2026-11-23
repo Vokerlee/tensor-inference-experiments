@@ -1,0 +1,80 @@
+{
+  "scope": "Recorded-source checks and paired numerical controls; not a hardware or task-quality certification",
+  "runs": {
+    "dinov3-small": {
+      "experiments": {
+        "commit": "496b5dce0965ba25b82d2853fc888ca3ee2f4b7f",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      },
+      "cases": 8,
+      "library_sha256": "f781d97c6ca5e34afaf3df84e21db4ede9d59ba7202f4b31c7548f1d6e2f3bd5"
+    },
+    "convnextv2-tiny": {
+      "experiments": {
+        "commit": "496b5dce0965ba25b82d2853fc888ca3ee2f4b7f",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      },
+      "cases": 8,
+      "library_sha256": "f781d97c6ca5e34afaf3df84e21db4ede9d59ba7202f4b31c7548f1d6e2f3bd5"
+    },
+    "sana-sprint": {
+      "experiments": {
+        "commit": "496b5dce0965ba25b82d2853fc888ca3ee2f4b7f",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      },
+      "cases": 8,
+      "library_sha256": "f781d97c6ca5e34afaf3df84e21db4ede9d59ba7202f4b31c7548f1d6e2f3bd5"
+    },
+    "sana-single-row-ablation": {
+      "experiments": {
+        "commit": "aebc4fe99123c4301bf14a6c30149433a047573c",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      },
+      "cases": 3,
+      "library_sha256": "f781d97c6ca5e34afaf3df84e21db4ede9d59ba7202f4b31c7548f1d6e2f3bd5"
+    }
+  },
+  "sana_controls": {
+    "original": {
+      "images": true,
+      "states": true
+    },
+    "bf16": {
+      "images": true,
+      "states": true
+    }
+  },
+  "rounding_boundary_comparison": {
+    "dinov3-small": {
+      "changed_output_scalars": 35642,
+      "output_rmse": 0.008287902157497942
+    },
+    "convnextv2-tiny": {
+      "changed_output_scalars": 84606,
+      "output_rmse": 0.026152541117914888
+    },
+    "sana-sprint": {
+      "mean_decoded_image_mse": 0.005361671995160577
+    }
+  },
+  "single_row_ablation": {
+    "trajectory_rmse_reduction_ratio": 28.574054635674596,
+    "mean_decoded_image_mse_reduction_ratio": 275.6882725426194
+  }
+}
