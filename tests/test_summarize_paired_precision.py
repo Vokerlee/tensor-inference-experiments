@@ -33,6 +33,13 @@ def test_summaries_weight_work_counts_and_preserve_histograms(monkeypatch):
     assert ablation_rows[0]["minimum_fp8_rows"] == 2
     assert ablation_rows[0]["record_sha256"] != rows[0]["record_sha256"]
     assert ablation_layers[0]["record_sha256"] == ablation_rows[0]["record_sha256"]
+    assert ablation_rows[0]["schedule_natural_mode_changes"] is None
+    report["settings"]["row_buffer"] = 32
+    layers["large"]["schedule"] = {"natural_mode_changes": 9, "peak_argument_payload_bytes": 100}
+    layers["small"]["schedule"] = {"natural_mode_changes": 3, "peak_argument_payload_bytes": 80}
+    schedule_rows, _ = summary.summarize(report)
+    assert schedule_rows[0]["schedule_natural_mode_changes"] == 12
+    assert schedule_rows[0]["schedule_peak_argument_payload_bytes"] == 100
     report["case_order"].append("unfinished")
     with pytest.raises(ValueError, match="incomplete"):
         summary.summarize(report)
