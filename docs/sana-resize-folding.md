@@ -42,3 +42,8 @@ source/checkpoint/library fingerprints. MACs are dense arithmetic, not array
 call counts, speed or energy. The output phases still require fixed-width
 matrix tiles and memory routing. Kernel growth, borders, precision, weight
 residency and output ordering must be priced on the target hardware.
+
+Export the completed case tables and source fingerprints with
+`scripts/summarize_resize_pilot.py --input <report.json> [<report.json> ...] --output <basename>`.
+It rejects incomplete or dirty-source measurements and invalid/incomplete
+quantizer statistics; full per-input/branch records remain in the raw report.
