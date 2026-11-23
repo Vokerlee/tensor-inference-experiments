@@ -22,9 +22,13 @@ def portable_payload(raw: bytes) -> tuple[bytes, list[str]]:
 
     def visit(value, location=()):
         if isinstance(value, dict):
-            return {key: visit(item, (*location, key)) for key, item in value.items()}
+            for key, item in value.items():
+                value[key] = visit(item, (*location, key))
+            return value
         if isinstance(value, list):
-            return [visit(item, (*location, str(index))) for index, item in enumerate(value)]
+            for index, item in enumerate(value):
+                value[index] = visit(item, (*location, str(index)))
+            return value
         if isinstance(value, str) and "/home/" in value:
             if location not in LOCAL_FIELDS or not value.startswith("/home/"):
                 raise ValueError(f"unreviewed machine-local path at {'/'.join(location)}")
