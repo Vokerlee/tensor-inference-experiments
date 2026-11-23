@@ -31,7 +31,8 @@ def kernel_coefficient(weight: torch.Tensor, *, coarse: bool = False) -> torch.T
     values = weight.detach().float()
     energy = values.square().sum((0, 2, 3))
     correlation = (values[..., 1:] * values[..., :-1]).sum((0, 2, 3))
-    coefficient = torch.where(energy > 0, correlation / energy.clamp_min(1e-30), 0)
+    safe_energy = torch.where(energy > 0, energy, 1)
+    coefficient = torch.where(energy > 0, correlation / safe_energy, 0)
     coefficient = coefficient.clamp(-0.5, 0.5)
     return (coefficient * 2).round() / 2 if coarse else coefficient
 
@@ -60,6 +61,8 @@ def quantize(values: torch.Tensor, coefficient: torch.Tensor, *, bits: int = 4,
     limit = (1 << (bits - 1)) - 1
     exponent = torch.where(maximum > 0, (maximum / limit).log2().ceil(), 0).int()
     scales = torch.ldexp(torch.ones_like(maximum), exponent)
+    if not torch.isfinite(scales).all() or (scales <= 0).any():
+        raise ValueError("source scale must be finite and positive in FP32")
     reconstructed = torch.empty_like(source)
     residual = torch.empty_like(source)
     carry = torch.zeros(batch, height, channels, device=values.device, dtype=torch.float32)
