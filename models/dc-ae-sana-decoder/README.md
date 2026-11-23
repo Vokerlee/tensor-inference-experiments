@@ -34,3 +34,10 @@ reductions and pixel fidelity remain distinct from hardware energy/task quality.
 compare fixed/recomputed quantizer scales on24 predeclared patches of one layer
 across eight original/folded decoder trajectories. These local interventions
 are not full-policy accuracy or whole-layer failure-rate measurements.
+
+[Full controller replay and stability filtering](../../reports/2026-11-24-controller-replay.md)
+cover19 controlled receivers (66.52% of original decoder dense MACs),112 cases
+per INT4/INT8 precision and all decision/sensor traces. Original-backend replay
+is bit-exact. Close fixed/live feedback comparisons remain unresolved on these
+eight curated inputs. Conditional guard selectivity does not establish saved
+reference work, energy or target-hardware correctness.
