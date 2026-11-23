@@ -79,3 +79,19 @@ bounds, including tail slices, both norm modes, zero groups and fallback.
 They also exercise streams, graph capture and the Meta interface. They validate
 planning only: the numerical oracle still executes the selected arithmetic
 separately, and source-statistics preparation is not free.
+
+## Planner timing
+
+```sh
+.venv/bin/python scripts/benchmark_integer_segments.py \
+    --output results/integer-segment-timing.json
+```
+
+The benchmark interleaves CUDA-graph trials for four cached-metadata planners
+(K128/K256, maximum-only/maximum-L1 bounds) and a custom BF16-input/FP32-output
+GEMM time comparator. Synthetic operands have representative matrix shapes;
+this is not model execution. Raw timing samples, source revisions, the compiled
+library hash and compiler metadata are recorded. Quantization, source-statistic
+generation, im2col, numerical fallback and consumption of the chosen plan are
+excluded, so this measures a component rather than end-to-end overhead. CUDA
+latency cannot establish the benefit of a pipelined ASIC implementation.
