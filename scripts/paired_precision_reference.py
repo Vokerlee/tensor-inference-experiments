@@ -12,6 +12,7 @@ from torch.nn import functional as F
 
 from integer_segment_backend import load_native
 import precision_moments
+import row_precision_schedule
 
 
 POLICIES = ("bf16", "fp8-paired", "fp8-split", "adaptive-paired", "adaptive-split",
@@ -41,6 +42,7 @@ class Counters:
     activation_scale_exponents: dict = field(default_factory=dict)
     normalized_bound_histogram: dict = field(default_factory=dict)
     normalized_moment_score_histogram: dict = field(default_factory=dict)
+    schedule: row_precision_schedule.ScheduleCounters = field(default_factory=row_precision_schedule.ScheduleCounters)
 
 
 def add_histogram(destination: dict, values: torch.Tensor) -> None:
@@ -113,12 +115,15 @@ def select_cohorts(values, reconstructed, weight_l1, weight_error_l1, *, toleran
 
 
 def multiply(values, weight, prepared=None, *, policy="adaptive-paired", tolerance=0.04,
-             cohort=32, counters=None):
+             cohort=32, counters=None, row_buffer=0, resident_rows=1024, execution="oracle"):
     if (policy not in POLICIES or values.ndim != 2 or weight.ndim != 2
             or values.shape[1] != weight.shape[1] or min(*values.shape, *weight.shape) < 1
             or values.dtype != torch.bfloat16 or weight.dtype != torch.bfloat16
             or not math.isfinite(tolerance) or tolerance < 0 or cohort < 1):
         raise ValueError("invalid BF16 matrix, policy, tolerance or cohort")
+    if (execution not in ("oracle", "packed") or row_buffer < 0 or resident_rows < 1
+            or (row_buffer and resident_rows % row_buffer) or (execution == "packed" and not row_buffer)):
+        raise ValueError("invalid row-buffer residency or execution contract")
     if prepared is None and policy != "bf16":
         raise ValueError("quantized policies require prepared immutable-weight metadata")
     if prepared is not None and (prepared.reconstructed.shape != weight.shape
@@ -148,6 +153,7 @@ def multiply(values, weight, prepared=None, *, policy="adaptive-paired", toleran
         original = values[:, begin:stop]
         original_weight = weight[:, begin:stop]
         shape = (len(row_counts), windows)
+        quantized = quantized_weight = None
         if policy == "bf16" or (adaptive_policy and width <= 128):
             selected = torch.zeros(shape, device=values.device, dtype=torch.bool)
         else:
@@ -172,7 +178,8 @@ def multiply(values, weight, prepared=None, *, policy="adaptive-paired", toleran
                 add_histogram(counters.normalized_bound_histogram, bins)
             else:
                 selected = torch.ones(shape, device=values.device, dtype=torch.bool)
-        mask = selected.repeat_interleave(cohort, 0)[:rows].repeat_interleave(128, 1)[:, :columns]
+        selected_rows = selected.repeat_interleave(cohort, 0)[:rows]
+        mask = selected_rows.repeat_interleave(128, 1)[:, :columns]
         any_low, all_low = bool(selected.any()), bool(selected.all())
         low_vectors = int((selected * row_counts[:, None]).sum())
         counters.reference_vectors += rows * windows * high_calls
@@ -183,6 +190,15 @@ def multiply(values, weight, prepared=None, *, policy="adaptive-paired", toleran
         counters.within_pair_mode_transitions += int((selected[1:] != selected[:-1]).sum())
         counters.useful_products += rows * columns * width
         counters.fp8_products += int(mask.sum()) * width
+        if row_buffer:
+            row_precision_schedule.account(selected_rows, width, counters.schedule,
+                                           buffer_rows=row_buffer, resident_rows=resident_rows,
+                                           candidate_prepared=quantized is not None)
+        if execution == "packed":
+            output = row_precision_schedule.execute(
+                original, quantized, original_weight, quantized_weight, output, selected_rows, product,
+                split_low=policy.endswith("split"), buffer_rows=row_buffer, resident_rows=resident_rows)
+            continue
         high = low = None
         if not all_low:
             high = output
