@@ -75,3 +75,29 @@ def test_cached_source_statistics_preserve_the_guarded_result():
     maximum_only = multiply(a, ae, w, we, accumulator_width=32,
                             a_statistics=(stats[0], None), bound_kind="max")
     assert torch.equal(maximum_only, multiply(a, ae, w, we, accumulator_width=32, bound_kind="max"))
+
+
+def test_segmented_exact_chunks_can_change_float_parentheses():
+    codes = torch.zeros(1, 4, 32, dtype=torch.int64)
+    codes[0, :3, 0] = 1
+    ae = torch.tensor([[24, 0, 0, 0]], dtype=torch.int32)
+    we = torch.zeros_like(ae)
+    baseline = multiply(codes, ae, codes, we)
+    counts = Counters()
+    chunked = multiply(codes, ae, codes, we, accumulator_width=24,
+                       strategy="greedy", counters=counts)
+    assert baseline.item() == 2 ** 24
+    assert chunked.item() == 2 ** 24 + 2
+    # A zero group is bypassed by the optimistic float baseline too.
+    assert counts.zero_gated_reference_merges == 2
+    assert counts.zero_gated_selected_merges == 1
+
+
+def test_all_zero_groups_do_not_claim_a_gain_over_zero_gated_float():
+    codes = torch.zeros(2, 4, 32, dtype=torch.int64)
+    exponent = torch.zeros(2, 4, dtype=torch.int32)
+    counts = Counters()
+    output = multiply(codes, exponent, codes, exponent, accumulator_width=24,
+                      strategy="greedy", counters=counts)
+    assert not output.any()
+    assert counts.zero_gated_reference_merges == counts.zero_gated_selected_merges == 0

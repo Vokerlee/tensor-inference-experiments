@@ -32,3 +32,14 @@ fixed-input tests and complete-model evaluation are required. Existing
 [precision-boundary work](https://doi.org/10.1016/j.sysarc.2026.103704)
 are comparators for deferred conversion and chunked accumulation. This planner
 alone does not establish a new architecture.
+
+The primitive oracle accepts `strategy="greedy"`. It sums each selected chunk
+using the bounded exact reference, converts that chunk to FP32, then merges it
+into a floating carry. A cancellation test deliberately produces a different
+answer from sequential FP32 grouping, so numerical equality is not assumed.
+
+Counters retain whole-slice guard coverage as a separate diagnostic. Chunk
+benefit is measured by selected chunk count and remaining group merges, not
+by that coverage. Both raw merge counts and a comparator that bypasses zero
+FP32 group outputs are recorded. All-zero inputs must show zero saving against
+that zero-gated comparator. These are action counts, not joules or skipped MACs.

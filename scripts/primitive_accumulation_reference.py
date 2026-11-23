@@ -9,7 +9,9 @@ from dataclasses import dataclass
 
 import torch
 
-from accumulation_scale_diagnostics import guarded_rows
+from accumulation_scale_diagnostics import (conservative_group_bounds, guard_group_bounds,
+                                           guarded_rows)
+from accumulation_segments import greedy_ends
 
 
 @dataclass
@@ -28,13 +30,16 @@ class Counters:
     source_groups_quantized: int = 0
     lowered_group_slots: int = 0
     valid_lowered_group_uses: int = 0
+    selected_chunks: int = 0
+    zero_gated_reference_merges: int = 0
+    zero_gated_selected_merges: int = 0
 
 
 def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
              w_codes: torch.Tensor, w_exponents: torch.Tensor, *,
              reduction_width: int = 128, accumulator_width: int | None = None,
              counters: Counters | None = None, a_statistics=None,
-             bound_kind: str = "min") -> torch.Tensor:
+             bound_kind: str = "min", strategy: str = "whole") -> torch.Tensor:
     """Reduce represented operands, emitting FP32 after every K slice.
 
     Inputs are [rows, groups, 32] activation and [columns, groups, 32] weight
@@ -48,6 +53,8 @@ def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
     """
     if reduction_width not in (128, 256):
         raise ValueError("this reference tests explicit K=128 or K=256 contracts")
+    if strategy not in {"whole", "greedy"}:
+        raise ValueError("strategy must be whole or greedy")
     if accumulator_width is not None and not 2 <= accumulator_width <= 48:
         raise ValueError("exact oracle supports accumulator widths 2..48")
     if (a_codes.ndim != 3 or w_codes.ndim != 3 or a_codes.shape[-1] != 32
@@ -75,12 +82,22 @@ def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
             statistics = None if a_statistics is None else (
                 a_statistics[0][:, begin:end],
                 None if a_statistics[1] is None else a_statistics[1][:, begin:end])
-            fits, anchors = guarded_rows(a, ae, w, we, accumulator_width, 128,
-                                        a_statistics=statistics, bound_kind=bound_kind)
+            if strategy == "greedy":
+                bounds, lower, upper = conservative_group_bounds(
+                    a, ae, w, we, 128, a_statistics=statistics, bound_kind=bound_kind)
+                fits, anchors = guard_group_bounds(bounds, lower, upper, accumulator_width)
+                ends = greedy_ends(bounds, lower, upper, accumulator_width)
+            else:
+                fits, anchors = guarded_rows(a, ae, w, we, accumulator_width, 128,
+                                            a_statistics=statistics, bound_kind=bound_kind)
         for column in range(0, columns, 128):
             stop = min(column + 128, columns)
             reference = torch.zeros(rows, stop - column, dtype=torch.float32, device=a.device)
             integer = torch.zeros_like(reference, dtype=torch.float64)
+            chunk_sum = torch.zeros_like(integer)
+            chunk_carry = torch.zeros_like(reference)
+            nonzero_groups = torch.zeros_like(reference, dtype=torch.int16)
+            nonzero_chunks = torch.zeros_like(nonzero_groups)
             if accumulator_width is not None:
                 accepted = fits[:, column // 128]
                 anchor = anchors[:, column // 128]
@@ -90,16 +107,32 @@ def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
                 exponent = ae[:, group, None] + we[None, column:stop, group]
                 term = torch.ldexp(dot, exponent)
                 reference = reference + term
+                if counters is not None:
+                    nonzero_groups += term != 0
                 if accumulator_width is not None:
-                    active = (a[:, group].abs().amax(-1)[:, None] > 0) & (
-                        w[column:stop, group].abs().amax(-1)[None] > 0)
-                    shift = torch.where(active & accepted[:, None],
-                                        exponent - anchor[:, None], 0)
-                    contribution = torch.where(accepted[:, None], dot.double(), 0)
-                    integer = integer + torch.ldexp(contribution, shift)
+                    if strategy == "greedy":
+                        chunk_sum += torch.ldexp(dot.double(), exponent)
+                        boundary = ends[:, column // 128, group, None]
+                        rounded_chunk = chunk_sum.float()
+                        chunk_carry = torch.where(boundary, chunk_carry + rounded_chunk, chunk_carry)
+                        if counters is not None:
+                            nonzero_chunks += boundary & (rounded_chunk != 0)
+                        chunk_sum = torch.where(boundary, 0, chunk_sum)
+                    else:
+                        active = dot != 0
+                        shift = torch.where(active & accepted[:, None], exponent - anchor[:, None], 0)
+                        contribution = torch.where(accepted[:, None], dot.double(), 0)
+                        integer = integer + torch.ldexp(contribution, shift)
             if accumulator_width is not None:
-                exact_output = torch.ldexp(integer, anchor[:, None]).float()
-                selected = torch.where(accepted[:, None], exact_output, reference)
+                if strategy == "greedy":
+                    selected = chunk_carry
+                    chunks = ends[:, column // 128].sum(-1)
+                    selected_nonzero = nonzero_chunks
+                else:
+                    exact_output = torch.ldexp(integer, anchor[:, None]).float()
+                    selected = torch.where(accepted[:, None], exact_output, reference)
+                    chunks = torch.where(accepted, 1, end - begin)
+                    selected_nonzero = torch.where(accepted[:, None], (selected != 0).to(torch.int16), nonzero_groups)
                 if counters is not None:
                     difference = selected.double() - reference.double()
                     counters.output_scalars += reference.numel()
@@ -109,6 +142,9 @@ def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
                     counters.max_output_difference = max(counters.max_output_difference,
                                                           float(difference.abs().amax()))
                 reference = selected
+            else:
+                chunks = torch.full((rows,), end - begin, device=a.device, dtype=torch.int64)
+                selected_nonzero = nonzero_groups
             # Deliberately preserve the fixed FP32 boundary between K slices.
             output[:, column:stop] += reference
             if counters is not None:
@@ -120,5 +156,8 @@ def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
                 counters.accepted_products += accepted_rows * (stop - column) * useful_k
                 merges = max(end - begin - 1, 0)
                 counters.reference_group_merges += rows * (stop - column) * merges
-                counters.replaced_group_merges += accepted_rows * (stop - column) * merges
+                counters.replaced_group_merges += int(((end - begin) - chunks).sum()) * (stop - column)
+                counters.selected_chunks += int(chunks.sum()) * (stop - column)
+                counters.zero_gated_reference_merges += int((nonzero_groups - 1).clamp_min(0).sum())
+                counters.zero_gated_selected_merges += int((selected_nonzero - 1).clamp_min(0).sum())
     return output

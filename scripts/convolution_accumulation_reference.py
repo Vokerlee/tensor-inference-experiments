@@ -71,13 +71,13 @@ def lower(source: SourceBlocks, layer: torch.nn.Conv2d):
 def convolve(values: torch.Tensor, layer: torch.nn.Conv2d, prepared, *,
              activation_format: str = "int8", reduction_width: int = 128,
              accumulator_width: int | None = None, counters: Counters | None = None,
-             bound_kind: str = "min") -> torch.Tensor:
+             bound_kind: str = "min", strategy: str = "whole") -> torch.Tensor:
     source = encode_source(values, activation_format, bound_kind=bound_kind)
     codes, exponent, statistics = lower(source, layer)
     weight, weight_exponent = prepared
     output = multiply(codes, exponent, weight, weight_exponent,
                       reduction_width=reduction_width, accumulator_width=accumulator_width,
-                      counters=counters, a_statistics=statistics, bound_kind=bound_kind)
+                      counters=counters, a_statistics=statistics, bound_kind=bound_kind, strategy=strategy)
     if layer.bias is not None:
         output += layer.bias.float()
     h = (values.shape[2] + 2 * layer.padding[0]
