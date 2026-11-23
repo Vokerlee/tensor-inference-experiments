@@ -6,6 +6,7 @@ import gzip
 import hashlib
 import io
 import json
+import shutil
 import zipfile
 from functools import lru_cache
 from pathlib import Path
@@ -154,14 +155,69 @@ def verify(destination, restore=None):
     return manifest
 
 
+def split_archive(root, reports, source, destination):
+    """Make independently restorable input shards for atomic evidence commits."""
+    root = root.resolve()
+    groups = {}
+    for path in reports:
+        report = json.loads(path.read_text())
+        if report.get("status") != "complete":
+            raise ValueError("complete reports required for input sharding")
+        for row in report["runs"]:
+            identity = (row["bundle"], row["bundle_input_index"])
+            relative = Path(row["trace"]).resolve().relative_to(root).as_posix()
+            groups.setdefault(identity, set()).add(relative)
+    original = json.loads((source / "index.json").read_text())
+    files = {entry["source"]: entry for entry in original["files"]}
+    if set(files) != set().union(*groups.values()) or sum(map(len, groups.values())) != len(files):
+        raise ValueError("input partition does not match complete trace archive")
+    destination.mkdir(parents=True, exist_ok=False)
+    summary = []
+    for index, (identity, paths) in enumerate(sorted(groups.items())):
+        needed = set()
+
+        def collect(key):
+            if key in needed:
+                return
+            needed.add(key)
+            entry = original["objects"][key]
+            if entry["encoding"] == "xor":
+                collect(entry["base"])
+
+        entries = [entry for entry in original["files"] if entry["source"] in paths]
+        for entry in entries:
+            for member in entry["members"]:
+                collect(member["object"])
+        directory = destination / f"input-{index:03d}"
+        (directory / "objects").mkdir(parents=True)
+        for key in sorted(needed):
+            shutil.copyfile(source / "objects" / f"{key}.gz", directory / "objects" / f"{key}.gz")
+        manifest = {**original, "files": entries,
+                    "objects": {key: original["objects"][key] for key in sorted(needed)},
+                    "input_identity": list(identity),
+                    "parent_index_sha256": sha256((source / "index.json").read_bytes())}
+        (directory / "index.json").write_text(json.dumps(manifest, indent=2) + "\n")
+        verify(directory)
+        summary.append({"directory": directory.name, "input_identity": list(identity),
+                        "traces": len(entries), "objects": len(needed)})
+    return summary
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path("results"))
     parser.add_argument("--report", nargs="+", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--verify", action="store_true")
+    parser.add_argument("--split", type=Path)
     parser.add_argument("--restore", type=Path)
     args = parser.parse_args()
+    if args.split is not None:
+        if not args.report or args.verify or args.restore:
+            parser.error("splitting requires reports and excludes verify/restore")
+        shards = split_archive(args.root, args.report, args.split, args.output)
+        print(f"Verified {len(shards)} independently restorable input shards")
+        return
     if args.verify:
         if args.report:
             parser.error("verification does not accept source reports")

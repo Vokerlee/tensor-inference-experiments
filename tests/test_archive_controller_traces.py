@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from archive_controller_traces import archive, verify
+from archive_controller_traces import archive, split_archive, verify
 
 
 def sources(tmp_path):
@@ -64,3 +64,17 @@ def test_changed_trace_or_incomplete_report_is_rejected(tmp_path):
     report.write_text(json.dumps(document))
     with pytest.raises(ValueError, match='hash changed'):
         archive(root, [report], tmp_path / 'modified')
+
+
+def test_input_shards_are_independently_restorable(tmp_path):
+    root, report = sources(tmp_path)
+    document = json.loads(report.read_text())
+    document["runs"][-1]["bundle_input_index"] = 1
+    report.write_text(json.dumps(document))
+    destination = tmp_path / "archive"
+    archive(root, [report], destination)
+    shards = split_archive(root, [report], destination, tmp_path / "shards")
+    assert [row["traces"] for row in shards] == [2, 1]
+    for row in shards:
+        verified = verify(tmp_path / "shards" / row["directory"], tmp_path / row["directory"])
+        assert len(verified["files"]) == row["traces"]
