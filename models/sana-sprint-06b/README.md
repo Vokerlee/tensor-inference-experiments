@@ -26,3 +26,7 @@ not established by this shape profile. Output-vector capacity is not SRAM
 traffic or output cadence.
 
 Numerical experiment reports will be linked here as they are recorded.
+
+[Preserved scientific statistics](../../reports/statistics/2026-11-23/models.md#sana-sprint-06b)
+include the complete dated records available at this snapshot, including earlier
+exploratory runs. Consult their original conditions and source status.

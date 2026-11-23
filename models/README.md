@@ -32,3 +32,9 @@ ignored results/cache paths; record manifests, fingerprints and exact replay
 commands so numerical data can be regenerated. Keep the compact scientific
 statistics and their interpretation in this repository. PhD hypotheses and
 private planning do not belong in model cards.
+
+[Complete statistical archive](../reports/statistics/2026-11-23/README.md)
+preserves all JSON scientific records available at the dated snapshot; its
+[per-model index](../reports/statistics/2026-11-23/models.md) includes historical
+and preliminary runs. [Archive conventions](../docs/statistics.md) specify
+integrity checks, immutable snapshots and large-array handling.

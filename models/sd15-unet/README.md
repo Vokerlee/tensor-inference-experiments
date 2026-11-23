@@ -16,3 +16,7 @@ than the primary modern-workload set.
 Measurements: [Primitive arithmetic report](../../reports/2026-11-23-primitive-accumulation.md). A report can cover only some models/operators; inspect
 its conditions instead of transferring a result to every network in a table.
 MAC shares are not energy. Meta execution does not evaluate model quality.
+
+[Preserved scientific statistics](../../reports/statistics/2026-11-23/models.md#sd15-unet)
+include the complete dated records available at this snapshot, including earlier
+exploratory runs. Consult their original conditions and source status.
