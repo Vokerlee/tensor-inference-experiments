@@ -35,3 +35,23 @@ comparators. A different score cannot be credited with the uniform FP8 benefit.
 Tests use exhaustive common permutations, coherent bias, zero-sum receiving
 weights and native precision-policy extremes. These check algebra and declared
 execution contracts; final-model tests are still required.
+
+## Same-input diagnostics and complete-model pilots
+
+The modern pilot accepts the new policies through `--case`. All policies keep
+the chosen row eligibility condition and cohort in the report. The original
+max/L1 defaults remain unchanged. Prepared receiver moments and live score
+histograms are exported, separately from worst-case-bound histograms.
+
+`--diagnostic-rows 8 --diagnostic-calls 1` additionally records fixed-input
+local comparisons on eight deterministic rows of the first call to each
+eligible module. All K slices wider than128 are checked; short tails are
+omitted. Diagnostics compare represented original and quantized operands using
+the same K256/FP32 engine boundary. They retain actual/predicted error and output
+energies per sampled row/output window. This isolates representation error,
+not K128/K256 regrouping, full-layer accumulation, graph error or task quality.
+
+The extra original/quantized receiving GEMMs are validation oracles only. They
+do not choose deployed precision and are not included as target controller
+work. Original-model forward arithmetic remains unchanged by observation.
+Recorded sampling limits must accompany all aggregate diagnostic conclusions.
