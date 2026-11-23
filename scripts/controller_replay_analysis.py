@@ -98,12 +98,46 @@ def summarize(report):
     return result
 
 
+def descriptor_summary(report):
+    if report.get("status") != "complete":
+        raise ValueError("complete descriptor report required")
+    grouped = {}
+    for row in report["records"]:
+        key = (row["bits"], row["policy"], row["backend"], row["control"])
+        identity = (row["bundle"], row["bundle_input_index"])
+        group = grouped.setdefault(key, {})
+        if identity in group:
+            raise ValueError("duplicate descriptor observation")
+        group[identity] = row
+    identities = sorted({(row["bundle"], row["bundle_input_index"]) for row in report["references"]})
+    if not identities or any(set(group) != set(identities) for group in grouped.values()):
+        raise ValueError("incomplete descriptor input coverage")
+    results = []
+    for bits in sorted({key[0] for key in grouped}):
+        policies = sorted({key[1] for key in grouped if key[0] == bits})
+        for metric in ("cosine_distance", "relative_mse"):
+            values = {key[1:]: np.array([group[identity][metric] for identity in identities])
+                      for key, group in grouped.items() if key[0] == bits}
+            comparisons = []
+            for first, second in itertools.combinations(policies, 2):
+                for backend, control in CONTEXTS:
+                    comparisons.append({"first": first, "second": second,
+                        "context": f"{backend}/{control}", **paired_summary(
+                            values[(first, backend, control)] - values[(second, backend, control)])})
+            results.append({"bits": bits, "metric": metric, "inputs": len(identities),
+                "mean": {"/".join(key): float(value.mean()) for key, value in values.items()},
+                "pairwise": comparisons})
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, nargs="+", required=True)
+    parser.add_argument("--descriptor", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    report = {"schema": 1, "status": "complete", "analyses": [], "limitations": [
+    report = {"schema": 1, "status": "complete", "analyses": [],
+              "script_sha256": digest(Path(__file__)), "limitations": [
         "Unit of resampling is an input, never a repeated replay or individual decision",
         "Eight-input comparisons are exploratory; no population or corrected confirmatory significance claim",
         "Percentile intervals assume exchangeable sampled inputs; prompts here are curated, not random population draws",
@@ -115,6 +149,9 @@ def main():
     for path in args.input:
         report["analyses"].append({"source": str(path), "source_sha256": digest(path),
                                    **summarize(json.loads(path.read_text()))})
+    if args.descriptor is not None:
+        report["descriptors"] = {"source": str(args.descriptor), "source_sha256": digest(args.descriptor),
+            "analyses": descriptor_summary(json.loads(args.descriptor.read_text()))}
     write_json(args.output, report)
 
 
