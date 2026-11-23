@@ -208,7 +208,7 @@ def inventory(model, execute) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", required=True, choices=(
-        "resnet50", "convnext_tiny", "mobilenet_v3_large", "vit_b_16", "swin_t", "unet"))
+        "resnet18", "resnet50", "convnext_tiny", "mobilenet_v3_large", "vit_b_16", "swin_t", "unet"))
     parser.add_argument("--unet-config", type=Path)
     parser.add_argument("--image-size", type=int, default=224)
     parser.add_argument("--output", type=Path, required=True)
