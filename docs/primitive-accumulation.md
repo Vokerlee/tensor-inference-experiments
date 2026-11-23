@@ -87,3 +87,12 @@ The exporter verifies source hashes against the executed Git objects and checks
 the engine gitlink. It rejects dirty arithmetic executions and incomplete runs.
 Raw action counts and zero-output-gated comparisons remain separate, and older
 runs without the latter have empty fields rather than inferred measurements.
+
+`scripts/reproduce_primitive_pilots.py --provenance RECORD --output DIRECTORY`
+replays arithmetic runs in detached worktrees at their recorded revisions,
+initializes the exact engine submodules and uses the current pinned environment.
+`--dry-run` lists commands; `--run NAME` selects a recorded case group. It checks
+source/data/checkpoint identity and reports prediction differences separately.
+Worktrees and replay logs remain in the requested output directory; the active
+development checkout is preserved. Geometry is regenerated with the recorded
+script revision and, for U-Net, the recorded external configuration.
