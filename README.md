@@ -52,6 +52,11 @@ running the custom engine operator against Torch with matched arithmetic.
 
 ## Activation representation pilots
 
+The [source-quantization and primitive-local accumulation report](reports/2026-11-23-primitive-accumulation.md)
+adds paired arithmetic execution, convolution geometry, exact-source replay and
+native planner timing. Action-count reductions and numerical quality are
+reported separately from implementation overhead and unmeasured ASIC energy.
+
 See the [measured results](reports/2026-11-22-activation-representations.md),
 [reproduction pipeline](docs/reproduce-activation-pilots.md) and
 [systolic action assumptions](docs/systolic-actions.md). Numerical quality,
