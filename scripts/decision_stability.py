@@ -58,3 +58,16 @@ def grouped_sources(values):
         raise ValueError("expected group32-aligned NCHW source")
     source = values.double().numpy().transpose(0, 2, 3, 1)
     return source.reshape(*source.shape[:-1], source.shape[-1] // 32, 32)
+
+
+def observed_group_bounds(first, second):
+    """Enclose exact pairwise differences of finite FP64-representable sources."""
+    first, second = np.asarray(first, dtype=np.float64), np.asarray(second, dtype=np.float64)
+    if first.shape != second.shape or not np.isfinite(first).all() or not np.isfinite(second).all():
+        raise ValueError("matching finite grouped sources required")
+    with np.errstate(over="ignore"):
+        difference = np.abs(second - first).max(-1)
+        bound = np.nextafter(difference, np.inf)
+    if not np.isfinite(bound).all():
+        raise ValueError("observed bound outside finite FP64 range")
+    return np.where(difference == 0, 0.0, bound)

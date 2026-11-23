@@ -23,7 +23,7 @@ codes, feedback mode/state, a receiving product or model output. An unknown
 result means the condition could not certify stability, not that a flip occurred.
 
 The real-trajectory probe uses three predeclared local source patches per SANA
-input. Both per-group and patch-global bounds are measured from the actual pair
+input. Both per-group and patch-global bounds are measured with outward rounding from the actual pair
 of original/folded trajectories. All group maxima, observed bounds, exponents
 and guard outcomes are retained. Since both trajectories were already evaluated,
 this measures diagnostic selectivity, not saved reference work. A future
