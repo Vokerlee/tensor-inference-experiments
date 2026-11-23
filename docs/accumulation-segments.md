@@ -88,8 +88,8 @@ separately, and source-statistics preparation is not free.
 ```
 
 The benchmark interleaves CUDA-graph trials for four cached-metadata planners
-(K128/K256, maximum-only/maximum-L1 bounds) and a custom BF16-input/FP32-output
-GEMM time comparator. Synthetic operands have representative matrix shapes;
+(K128/K256, maximum-only/maximum-L1 bounds), a custom BF16-input/FP32-output
+GEMM and Torch's corresponding GEMM. Synthetic operands have representative matrix shapes;
 this is not model execution. Raw timing samples, source revisions, the compiled
 library hash and compiler metadata are recorded. Quantization, source-statistic
 generation, im2col, numerical fallback and consumption of the chosen plan are

@@ -96,7 +96,7 @@ def main() -> None:
             "Cached code metadata; source quantization and statistics are excluded",
             "No matrix multiplication executes the selected partitions",
             "CUDA time is not ASIC energy, throughput or end-to-end speedup",
-            "GEMM comparator: BF16 inputs, FP32 output and accumulation, no reduced reduction",
+            "GEMM comparators: BF16 inputs, FP32 output and accumulation, no reduced reduction",
             "Metadata uses int32 software storage, not a compact hardware packet",
         ],
         "cases": [],
@@ -109,7 +109,10 @@ def main() -> None:
         weights = weight_statistics(weight_codes, weight_exponent)
         maximum = codes.abs().amax(-1).int().contiguous()
         l1 = codes.abs().sum(-1).int().contiguous()
-        functions = {"gemm_bf16_fp32": lambda: torch.ops.tensor_inference_engine.gemm(a, w.T, True)}
+        functions = {
+            "gemm_bf16_fp32": lambda: torch.ops.tensor_inference_engine.gemm(a, w.T, True),
+            "torch_bf16_fp32": lambda: torch.mm(a, w.T, out_dtype=torch.float32),
+        }
         for groups in (4, 8):
             for bound in ("max", "min"):
                 functions[f"plan_k{groups * 32}_{bound}"] = (
@@ -120,10 +123,12 @@ def main() -> None:
         # the represented INT8 operands used to generate the plans.
         actual = functions["gemm_bf16_fp32"]()
         torch.testing.assert_close(actual, a.float() @ w.float().T, rtol=0.0001, atol=0.001)
+        torch.testing.assert_close(functions["torch_bf16_fp32"](), actual, rtol=0.0001, atol=0.001)
         timings = timed_graphs(functions, batch=args.graph_batch, iterations=args.iterations,
                               trials=args.trials, seed=args.seed)
         for value in timings.values():
             value["relative_to_gemm"] = value["median_us"] / timings["gemm_bf16_fp32"]["median_us"]
+            value["relative_to_torch"] = value["median_us"] / timings["torch_bf16_fp32"]["median_us"]
         report["cases"].append({"name": name, "M": rows, "K": reduction, "N": columns,
                                 "groups": reduction // 32, "windows": (columns + 127) // 128,
                                 "timings": timings})
