@@ -84,3 +84,6 @@ CUDA preparation cost and prospective hardware actions are evaluated separately.
 The [modern decoder feedback report](reports/2026-11-23-decoder-feedback.md)
 adds exact final-latent replay, fixed/live feedback comparisons and the complete
 statistical archive for eight SANA-Sprint outputs.
+
+The [limitations and negative-results register](reports/limitations-and-negative-results.md)
+keeps unfavorable variants, supporting evidence and concrete revisit conditions.
