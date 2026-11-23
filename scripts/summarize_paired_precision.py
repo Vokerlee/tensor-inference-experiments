@@ -14,6 +14,12 @@ COUNTERS = (
     "mode_groups", "fp8_mode_groups", "within_pair_mode_transitions",
     "reference_gemm_calls", "candidate_activation_rows",
 )
+SCHEDULE_COUNTERS = (
+    "resident_phases", "windows", "mixed_windows", "natural_mode_changes", "packed_mode_changes",
+    "bf16_rows", "fp8_rows", "reference_weight_capacity_bytes", "selected_weight_capacity_bytes",
+    "selected_weight_capacity_bytes_without_residency", "peak_argument_payload_bytes",
+    "peak_result_payload_bytes", "peak_row_index_bytes",
+)
 
 
 def summarize(report: dict, *, record_sha256: str | None = None) -> tuple[list[dict], list[dict]]:
@@ -29,6 +35,9 @@ def summarize(report: dict, *, record_sha256: str | None = None) -> tuple[list[d
         "experiments_commit": report.get("experiments", {}).get("commit"),
         "minimum_fp8_rows": report.get("settings", {}).get("minimum_fp8_rows", 1),
         "cohort": report.get("settings", {}).get("cohort"),
+        "row_buffer": report.get("settings", {}).get("row_buffer", 0),
+        "resident_rows": report.get("settings", {}).get("resident_rows"),
+        "execution": report.get("settings", {}).get("execution", "oracle"),
     }
     rows, layers = [], []
     for case in report["cases"]:
@@ -56,6 +65,10 @@ def summarize(report: dict, *, record_sha256: str | None = None) -> tuple[list[d
                 values = case[key]
                 row[f"{key}_mean"] = sum(values) / len(values) if all(x is not None for x in values) else None
         rows.append(row)
+        for key in SCHEDULE_COUNTERS:
+            values = [layer.get("schedule", {}).get(key, 0) for layer in case["layers"].values()]
+            row[f"schedule_{key}"] = ((max(values, default=0) if key.startswith("peak_") else sum(values))
+                                      if context["row_buffer"] else None)
         for name, counters in case["layers"].items():
             traces = case["activation_summaries"][name]
             layers.append({
@@ -69,6 +82,8 @@ def summarize(report: dict, *, record_sha256: str | None = None) -> tuple[list[d
                 "observed_zero_elements": sum(trace["zero_elements"] for trace in traces),
                 "maximum_observed_amax": max((trace["amax"] for trace in traces), default=None),
                 "skipped_dtype_calls": case["skipped_dtype_calls"][name],
+                **{f"schedule_{key}": counters.get("schedule", {}).get(key, 0)
+                   if context["row_buffer"] else None for key in SCHEDULE_COUNTERS},
             })
     return rows, layers
 
