@@ -115,7 +115,8 @@ def select_cohorts(values, reconstructed, weight_l1, weight_error_l1, *, toleran
 
 
 def multiply(values, weight, prepared=None, *, policy="adaptive-paired", tolerance=0.04,
-             cohort=32, counters=None, row_buffer=0, resident_rows=1024, execution="oracle"):
+             cohort=32, counters=None, row_buffer=0, resident_rows=1024, execution="oracle",
+             trace_schedule=False):
     if (policy not in POLICIES or values.ndim != 2 or weight.ndim != 2
             or values.shape[1] != weight.shape[1] or min(*values.shape, *weight.shape) < 1
             or values.dtype != torch.bfloat16 or weight.dtype != torch.bfloat16
@@ -193,7 +194,8 @@ def multiply(values, weight, prepared=None, *, policy="adaptive-paired", toleran
         if row_buffer:
             row_precision_schedule.account(selected_rows, width, counters.schedule,
                                            buffer_rows=row_buffer, resident_rows=resident_rows,
-                                           candidate_prepared=quantized is not None)
+                                           candidate_prepared=quantized is not None, trace=trace_schedule,
+                                           context={"k_begin": begin, "matrix_shape": [rows, columns, reduction]})
         if execution == "packed":
             output = row_precision_schedule.execute(
                 original, quantized, original_weight, quantized_weight, output, selected_rows, product,

@@ -1,6 +1,6 @@
 """Bounded online row partitioning; capacities are not measured SRAM traffic."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import torch
 
@@ -20,6 +20,7 @@ class ScheduleCounters:
     peak_argument_payload_bytes: int = 0
     peak_result_payload_bytes: int = 0
     peak_row_index_bytes: int = 0
+    phase_trace: list = field(default_factory=list)
 
 
 def ordered_modes(available, previous):
@@ -30,7 +31,7 @@ def ordered_modes(available, previous):
 
 
 def account(selected_rows, width, counters, *, buffer_rows=32, resident_rows=1024,
-            candidate_prepared=True):
+            candidate_prepared=True, trace=False, context=None):
     """Map [M,Nwindows] decisions to a declared two-format tile-residency option.
 
     M is streamed. A receiver tile is N128; BF16 K128 and FP8 K256. Both weight
@@ -49,6 +50,10 @@ def account(selected_rows, width, counters, *, buffer_rows=32, resident_rows=102
         for column in range(group.shape[1]):
             counters.resident_phases += 1
             current = group[:, column]
+            phase = {**(context or {}), "first_row": first, "rows": len(group),
+                     "output_window": column, "width": width,
+                     "rows_per_window": [], "fp8_rows_per_window": [],
+                     "packed_mode_changes_per_window": []}
             any_low, any_high = bool(current.any()), bool((~current).any())
             weight_bytes = high_bytes * any_high + low_bytes * any_low
             counters.reference_weight_capacity_bytes += high_bytes
@@ -68,10 +73,17 @@ def account(selected_rows, width, counters, *, buffer_rows=32, resident_rows=102
                 counters.peak_row_index_bytes = max(counters.peak_row_index_bytes, len(window) * 4)
                 first_mode = bool(window[0])
                 available = [first_mode, not first_mode] if high and low else [first_mode]
+                before = counters.packed_mode_changes
                 for mode in ordered_modes(available, previous):
                     if previous is not None:
                         counters.packed_mode_changes += mode != previous
                     previous = mode
+                if trace:
+                    phase["rows_per_window"].append(len(window))
+                    phase["fp8_rows_per_window"].append(int(window.sum()))
+                    phase["packed_mode_changes_per_window"].append(counters.packed_mode_changes - before)
+            if trace:
+                counters.phase_trace.append(phase)
 
 
 def execute(original, quantized, weight, quantized_weight, prior, selected_rows, product, *,
