@@ -46,3 +46,9 @@ for image-restoration preprocessing and training. This experiment does not
 claim a new feedback principle or establish novelty of the specific variant.
 No training is performed in this pilot. Smaller local errors must still be
 checked against complete-model quality.
+
+Export complete paired runs with `scripts/summarize_spatial_feedback.py --input
+RUN.json ... --output-prefix reports/PREFIX`. The exporter checks clean executed
+source hashes and the engine gitlink against recorded Git objects. It retains
+paired predictions, local counters, checkpoint identities and image manifests;
+incomplete runs are rejected. Raw execution reports stay in ignored `results/`.
