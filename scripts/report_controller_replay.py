@@ -20,7 +20,7 @@ def read_record(directory, name):
 def write_table(path, rows):
     fields = list(dict.fromkeys(key for row in rows for key in row))
     with path.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
