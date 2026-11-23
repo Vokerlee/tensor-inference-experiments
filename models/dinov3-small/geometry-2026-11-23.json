@@ -1,0 +1,1398 @@
+{
+  "schema": 1,
+  "model": "dinov3-small",
+  "checkpoint": {
+    "repository": "timm/vit_small_patch16_dinov3.lvd1689m",
+    "revision": "3bf4720a82ec2066db88137180ff1f83a675cef0",
+    "config_sha256": "8eb1eeb3a94a3faddfcdd9ae693607a9cd9c8b91c34381578f7f0a48ce454eef",
+    "weights_loaded": false,
+    "timm": "1.0.22",
+    "num_classes": 0,
+    "preprocessing": {
+      "input_size": [
+        3,
+        256,
+        256
+      ],
+      "interpolation": "bicubic",
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "crop_pct": 1.0,
+      "crop_mode": "center"
+    }
+  },
+  "experiments": {
+    "commit": "a388fed29314647e7fc2908eaf4bdafcc4a900fe",
+    "dirty": false
+  },
+  "engine": {
+    "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+    "dirty": false
+  },
+  "torch": "2.11.0+cu128",
+  "source_sha256": {
+    "modern_model_geometry.py": "c4f1c22fc359d9091ad3ee5c2e192101cc380c12a8c3302221cd62ea7c119a1d",
+    "modern_models.py": "96679b4c1d049e5a077b55c5dc973375aa630bae50d27f7615aacbe5a43b7d39",
+    "convolution_geometry.py": "5196c1d30c8324a1608148a892644bff3ae05bfdc422f7b9d99f708078ee486a"
+  },
+  "image_size": 256,
+  "scope": "vision model",
+  "parameter_elements": 21586944,
+  "parameter_bytes_if_bf16": 43173888,
+  "geometry": {
+    "conv_macs": 75497472,
+    "linear_macs": 5541986304,
+    "attention_macs": 627803136,
+    "attention_calls": 12,
+    "other_explicit_matrix_macs": 0,
+    "matrix_and_conv_macs": 6245286912,
+    "conv_fraction_of_matrix_and_conv_macs": 0.012088711545811525,
+    "spatial_conv_macs": 75497472,
+    "depthwise_conv_macs": 0,
+    "short_full_reduction_macs_k_le_25": 0,
+    "layers": [
+      {
+        "name": "patch_embed.proj",
+        "batch": 1,
+        "input_channels": 3,
+        "output_channels": 384,
+        "groups": 1,
+        "input_height": 256,
+        "input_width": 256,
+        "output_height": 16,
+        "output_width": 16,
+        "kernel_height": 16,
+        "kernel_width": 16,
+        "stride_height": 16,
+        "stride_width": 16,
+        "dilation_height": 1,
+        "dilation_width": 1,
+        "pad_top": 0,
+        "pad_left": 0,
+        "K": 768,
+        "M": 256,
+        "N_per_group": 384,
+        "macs": 75497472,
+        "valid_macs": 75497472,
+        "schedules": [
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 6,
+            "vector_issue_groups": 4608,
+            "scheduled_product_slots": 75497472,
+            "dense_product_utilization": 1.0,
+            "valid_product_utilization": 1.0,
+            "lhs_capacity_bytes": 1179648,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 2359296
+          },
+          {
+            "reduction_width": 128,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 6,
+            "vector_issue_groups": 4608,
+            "scheduled_product_slots": 75497472,
+            "dense_product_utilization": 1.0,
+            "valid_product_utilization": 1.0,
+            "lhs_capacity_bytes": 1179648,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 2359296
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "concatenated-channels",
+            "k_segments_per_group": 3,
+            "vector_issue_groups": 2304,
+            "scheduled_product_slots": 75497472,
+            "dense_product_utilization": 1.0,
+            "valid_product_utilization": 1.0,
+            "lhs_capacity_bytes": 589824,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 1179648
+          },
+          {
+            "reduction_width": 256,
+            "output_width": 128,
+            "mapping": "separate-channel-windows",
+            "k_segments_per_group": 3,
+            "vector_issue_groups": 2304,
+            "scheduled_product_slots": 75497472,
+            "dense_product_utilization": 1.0,
+            "valid_product_utilization": 1.0,
+            "lhs_capacity_bytes": 589824,
+            "fp32_output_capacity_bytes_if_emitted_each_segment": 1179648
+          }
+        ]
+      }
+    ]
+  },
+  "matrix_shapes": [
+    {
+      "name": "blocks.0.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.0.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.0.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.0.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.1.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.1.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.1.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.1.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.2.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.2.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.2.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.2.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.3.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.3.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.3.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.3.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.4.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.4.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.4.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.4.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.5.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.5.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.5.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.5.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.6.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.6.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.6.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.6.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.7.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.7.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.7.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.7.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.8.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.8.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.8.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.8.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.9.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.9.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.9.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.9.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.10.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.10.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.10.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.10.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.11.attn.qkv",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1152,
+      "macs": 115458048,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 7047,
+          "lhs_capacity_bytes": 1804032,
+          "fp32_output_capacity_bytes": 3608064,
+          "product_slots": 115458048
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    },
+    {
+      "name": "blocks.11.attn.proj",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 384,
+      "macs": 38486016,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 2349,
+          "lhs_capacity_bytes": 601344,
+          "fp32_output_capacity_bytes": 1202688,
+          "product_slots": 38486016
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 1566,
+          "lhs_capacity_bytes": 400896,
+          "fp32_output_capacity_bytes": 801792,
+          "product_slots": 51314688
+        }
+      }
+    },
+    {
+      "name": "blocks.11.mlp.fc1",
+      "kind": "Linear",
+      "M": 261,
+      "K": 384,
+      "N": 1536,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 6264,
+          "lhs_capacity_bytes": 1603584,
+          "fp32_output_capacity_bytes": 3207168,
+          "product_slots": 205258752
+        }
+      }
+    },
+    {
+      "name": "blocks.11.mlp.fc2",
+      "kind": "Linear",
+      "M": 261,
+      "K": 1536,
+      "N": 384,
+      "macs": 153944064,
+      "interface": {
+        "bf16": {
+          "k_slice": 128,
+          "output_columns": 128,
+          "vector_count": 9396,
+          "lhs_capacity_bytes": 2405376,
+          "fp32_output_capacity_bytes": 4810752,
+          "product_slots": 153944064
+        },
+        "fp8": {
+          "k_slice": 256,
+          "output_columns": 128,
+          "vector_count": 4698,
+          "lhs_capacity_bytes": 1202688,
+          "fp32_output_capacity_bytes": 2405376,
+          "product_slots": 153944064
+        }
+      }
+    }
+  ],
+  "target_matrix_macs": 5541986304,
+  "limitations": [
+    "Meta execution: no pretrained weights or numerical quality evaluation",
+    "MAC inventory excludes elementwise work and is not an energy breakdown",
+    "BF16 parameter bytes exclude buffers, activations, workspace and quantized copies",
+    "BF16 K128 / FP8 K256 both have128outputs and256-byte LHS vectors",
+    "FP8 counts are a hypothetical all-FP8 contract, not validated format selection",
+    "FP32 output capacity is not an SRAM transaction count or per-clock cadence",
+    "Mode switches, weight delivery, buffering and array filling/draining are unpriced"
+  ]
+}
