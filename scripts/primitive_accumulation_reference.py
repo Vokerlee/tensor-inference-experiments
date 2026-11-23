@@ -25,6 +25,9 @@ class Counters:
     squared_output_difference: float = 0.0
     squared_reference_output: float = 0.0
     max_output_difference: float = 0.0
+    source_groups_quantized: int = 0
+    lowered_group_slots: int = 0
+    valid_lowered_group_uses: int = 0
 
 
 def multiply(a_codes: torch.Tensor, a_exponents: torch.Tensor,
