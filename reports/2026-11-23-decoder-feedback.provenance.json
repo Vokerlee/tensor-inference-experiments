@@ -1,0 +1,303 @@
+{
+  "sources": [
+    {
+      "path": "results/decoder-feedback-20261123/report.json",
+      "sha256": "4c68f1179cb923db2dab0cf2f9409f4a813721d2fbf8e96e52d45079af70e8b7",
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false,
+        "experiments": {
+          "commit": "de8ea0588ba044571d784ed1621d5a3b4789d99b",
+          "dirty": false
+        },
+        "engine": {
+          "commit": "642089cbeeb77f6a6719c201330b6eb70e6534ff",
+          "dirty": false
+        },
+        "source_sha256": {
+          "sana_decoder_feedback.py": "915f3be978efaf9674325786646db7fba66e471872bba99bcfbed6317f03c380",
+          "source_feedback_backend.py": "a909042caf1b201caf1b66c285c6f4ae1ba9e9cac45bbe226d6be2808630169a",
+          "spatial_feedback_reference.py": "974ff742e3d084e642e710bf75ecc660d34ce6d74cadbcf2d2be431177198259",
+          "modern_models.py": "96679b4c1d049e5a077b55c5dc973375aa630bae50d27f7615aacbe5a43b7d39",
+          "activation_pilot.py": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c"
+        },
+        "native_sha256": "3c6694df366362894ddb47b7fc4216f60b00a4a59ff7eecff91bad044d1dc5d8"
+      },
+      "checkpoint": {
+        "repository": "Efficient-Large-Model/Sana_Sprint_0.6B_1024px_diffusers",
+        "revision": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+        "files_sha256": {
+          "model_index.json": "e3294833370d55fe1d568ab6f9b24df46c4270403d24daffd594eb01927e3fca",
+          "scheduler/scheduler_config.json": "9a2c56f902710bfde73c81045c7fb99902ab3ead525fa201b58a35817995173b",
+          "text_encoder/config.json": "733f241a6692770dfba10383e2c5a56a4f88b320732d9ee8fa16118737eca84d",
+          "text_encoder/model-00001-of-00002.safetensors": "e909230aabafad02d097c7dc02f2ae062b4e6b0593477c1f07679d277e09ce71",
+          "text_encoder/model-00002-of-00002.safetensors": "48e14f6b7a917e54cabc4ff2047ac2bfe0dae663e771eed3a8acf4ea27dcac18",
+          "text_encoder/model.safetensors.index.json": "92764588f700e36874c52f9f05bba143857e5069fc69b14450f907a1cdf879ed",
+          "tokenizer/special_tokens_map.json": "baec30ea10906f16adb8c18af7a34023002c1746542612b8b41c9f09e1351351",
+          "tokenizer/tokenizer.json": "5f7eee611703c5ce5d1eee32d9cdcfe465647b8aff0c1dfb3bed7ad7dbb05060",
+          "tokenizer/tokenizer.model": "61a7b147390c64585d6c3543dd6fc636906c9af3865a5548f27f31aee1d4c8e2",
+          "tokenizer/tokenizer_config.json": "cb32b7929c62608d46572e813112b3ad8a841fb98fdd6a4da8559e368a951c89",
+          "transformer/config.json": "9a2d4ea76558c35f8749775dc3eb02820c9af682f1cfbe95c6670702735156cc",
+          "transformer/diffusion_pytorch_model.safetensors": "9069dd697395b96a59d1f74837461f7aeb3d95e55b67fa85c9f31c9106b65e87",
+          "vae/config.json": "ba6f3d3e44d75d44fdd3760097c069173b5b925e6d14604d5d3582628d09cca6",
+          "vae/diffusion_pytorch_model.safetensors": "dfd991d1b54ffabf22745c5885589d8f2a7bc59930d95d92bd741c4fc64454bb"
+        }
+      },
+      "input_sha256": "08bf4173d73d505aa99524912a80b819006b73efdd514f186295beee6802e1aa"
+    },
+    {
+      "path": "results/decoder-feedback-w8-20261123/report.json",
+      "sha256": "7f0a437cd6bede17e8872783cd88b632258e97413d9e7820b58043903399dd22",
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false,
+        "experiments": {
+          "commit": "de8ea0588ba044571d784ed1621d5a3b4789d99b",
+          "dirty": false
+        },
+        "engine": {
+          "commit": "642089cbeeb77f6a6719c201330b6eb70e6534ff",
+          "dirty": false
+        },
+        "source_sha256": {
+          "sana_decoder_feedback.py": "915f3be978efaf9674325786646db7fba66e471872bba99bcfbed6317f03c380",
+          "source_feedback_backend.py": "a909042caf1b201caf1b66c285c6f4ae1ba9e9cac45bbe226d6be2808630169a",
+          "spatial_feedback_reference.py": "974ff742e3d084e642e710bf75ecc660d34ce6d74cadbcf2d2be431177198259",
+          "modern_models.py": "96679b4c1d049e5a077b55c5dc973375aa630bae50d27f7615aacbe5a43b7d39",
+          "activation_pilot.py": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c"
+        },
+        "native_sha256": "3c6694df366362894ddb47b7fc4216f60b00a4a59ff7eecff91bad044d1dc5d8"
+      },
+      "checkpoint": {
+        "repository": "Efficient-Large-Model/Sana_Sprint_0.6B_1024px_diffusers",
+        "revision": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+        "files_sha256": {
+          "model_index.json": "e3294833370d55fe1d568ab6f9b24df46c4270403d24daffd594eb01927e3fca",
+          "scheduler/scheduler_config.json": "9a2c56f902710bfde73c81045c7fb99902ab3ead525fa201b58a35817995173b",
+          "text_encoder/config.json": "733f241a6692770dfba10383e2c5a56a4f88b320732d9ee8fa16118737eca84d",
+          "text_encoder/model-00001-of-00002.safetensors": "e909230aabafad02d097c7dc02f2ae062b4e6b0593477c1f07679d277e09ce71",
+          "text_encoder/model-00002-of-00002.safetensors": "48e14f6b7a917e54cabc4ff2047ac2bfe0dae663e771eed3a8acf4ea27dcac18",
+          "text_encoder/model.safetensors.index.json": "92764588f700e36874c52f9f05bba143857e5069fc69b14450f907a1cdf879ed",
+          "tokenizer/special_tokens_map.json": "baec30ea10906f16adb8c18af7a34023002c1746542612b8b41c9f09e1351351",
+          "tokenizer/tokenizer.json": "5f7eee611703c5ce5d1eee32d9cdcfe465647b8aff0c1dfb3bed7ad7dbb05060",
+          "tokenizer/tokenizer.model": "61a7b147390c64585d6c3543dd6fc636906c9af3865a5548f27f31aee1d4c8e2",
+          "tokenizer/tokenizer_config.json": "cb32b7929c62608d46572e813112b3ad8a841fb98fdd6a4da8559e368a951c89",
+          "transformer/config.json": "9a2d4ea76558c35f8749775dc3eb02820c9af682f1cfbe95c6670702735156cc",
+          "transformer/diffusion_pytorch_model.safetensors": "9069dd697395b96a59d1f74837461f7aeb3d95e55b67fa85c9f31c9106b65e87",
+          "vae/config.json": "ba6f3d3e44d75d44fdd3760097c069173b5b925e6d14604d5d3582628d09cca6",
+          "vae/diffusion_pytorch_model.safetensors": "dfd991d1b54ffabf22745c5885589d8f2a7bc59930d95d92bd741c4fc64454bb"
+        }
+      },
+      "input_sha256": "08bf4173d73d505aa99524912a80b819006b73efdd514f186295beee6802e1aa"
+    },
+    {
+      "path": "results/decoder-feedback-holdout-20261123/report.json",
+      "sha256": "c488f5e6b9c6b64ef894200b4a1b85e1f84463471057ec2172c8a42210a2642e",
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false,
+        "experiments": {
+          "commit": "de8ea0588ba044571d784ed1621d5a3b4789d99b",
+          "dirty": false
+        },
+        "engine": {
+          "commit": "642089cbeeb77f6a6719c201330b6eb70e6534ff",
+          "dirty": false
+        },
+        "source_sha256": {
+          "sana_decoder_feedback.py": "915f3be978efaf9674325786646db7fba66e471872bba99bcfbed6317f03c380",
+          "source_feedback_backend.py": "a909042caf1b201caf1b66c285c6f4ae1ba9e9cac45bbe226d6be2808630169a",
+          "spatial_feedback_reference.py": "974ff742e3d084e642e710bf75ecc660d34ce6d74cadbcf2d2be431177198259",
+          "modern_models.py": "96679b4c1d049e5a077b55c5dc973375aa630bae50d27f7615aacbe5a43b7d39",
+          "activation_pilot.py": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c"
+        },
+        "native_sha256": "3c6694df366362894ddb47b7fc4216f60b00a4a59ff7eecff91bad044d1dc5d8"
+      },
+      "checkpoint": {
+        "repository": "Efficient-Large-Model/Sana_Sprint_0.6B_1024px_diffusers",
+        "revision": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+        "files_sha256": {
+          "model_index.json": "e3294833370d55fe1d568ab6f9b24df46c4270403d24daffd594eb01927e3fca",
+          "scheduler/scheduler_config.json": "9a2c56f902710bfde73c81045c7fb99902ab3ead525fa201b58a35817995173b",
+          "text_encoder/config.json": "733f241a6692770dfba10383e2c5a56a4f88b320732d9ee8fa16118737eca84d",
+          "text_encoder/model-00001-of-00002.safetensors": "e909230aabafad02d097c7dc02f2ae062b4e6b0593477c1f07679d277e09ce71",
+          "text_encoder/model-00002-of-00002.safetensors": "48e14f6b7a917e54cabc4ff2047ac2bfe0dae663e771eed3a8acf4ea27dcac18",
+          "text_encoder/model.safetensors.index.json": "92764588f700e36874c52f9f05bba143857e5069fc69b14450f907a1cdf879ed",
+          "tokenizer/special_tokens_map.json": "baec30ea10906f16adb8c18af7a34023002c1746542612b8b41c9f09e1351351",
+          "tokenizer/tokenizer.json": "5f7eee611703c5ce5d1eee32d9cdcfe465647b8aff0c1dfb3bed7ad7dbb05060",
+          "tokenizer/tokenizer.model": "61a7b147390c64585d6c3543dd6fc636906c9af3865a5548f27f31aee1d4c8e2",
+          "tokenizer/tokenizer_config.json": "cb32b7929c62608d46572e813112b3ad8a841fb98fdd6a4da8559e368a951c89",
+          "transformer/config.json": "9a2d4ea76558c35f8749775dc3eb02820c9af682f1cfbe95c6670702735156cc",
+          "transformer/diffusion_pytorch_model.safetensors": "9069dd697395b96a59d1f74837461f7aeb3d95e55b67fa85c9f31c9106b65e87",
+          "vae/config.json": "ba6f3d3e44d75d44fdd3760097c069173b5b925e6d14604d5d3582628d09cca6",
+          "vae/diffusion_pytorch_model.safetensors": "dfd991d1b54ffabf22745c5885589d8f2a7bc59930d95d92bd741c4fc64454bb"
+        }
+      },
+      "input_sha256": "f6c6997829c3afb520c1ee9d7bd9e3e08039208bf5da16c24574e38364bf11a2"
+    },
+    {
+      "path": "results/decoder-feedback-holdout-w8-20261123/report.json",
+      "sha256": "587a6c113ffe3f366f24522383b7c9f6f812b7dec1d4cebde365c802cbd0f286",
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false,
+        "experiments": {
+          "commit": "de8ea0588ba044571d784ed1621d5a3b4789d99b",
+          "dirty": false
+        },
+        "engine": {
+          "commit": "642089cbeeb77f6a6719c201330b6eb70e6534ff",
+          "dirty": false
+        },
+        "source_sha256": {
+          "sana_decoder_feedback.py": "915f3be978efaf9674325786646db7fba66e471872bba99bcfbed6317f03c380",
+          "source_feedback_backend.py": "a909042caf1b201caf1b66c285c6f4ae1ba9e9cac45bbe226d6be2808630169a",
+          "spatial_feedback_reference.py": "974ff742e3d084e642e710bf75ecc660d34ce6d74cadbcf2d2be431177198259",
+          "modern_models.py": "96679b4c1d049e5a077b55c5dc973375aa630bae50d27f7615aacbe5a43b7d39",
+          "activation_pilot.py": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c"
+        },
+        "native_sha256": "3c6694df366362894ddb47b7fc4216f60b00a4a59ff7eecff91bad044d1dc5d8"
+      },
+      "checkpoint": {
+        "repository": "Efficient-Large-Model/Sana_Sprint_0.6B_1024px_diffusers",
+        "revision": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+        "files_sha256": {
+          "model_index.json": "e3294833370d55fe1d568ab6f9b24df46c4270403d24daffd594eb01927e3fca",
+          "scheduler/scheduler_config.json": "9a2c56f902710bfde73c81045c7fb99902ab3ead525fa201b58a35817995173b",
+          "text_encoder/config.json": "733f241a6692770dfba10383e2c5a56a4f88b320732d9ee8fa16118737eca84d",
+          "text_encoder/model-00001-of-00002.safetensors": "e909230aabafad02d097c7dc02f2ae062b4e6b0593477c1f07679d277e09ce71",
+          "text_encoder/model-00002-of-00002.safetensors": "48e14f6b7a917e54cabc4ff2047ac2bfe0dae663e771eed3a8acf4ea27dcac18",
+          "text_encoder/model.safetensors.index.json": "92764588f700e36874c52f9f05bba143857e5069fc69b14450f907a1cdf879ed",
+          "tokenizer/special_tokens_map.json": "baec30ea10906f16adb8c18af7a34023002c1746542612b8b41c9f09e1351351",
+          "tokenizer/tokenizer.json": "5f7eee611703c5ce5d1eee32d9cdcfe465647b8aff0c1dfb3bed7ad7dbb05060",
+          "tokenizer/tokenizer.model": "61a7b147390c64585d6c3543dd6fc636906c9af3865a5548f27f31aee1d4c8e2",
+          "tokenizer/tokenizer_config.json": "cb32b7929c62608d46572e813112b3ad8a841fb98fdd6a4da8559e368a951c89",
+          "transformer/config.json": "9a2d4ea76558c35f8749775dc3eb02820c9af682f1cfbe95c6670702735156cc",
+          "transformer/diffusion_pytorch_model.safetensors": "9069dd697395b96a59d1f74837461f7aeb3d95e55b67fa85c9f31c9106b65e87",
+          "vae/config.json": "ba6f3d3e44d75d44fdd3760097c069173b5b925e6d14604d5d3582628d09cca6",
+          "vae/diffusion_pytorch_model.safetensors": "dfd991d1b54ffabf22745c5885589d8f2a7bc59930d95d92bd741c4fc64454bb"
+        }
+      },
+      "input_sha256": "f6c6997829c3afb520c1ee9d7bd9e3e08039208bf5da16c24574e38364bf11a2"
+    },
+    {
+      "path": "results/decoder-live-w8-20261123/report.json",
+      "sha256": "91155f207af6353ca86625788d7507683327529adcabad76a2d5fc087fdb90bc",
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false,
+        "experiments": {
+          "commit": "0312f49639fe4699d013bf54e5ce15d8edc3484f",
+          "dirty": false
+        },
+        "engine": {
+          "commit": "642089cbeeb77f6a6719c201330b6eb70e6534ff",
+          "dirty": false
+        },
+        "source_sha256": {
+          "sana_decoder_feedback.py": "c4fff810d92ad56eafdfdf9b887c33fb964af79188a94d7b5d10fd5464e25435",
+          "source_feedback_backend.py": "a909042caf1b201caf1b66c285c6f4ae1ba9e9cac45bbe226d6be2808630169a",
+          "spatial_feedback_reference.py": "974ff742e3d084e642e710bf75ecc660d34ce6d74cadbcf2d2be431177198259",
+          "modern_models.py": "96679b4c1d049e5a077b55c5dc973375aa630bae50d27f7615aacbe5a43b7d39",
+          "activation_pilot.py": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+          "live_source_feedback.py": "30c02c236bde0bef00eabfc5f138cfe2daeeb79ba22c0f341efbb742738cfafe"
+        },
+        "native_sha256": "3c6694df366362894ddb47b7fc4216f60b00a4a59ff7eecff91bad044d1dc5d8"
+      },
+      "checkpoint": {
+        "repository": "Efficient-Large-Model/Sana_Sprint_0.6B_1024px_diffusers",
+        "revision": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+        "files_sha256": {
+          "model_index.json": "e3294833370d55fe1d568ab6f9b24df46c4270403d24daffd594eb01927e3fca",
+          "scheduler/scheduler_config.json": "9a2c56f902710bfde73c81045c7fb99902ab3ead525fa201b58a35817995173b",
+          "text_encoder/config.json": "733f241a6692770dfba10383e2c5a56a4f88b320732d9ee8fa16118737eca84d",
+          "text_encoder/model-00001-of-00002.safetensors": "e909230aabafad02d097c7dc02f2ae062b4e6b0593477c1f07679d277e09ce71",
+          "text_encoder/model-00002-of-00002.safetensors": "48e14f6b7a917e54cabc4ff2047ac2bfe0dae663e771eed3a8acf4ea27dcac18",
+          "text_encoder/model.safetensors.index.json": "92764588f700e36874c52f9f05bba143857e5069fc69b14450f907a1cdf879ed",
+          "tokenizer/special_tokens_map.json": "baec30ea10906f16adb8c18af7a34023002c1746542612b8b41c9f09e1351351",
+          "tokenizer/tokenizer.json": "5f7eee611703c5ce5d1eee32d9cdcfe465647b8aff0c1dfb3bed7ad7dbb05060",
+          "tokenizer/tokenizer.model": "61a7b147390c64585d6c3543dd6fc636906c9af3865a5548f27f31aee1d4c8e2",
+          "tokenizer/tokenizer_config.json": "cb32b7929c62608d46572e813112b3ad8a841fb98fdd6a4da8559e368a951c89",
+          "transformer/config.json": "9a2d4ea76558c35f8749775dc3eb02820c9af682f1cfbe95c6670702735156cc",
+          "transformer/diffusion_pytorch_model.safetensors": "9069dd697395b96a59d1f74837461f7aeb3d95e55b67fa85c9f31c9106b65e87",
+          "vae/config.json": "ba6f3d3e44d75d44fdd3760097c069173b5b925e6d14604d5d3582628d09cca6",
+          "vae/diffusion_pytorch_model.safetensors": "dfd991d1b54ffabf22745c5885589d8f2a7bc59930d95d92bd741c4fc64454bb"
+        }
+      },
+      "input_sha256": "08bf4173d73d505aa99524912a80b819006b73efdd514f186295beee6802e1aa"
+    },
+    {
+      "path": "results/decoder-live-holdout-w8-20261123/report.json",
+      "sha256": "61797a329ee3b55ac5e929d57e0b2f316bac38f0264a4db6d725952b5e8127f5",
+      "environment": {
+        "python": "3.12.3",
+        "torch": "2.11.0+cu128",
+        "cuda": "12.8",
+        "gpu": "NVIDIA GeForce RTX 4070",
+        "tf32": false,
+        "bf16_reduced_precision_reduction": false,
+        "experiments": {
+          "commit": "0312f49639fe4699d013bf54e5ce15d8edc3484f",
+          "dirty": false
+        },
+        "engine": {
+          "commit": "642089cbeeb77f6a6719c201330b6eb70e6534ff",
+          "dirty": false
+        },
+        "source_sha256": {
+          "sana_decoder_feedback.py": "c4fff810d92ad56eafdfdf9b887c33fb964af79188a94d7b5d10fd5464e25435",
+          "source_feedback_backend.py": "a909042caf1b201caf1b66c285c6f4ae1ba9e9cac45bbe226d6be2808630169a",
+          "spatial_feedback_reference.py": "974ff742e3d084e642e710bf75ecc660d34ce6d74cadbcf2d2be431177198259",
+          "modern_models.py": "96679b4c1d049e5a077b55c5dc973375aa630bae50d27f7615aacbe5a43b7d39",
+          "activation_pilot.py": "164d65b1331947bae98ab2c173d9e0458f313d0d04d71ffad629e412e8d4b38c",
+          "live_source_feedback.py": "30c02c236bde0bef00eabfc5f138cfe2daeeb79ba22c0f341efbb742738cfafe"
+        },
+        "native_sha256": "3c6694df366362894ddb47b7fc4216f60b00a4a59ff7eecff91bad044d1dc5d8"
+      },
+      "checkpoint": {
+        "repository": "Efficient-Large-Model/Sana_Sprint_0.6B_1024px_diffusers",
+        "revision": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+        "files_sha256": {
+          "model_index.json": "e3294833370d55fe1d568ab6f9b24df46c4270403d24daffd594eb01927e3fca",
+          "scheduler/scheduler_config.json": "9a2c56f902710bfde73c81045c7fb99902ab3ead525fa201b58a35817995173b",
+          "text_encoder/config.json": "733f241a6692770dfba10383e2c5a56a4f88b320732d9ee8fa16118737eca84d",
+          "text_encoder/model-00001-of-00002.safetensors": "e909230aabafad02d097c7dc02f2ae062b4e6b0593477c1f07679d277e09ce71",
+          "text_encoder/model-00002-of-00002.safetensors": "48e14f6b7a917e54cabc4ff2047ac2bfe0dae663e771eed3a8acf4ea27dcac18",
+          "text_encoder/model.safetensors.index.json": "92764588f700e36874c52f9f05bba143857e5069fc69b14450f907a1cdf879ed",
+          "tokenizer/special_tokens_map.json": "baec30ea10906f16adb8c18af7a34023002c1746542612b8b41c9f09e1351351",
+          "tokenizer/tokenizer.json": "5f7eee611703c5ce5d1eee32d9cdcfe465647b8aff0c1dfb3bed7ad7dbb05060",
+          "tokenizer/tokenizer.model": "61a7b147390c64585d6c3543dd6fc636906c9af3865a5548f27f31aee1d4c8e2",
+          "tokenizer/tokenizer_config.json": "cb32b7929c62608d46572e813112b3ad8a841fb98fdd6a4da8559e368a951c89",
+          "transformer/config.json": "9a2d4ea76558c35f8749775dc3eb02820c9af682f1cfbe95c6670702735156cc",
+          "transformer/diffusion_pytorch_model.safetensors": "9069dd697395b96a59d1f74837461f7aeb3d95e55b67fa85c9f31c9106b65e87",
+          "vae/config.json": "ba6f3d3e44d75d44fdd3760097c069173b5b925e6d14604d5d3582628d09cca6",
+          "vae/diffusion_pytorch_model.safetensors": "dfd991d1b54ffabf22745c5885589d8f2a7bc59930d95d92bd741c4fc64454bb"
+        }
+      },
+      "input_sha256": "f6c6997829c3afb520c1ee9d7bd9e3e08039208bf5da16c24574e38364bf11a2"
+    }
+  ],
+  "case_records": 40,
+  "image_records": 160,
+  "call_records": 2880
+}

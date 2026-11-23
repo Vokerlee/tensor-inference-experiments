@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "decoder-feedback-20261123/report.json",
+      "archive": "decoder-feedback-20261123/report.json.gz",
+      "source_sha256": "4c68f1179cb923db2dab0cf2f9409f4a813721d2fbf8e96e52d45079af70e8b7",
+      "payload_sha256": "4c68f1179cb923db2dab0cf2f9409f4a813721d2fbf8e96e52d45079af70e8b7",
+      "archive_sha256": "fdfe7df9c489f0b5dceb134b507871a8aba6068dd92ff194766c0f696ab46a5a",
+      "source_bytes": 1807370,
+      "payload_bytes": 1807370,
+      "archive_bytes": 238483,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    },
+    {
+      "source": "decoder-feedback-holdout-20261123/report.json",
+      "archive": "decoder-feedback-holdout-20261123/report.json.gz",
+      "source_sha256": "c488f5e6b9c6b64ef894200b4a1b85e1f84463471057ec2172c8a42210a2642e",
+      "payload_sha256": "c488f5e6b9c6b64ef894200b4a1b85e1f84463471057ec2172c8a42210a2642e",
+      "archive_sha256": "8f4b3640f5c5485dbac1bbd30ab4225884ed5204366c65a8ff8d0fc92a901af4",
+      "source_bytes": 1790157,
+      "payload_bytes": 1790157,
+      "archive_bytes": 236043,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    },
+    {
+      "source": "decoder-feedback-holdout-w8-20261123/report.json",
+      "archive": "decoder-feedback-holdout-w8-20261123/report.json.gz",
+      "source_sha256": "587a6c113ffe3f366f24522383b7c9f6f812b7dec1d4cebde365c802cbd0f286",
+      "payload_sha256": "587a6c113ffe3f366f24522383b7c9f6f812b7dec1d4cebde365c802cbd0f286",
+      "archive_sha256": "9574863fb3e7f4806bd978358af5b7c2eb6f02e6b0230ce3abe4e153339d1e70",
+      "source_bytes": 1793951,
+      "payload_bytes": 1793951,
+      "archive_bytes": 236977,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    },
+    {
+      "source": "decoder-feedback-w8-20261123/report.json",
+      "archive": "decoder-feedback-w8-20261123/report.json.gz",
+      "source_sha256": "7f0a437cd6bede17e8872783cd88b632258e97413d9e7820b58043903399dd22",
+      "payload_sha256": "7f0a437cd6bede17e8872783cd88b632258e97413d9e7820b58043903399dd22",
+      "archive_sha256": "c4f905ecdfa1285157ba662dd115c275cba319b254e3b4fbb980a8b5860578c2",
+      "source_bytes": 1811632,
+      "payload_bytes": 1811632,
+      "archive_bytes": 239377,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    },
+    {
+      "source": "decoder-inputs-20261123/inputs.json",
+      "archive": "decoder-inputs-20261123/inputs.json.gz",
+      "source_sha256": "4c80f84b4725f0c557268a284375c666ca4c4c3ea2ad3e100c4e0cebeb896447",
+      "payload_sha256": "4c80f84b4725f0c557268a284375c666ca4c4c3ea2ad3e100c4e0cebeb896447",
+      "archive_sha256": "86c1e1d87fe30a44ea8d61dd198516b2c63b214d5d733c1ccd6a46785f0d5d48",
+      "source_bytes": 3531,
+      "payload_bytes": 3531,
+      "archive_bytes": 1824,
+      "normalized_fields": []
+    },
+    {
+      "source": "decoder-inputs-holdout-20261123/inputs.json",
+      "archive": "decoder-inputs-holdout-20261123/inputs.json.gz",
+      "source_sha256": "d7799886d2f25a2c21c912eca55ab7b03a49f97597337bb36f8f5bea3aac5648",
+      "payload_sha256": "d7799886d2f25a2c21c912eca55ab7b03a49f97597337bb36f8f5bea3aac5648",
+      "archive_sha256": "a0952623070bad72d926996f89fb4eace1295499b49d7d9c027c8ce0cfae4f5a",
+      "source_bytes": 3576,
+      "payload_bytes": 3576,
+      "archive_bytes": 1846,
+      "normalized_fields": []
+    },
+    {
+      "source": "decoder-live-holdout-w8-20261123/report.json",
+      "archive": "decoder-live-holdout-w8-20261123/report.json.gz",
+      "source_sha256": "61797a329ee3b55ac5e929d57e0b2f316bac38f0264a4db6d725952b5e8127f5",
+      "payload_sha256": "61797a329ee3b55ac5e929d57e0b2f316bac38f0264a4db6d725952b5e8127f5",
+      "archive_sha256": "acea1bf9d275a62210d892a7f519c04d6d87197c50584e5c9b49593196ebb60c",
+      "source_bytes": 1298067,
+      "payload_bytes": 1298067,
+      "archive_bytes": 210071,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    },
+    {
+      "source": "decoder-live-w8-20261123/report.json",
+      "archive": "decoder-live-w8-20261123/report.json.gz",
+      "source_sha256": "91155f207af6353ca86625788d7507683327529adcabad76a2d5fc087fdb90bc",
+      "payload_sha256": "91155f207af6353ca86625788d7507683327529adcabad76a2d5fc087fdb90bc",
+      "archive_sha256": "a48e44da45c6fc50bd57ff31edcd3f2daee43c173ef826322b20927394c302f5",
+      "source_bytes": 1308179,
+      "payload_bytes": 1308179,
+      "archive_bytes": 211145,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder"
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}

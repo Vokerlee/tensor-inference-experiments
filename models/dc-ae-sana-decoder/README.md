@@ -19,3 +19,8 @@ retains every recorded convolution/projection shape and interface comparison.
 [Request conditions and component balance](../sana-sprint-06b/README.md) explain
 prompt encoding and denoising steps. Preserved preliminary and clean profiles
 are in the [full statistical archive](../../reports/statistics/2026-11-23-adaptive/README.md).
+
+[Exact-input decoder feedback results](../../reports/2026-11-23-decoder-feedback.md)
+cover eight1024px outputs, BF16/INT8 weights, INT4/INT8 activations and a causal
+row-statistic controller ablation. Full JSON statistics are archived; pixel
+fidelity and MAC coverage do not establish generation quality or energy.
