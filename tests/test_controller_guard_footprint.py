@@ -36,3 +36,13 @@ def test_masks_empty_full_and_tail_cohorts_preserve_denominators():
 def test_unsupported_geometry_rejected(shape, kernel, cohort):
     with pytest.raises(ValueError):
         footprint(np.zeros(shape, dtype=bool), kernel=kernel, cohort=cohort)
+
+
+def test_chosen_reduction_order_changes_footprint_without_changing_dense_work():
+    flags = np.zeros((5, 5, 4), dtype=bool)
+    flags[2, 2, 1] = True
+    position_first = footprint(flags, layout="kernel-channel")
+    channel_first = footprint(flags, layout="channel-kernel")
+    assert position_first["row_vectors"] == channel_first["row_vectors"] == 81
+    assert position_first["flagged_row_vectors"] == 9
+    assert channel_first["flagged_row_vectors"] == 27

@@ -6,6 +6,7 @@ M is a software cohort length; the physical reduction/output dimensions are128.
 """
 
 import argparse
+import csv
 import gzip
 import json
 import math
@@ -17,35 +18,44 @@ from activation_pilot import ROOT, digest, revision, write_json
 
 
 COHORTS = (1, 8, 32, 128)
+LAYOUTS = ("kernel-channel", "channel-kernel")
 
 
-def footprint(flags, *, kernel=3, cohort=1):
-    """Each valid-convolution kernel position consumes one K128 BF16 vector.
+def footprint(flags, *, kernel=3, cohort=1, layout="kernel-channel"):
+    """Map one declared dense lowering, with channel group32 uncertainty.
 
-    flags has H,W,4 group32 decisions. It collapses four source groups into one
-    vector and maps the exact im2col source coordinates without materialization.
-    Consecutive output positions form an explicitly chosen streamed M cohort.
+    kernel-channel puts128 channels of one spatial kernel position in a K128
+    slice. channel-kernel orders all spatial kernel positions within a channel.
+    Both are chosen mappings, not assumptions about the target im2col unit.
     """
     flags = np.asarray(flags, dtype=bool)
-    if flags.ndim != 3 or flags.shape[-1] != 4 or kernel < 1 or cohort < 1:
-        raise ValueError("expected H,W,4 source mask and positive kernel/cohort")
+    if (flags.ndim != 3 or flags.shape[-1] != 4 or kernel < 1 or cohort < 1
+            or layout not in LAYOUTS):
+        raise ValueError("expected H,W,4 source mask and supported kernel/cohort/layout")
     height, width = flags.shape[:2]
     output_height, output_width = height - kernel + 1, width - kernel + 1
     if min(output_height, output_width) < 1:
         raise ValueError("source patch smaller than convolution kernel")
-    selected = flags.any(-1)
+    rows, columns = np.indices((output_height, output_width)).reshape(2, -1)
     planes = []
-    for row in range(kernel):
-        for column in range(kernel):
-            vectors = selected[row:row + output_height, column:column + output_width].ravel()
-            counts = [int(vectors[start:start + cohort].sum())
-                      for start in range(0, len(vectors), cohort)]
-            planes.append({"kernel_row": row, "kernel_column": column,
-                           "row_vectors": len(vectors), "flagged_row_vectors": int(vectors.sum()),
-                           "cohorts": math.ceil(len(vectors) / cohort),
-                           "flagged_cohorts": sum(value > 0 for value in counts),
-                           "flagged_rows_per_cohort": counts})
-    return {"kernel": kernel, "cohort_rows": cohort,
+    for begin in range(0, 128 * kernel * kernel, 128):
+        indices = np.arange(begin, begin + 128)
+        if layout == "kernel-channel":
+            channels, positions = indices % 128, indices // 128
+        else:
+            channels, positions = indices // (kernel * kernel), indices % (kernel * kernel)
+        coordinates = np.unique(np.stack((positions // kernel, positions % kernel, channels // 32), 1), axis=0)
+        vectors = flags[rows[:, None] + coordinates[:, 0],
+                        columns[:, None] + coordinates[:, 1], coordinates[:, 2]].any(1)
+        counts = [int(vectors[start:start + cohort].sum())
+                  for start in range(0, len(vectors), cohort)]
+        planes.append({"k_begin": begin, "k_end": begin + 128,
+                       "source_group_coordinates": coordinates.tolist(),
+                       "row_vectors": len(vectors), "flagged_row_vectors": int(vectors.sum()),
+                       "cohorts": math.ceil(len(vectors) / cohort),
+                       "flagged_cohorts": sum(value > 0 for value in counts),
+                       "flagged_rows_per_cohort": counts})
+    return {"kernel": kernel, "cohort_rows": cohort, "lowering": layout,
             "source_groups": flags.size, "flagged_source_groups": int(flags.sum()),
             "row_vectors": sum(row["row_vectors"] for row in planes),
             "flagged_row_vectors": sum(row["flagged_row_vectors"] for row in planes),
@@ -69,22 +79,24 @@ def analyze(source):
         identity = {key: row[key] for key in ("bundle", "input_index", "patch_index", "layer", "bits")}
         for criterion, values in masks.items():
             flags = values.reshape(shape)[0]
-            for cohort in COHORTS:
-                records.append({**identity, "criterion": criterion,
-                                **footprint(flags, cohort=cohort)})
+            for layout in LAYOUTS:
+                for cohort in COHORTS:
+                    records.append({**identity, "criterion": criterion,
+                                    **footprint(flags, cohort=cohort, layout=layout)})
     aggregates = []
     for bits in (4, 8):
         for criterion in ("changed-scale", "local-bound-unknown", "global-bound-unknown"):
-            for cohort in COHORTS:
-                rows = [row for row in records if (row["bits"], row["criterion"], row["cohort_rows"])
-                        == (bits, criterion, cohort)]
-                totals = {key: sum(row[key] for row in rows) for key in (
-                    "source_groups", "flagged_source_groups", "row_vectors", "flagged_row_vectors",
-                    "cohorts", "flagged_cohorts")}
-                aggregates.append({"bits": bits, "criterion": criterion, "cohort_rows": cohort,
-                    **totals, "flagged_group_fraction": totals["flagged_source_groups"] / totals["source_groups"],
-                    "flagged_vector_fraction": totals["flagged_row_vectors"] / totals["row_vectors"],
-                    "flagged_cohort_fraction": totals["flagged_cohorts"] / totals["cohorts"]})
+            for layout in LAYOUTS:
+                for cohort in COHORTS:
+                    rows = [row for row in records if (row["bits"], row["criterion"], row["lowering"], row["cohort_rows"])
+                            == (bits, criterion, layout, cohort)]
+                    totals = {key: sum(row[key] for row in rows) for key in (
+                        "source_groups", "flagged_source_groups", "row_vectors", "flagged_row_vectors",
+                        "cohorts", "flagged_cohorts")}
+                    aggregates.append({"bits": bits, "criterion": criterion, "lowering": layout, "cohort_rows": cohort,
+                        **totals, "flagged_group_fraction": totals["flagged_source_groups"] / totals["source_groups"],
+                        "flagged_vector_fraction": totals["flagged_row_vectors"] / totals["row_vectors"],
+                        "flagged_cohort_fraction": totals["flagged_cohorts"] / totals["cohorts"]})
     return records, aggregates
 
 
@@ -92,6 +104,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--table", type=Path)
     args = parser.parse_args()
     raw = args.input.read_bytes()
     source = json.loads(gzip.decompress(raw) if args.input.suffix == ".gz" else raw)
@@ -102,9 +115,11 @@ def main():
         "source_experiments": source["experiments"], "records": records, "aggregates": aggregates,
         "contract": {"input_format": "reconstructed-bf16", "K": 128, "N": 128,
                      "output_scalars": 128, "output_format": "fp32", "kernel": [3, 3],
-                     "padding": "valid patch interior", "cohort_rows": list(COHORTS)},
+                     "padding": "valid patch interior", "cohort_rows": list(COHORTS), "lowerings": list(LAYOUTS)},
         "limitations": [
             "M is a software batching choice, not a fixed physical128-row dimension",
+            "Two chosen dense reduction orders; actual target im2col layout/padding/stationarity remain unspecified",
+            "Changing reduction order can change numerical outputs; these are alternative footprints of fixed recorded masks",
             "INT4/INT8 source codes are reconstructed BF16; no native FP8 K256 capability inferred",
             "Changed-scale criterion is known only after paired execution; it is not a deployable detector",
             "Unknown-scale footprint is not a guarantee that outputs change or need recomputation",
@@ -112,6 +127,11 @@ def main():
             "No compacting/reordering kernel, setup/launch cost, memory traffic, latency or energy is measured",
             "Repeated cohort lengths and correlated patches are alternative accounting, never additive workloads",
         ]})
+    if args.table is not None:
+        with args.table.open("w", newline="") as stream:
+            writer = csv.DictWriter(stream, fieldnames=list(aggregates[0]), lineterminator="\n")
+            writer.writeheader()
+            writer.writerows(aggregates)
     print(len(records), "patch/criterion/cohort records", len(aggregates), "aggregate alternatives")
 
 
