@@ -61,6 +61,12 @@ running the custom engine operator against Torch with matched arithmetic.
 
 ## Activation representation pilots
 
+The [modern paired-precision report](reports/2026-11-23-paired-precision.md)
+compares live BF16/FP8 selection in DINOv3, ConvNeXt-V2 and SANA-Sprint,
+including a single-row conditioning ablation. The
+[complete statistical archive](reports/statistics/2026-11-23/README.md) preserves
+117 full JSON records, indexed by model, with integrity checks.
+
 The [spatial feedback report](reports/2026-11-23-spatial-feedback.md) separates
 same-input convolution error from complete-model quality for source-group
 quantization with fixed and kernel-derived residual feedback.
