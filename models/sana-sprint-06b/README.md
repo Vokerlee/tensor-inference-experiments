@@ -32,3 +32,27 @@ statistics, exact input/checkpoint conditions and limitations accompany the repo
 [Preserved scientific statistics](../../reports/statistics/2026-11-23/models.md#sana-sprint-06b)
 include the complete dated records available at this snapshot, including earlier
 exploratory runs. Consult their original conditions and source status.
+
+## Complete cold-prompt request
+
+The [complete component profile](pipeline-geometry-2026-11-23.json) counts one
+300-token prompt encoding, two denoiser calls and one1024×1024 image decode.
+Every component agrees with an independent Torch dispatch FLOP count.
+
+| Component | Request MACs | Share of matrix/convolution MACs |
+|---|---:|---:|
+| Gemma2 prompt encoder | 616,867,468,800 | 10.4154% |
+| SANA denoiser, two calls | 1,121,491,353,600 | 18.9356% |
+| DC-AE image decoder | 4,184,305,827,840 | 70.6490% |
+
+Spatial convolutions contribute62.2204% of this complete-request denominator.
+The earlier0.2651% spatial share concerns the denoiser only. These are not
+energy shares. Encoder lookup/vector work, tokenization, scheduling, memory
+and masked-kernel work elision need separate accounting; cached prompts or
+other step counts change the request balance. The text shape path uses FP32
+CPU-fake eager attention; decoder/denoiser use BF16 meta tensors. Numerical
+weights/quality are not evaluated by this profile.
+
+[Extended numerical and schedule evidence](../../reports/statistics/2026-11-23-adaptive/README.md)
+retains all moment/cohort/phase-trace comparisons, including unfavorable results.
+See the separate [DC-AE decoder card](../dc-ae-sana-decoder/README.md).

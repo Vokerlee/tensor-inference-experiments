@@ -1,0 +1,365 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "dinov3-profile-refactor-check.json",
+      "archive": "dinov3-profile-refactor-check.json.gz",
+      "source_sha256": "e4d20b95ec4fd6af77b75a70c96c730091535c5df3234c41f259f18d521603f8",
+      "payload_sha256": "e4d20b95ec4fd6af77b75a70c96c730091535c5df3234c41f259f18d521603f8",
+      "archive_sha256": "548693050b353b38293339b9983da73e66e2cdf96f92ed6d9979ecdb5e2a5737",
+      "source_bytes": 36891,
+      "payload_bytes": 36891,
+      "archive_bytes": 2340,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "5a5882106f09c17c7fa250aed05acb27cf58ac73",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "format-residency-replay-20261123.json",
+      "archive": "format-residency-replay-20261123.json.gz",
+      "source_sha256": "7049c78e752d509523b9dfd002a9604f3b6a17c8334c1c0224cd667f0e60fd23",
+      "payload_sha256": "7049c78e752d509523b9dfd002a9604f3b6a17c8334c1c0224cd667f0e60fd23",
+      "archive_sha256": "2b06c0ad4e2ab924f5ca09e199280dc2f9b86367e544b3821b952ddd0facc238",
+      "source_bytes": 228131,
+      "payload_bytes": 228131,
+      "archive_bytes": 10945,
+      "normalized_fields": []
+    },
+    {
+      "source": "moment-precision-20261123/convnextv2-tiny/report.json",
+      "archive": "moment-precision-20261123/convnextv2-tiny/report.json.gz",
+      "source_sha256": "4f5ccaa6e9ff60de273b649b560db974ba1469e7f09f512f5ac691612de30008",
+      "payload_sha256": "4f5ccaa6e9ff60de273b649b560db974ba1469e7f09f512f5ac691612de30008",
+      "archive_sha256": "16833cb4a2cc861a25c8a2049cccf3cb801edc02710727e35d934431cf461753",
+      "source_bytes": 4537855,
+      "payload_bytes": 4537855,
+      "archive_bytes": 699083,
+      "normalized_fields": [],
+      "model": "convnextv2-tiny",
+      "experiments": {
+        "commit": "30609c30175e6d3f02f3b63495cb0c88bb546a2d",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "moment-precision-20261123/dinov3-small/report.json",
+      "archive": "moment-precision-20261123/dinov3-small/report.json.gz",
+      "source_sha256": "92b075f7b0b901fad8b419cdf0c34171f8d73e7fe1407246add0692f72f5af7c",
+      "payload_sha256": "92b075f7b0b901fad8b419cdf0c34171f8d73e7fe1407246add0692f72f5af7c",
+      "archive_sha256": "ea9da5767b7871c5a53436bbe451cf6f518d94ffe2acd0a049da5c40e182e6c9",
+      "source_bytes": 4749938,
+      "payload_bytes": 4749938,
+      "archive_bytes": 601163,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "30609c30175e6d3f02f3b63495cb0c88bb546a2d",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "moment-precision-20261123/sana-sprint/report.json",
+      "archive": "moment-precision-20261123/sana-sprint/report.json.gz",
+      "source_sha256": "eefc4c45c098d6a461bdeb542334e3e8628e98eb8fcfabf653aeaba251292555",
+      "payload_sha256": "eefc4c45c098d6a461bdeb542334e3e8628e98eb8fcfabf653aeaba251292555",
+      "archive_sha256": "f00d34ad4f6ad0dd5e79e5a91368badffaf5e662912d5ad6481bf62ec0e85bb3",
+      "source_bytes": 58829235,
+      "payload_bytes": 58829235,
+      "archive_bytes": 11408819,
+      "normalized_fields": [],
+      "model": "sana-sprint",
+      "experiments": {
+        "commit": "30609c30175e6d3f02f3b63495cb0c88bb546a2d",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "precision-phase-traces-20261123/convnextv2-tiny-1000-holdout/report.json",
+      "archive": "precision-phase-traces-20261123/convnextv2-tiny-1000-holdout/report.json.gz",
+      "source_sha256": "35a3135c7241cead16a86e2dd7abf81ad2cf87dff527d9d4f276ec720efc7908",
+      "payload_sha256": "35a3135c7241cead16a86e2dd7abf81ad2cf87dff527d9d4f276ec720efc7908",
+      "archive_sha256": "8298eb6df6dfaf4617ad1023fcef491fb1de7eeaa7daa682329214239e03989b",
+      "source_bytes": 1135294197,
+      "payload_bytes": 1135294197,
+      "archive_bytes": 9703721,
+      "normalized_fields": [],
+      "model": "convnextv2-tiny",
+      "experiments": {
+        "commit": "711d64d0148841f903504467c51f50bdf9f66740",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "precision-phase-traces-20261123/dinov3-small/report.json",
+      "archive": "precision-phase-traces-20261123/dinov3-small/report.json.gz",
+      "source_sha256": "b1c5b68dca6b0d1fa8c66610d9527d7597366d6eeac68d1355fec5ea23ba444c",
+      "payload_sha256": "b1c5b68dca6b0d1fa8c66610d9527d7597366d6eeac68d1355fec5ea23ba444c",
+      "archive_sha256": "e31779675b92acff24a527198a3a71a10f5b1ff22257e720dec64975f35c558e",
+      "source_bytes": 163157530,
+      "payload_bytes": 163157530,
+      "archive_bytes": 1517214,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "711d64d0148841f903504467c51f50bdf9f66740",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "precision-phase-traces-20261123/sana-sprint/report.json",
+      "archive": "precision-phase-traces-20261123/sana-sprint/report.json.gz",
+      "source_sha256": "6a018c172f4699d46620ec72df12da7292c390b4428e3828ad8d98166b38bc76",
+      "payload_sha256": "6a018c172f4699d46620ec72df12da7292c390b4428e3828ad8d98166b38bc76",
+      "archive_sha256": "aa2c95bede13bf38719920d2fb143ae705f6c6992f6a6f0dea4c8670daa65ef9",
+      "source_bytes": 1131819075,
+      "payload_bytes": 1131819075,
+      "archive_bytes": 10385811,
+      "normalized_fields": [],
+      "model": "sana-sprint",
+      "experiments": {
+        "commit": "711d64d0148841f903504467c51f50bdf9f66740",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "row-precision-20261123/convnextv2-tiny-cohort1/report.json",
+      "archive": "row-precision-20261123/convnextv2-tiny-cohort1/report.json.gz",
+      "source_sha256": "f3f3af1a9902b843fa9acde31257e3e057d8de74489f6e848152d35247bc289a",
+      "payload_sha256": "f3f3af1a9902b843fa9acde31257e3e057d8de74489f6e848152d35247bc289a",
+      "archive_sha256": "6aa02a0ce264c0e986940c361b6f1b36b3aac22aed59c6ef370c25df98256ba0",
+      "source_bytes": 1659809,
+      "payload_bytes": 1659809,
+      "archive_bytes": 181587,
+      "normalized_fields": [],
+      "model": "convnextv2-tiny",
+      "experiments": {
+        "commit": "0b373ebba66f5588dfde03cdd2fd04b354f382af",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "row-precision-20261123/convnextv2-tiny-cohort32/report.json",
+      "archive": "row-precision-20261123/convnextv2-tiny-cohort32/report.json.gz",
+      "source_sha256": "8ae165ef710897e65ab70833962099121e10043105842ba65fe9cad8c77e6635",
+      "payload_sha256": "8ae165ef710897e65ab70833962099121e10043105842ba65fe9cad8c77e6635",
+      "archive_sha256": "12580820f903c9eec5d9f9b065ea1a848e37be75aafc66ce3bbf207604ad1cfb",
+      "source_bytes": 1658511,
+      "payload_bytes": 1658511,
+      "archive_bytes": 181338,
+      "normalized_fields": [],
+      "model": "convnextv2-tiny",
+      "experiments": {
+        "commit": "0b373ebba66f5588dfde03cdd2fd04b354f382af",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "row-precision-20261123/dinov3-small-cohort1/report.json",
+      "archive": "row-precision-20261123/dinov3-small-cohort1/report.json.gz",
+      "source_sha256": "68d4cfb927dd38a5cd14bb75c886785adbcd299bcc988498a3018ef58aa1ab55",
+      "payload_sha256": "68d4cfb927dd38a5cd14bb75c886785adbcd299bcc988498a3018ef58aa1ab55",
+      "archive_sha256": "af1b38a1b72698627572b8857c144aa256e0e424910aaa2baf9397398c44de20",
+      "source_bytes": 2142764,
+      "payload_bytes": 2142764,
+      "archive_bytes": 206663,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "0b373ebba66f5588dfde03cdd2fd04b354f382af",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "row-precision-20261123/dinov3-small-cohort32/report.json",
+      "archive": "row-precision-20261123/dinov3-small-cohort32/report.json.gz",
+      "source_sha256": "1666a9239620299db517e22bbbbb167c5a0ebb674923569329f1b3e3dc6643e7",
+      "payload_sha256": "1666a9239620299db517e22bbbbb167c5a0ebb674923569329f1b3e3dc6643e7",
+      "archive_sha256": "e793bc72ee0e9981dc12c3233af0caa7e8259ab34fb7ca726dd4bc2bf8ec0ba1",
+      "source_bytes": 2141547,
+      "payload_bytes": 2141547,
+      "archive_bytes": 206624,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "0b373ebba66f5588dfde03cdd2fd04b354f382af",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "row-precision-20261123/sana-sprint-cohort1/report.json",
+      "archive": "row-precision-20261123/sana-sprint-cohort1/report.json.gz",
+      "source_sha256": "6417eb93f328c418efdea52480dd734a1dd77c5e88320042484200faffa31619",
+      "payload_sha256": "6417eb93f328c418efdea52480dd734a1dd77c5e88320042484200faffa31619",
+      "archive_sha256": "c915ffdfd2810e61eeb042e2eae4b63536666da1017edb4d78e74ef9f6f5592a",
+      "source_bytes": 15288300,
+      "payload_bytes": 15288300,
+      "archive_bytes": 2089250,
+      "normalized_fields": [],
+      "model": "sana-sprint",
+      "experiments": {
+        "commit": "0b373ebba66f5588dfde03cdd2fd04b354f382af",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "row-precision-20261123/sana-sprint-cohort32/report.json",
+      "archive": "row-precision-20261123/sana-sprint-cohort32/report.json.gz",
+      "source_sha256": "27946e4878ca4b608ce490866dc2768d26ae963da17eba35024600b05567d9cf",
+      "payload_sha256": "27946e4878ca4b608ce490866dc2768d26ae963da17eba35024600b05567d9cf",
+      "archive_sha256": "c2dde78bb06baf827821ec6c6e379b43b7e2043e831746ae4390b60e4f77f0c1",
+      "source_bytes": 15278907,
+      "payload_bytes": 15278907,
+      "archive_bytes": 2088229,
+      "normalized_fields": [],
+      "model": "sana-sprint",
+      "experiments": {
+        "commit": "0b373ebba66f5588dfde03cdd2fd04b354f382af",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "sana-components-preflight.json",
+      "archive": "sana-components-preflight.json.gz",
+      "source_sha256": "c0f7e34cadd42f61faf1fbdcf2456f492d817434bd41291c912a8e209c8fa3b3",
+      "payload_sha256": "c0f7e34cadd42f61faf1fbdcf2456f492d817434bd41291c912a8e209c8fa3b3",
+      "archive_sha256": "d0db841742255c9af6b3bee0ddf5e9510e277d847764bf2dbc704ce9d94eef04",
+      "source_bytes": 202183,
+      "payload_bytes": 202183,
+      "archive_bytes": 5367,
+      "normalized_fields": [],
+      "model": "sana-sprint"
+    },
+    {
+      "source": "sana-decoder-flop-check-preflight.json",
+      "archive": "sana-decoder-flop-check-preflight.json.gz",
+      "source_sha256": "1672401e90ed1e7ea92ca67b639c75e0519e4f899827be70433f0181e43a060d",
+      "payload_sha256": "1672401e90ed1e7ea92ca67b639c75e0519e4f899827be70433f0181e43a060d",
+      "archive_sha256": "765650ca5c469ae55f1607b2ec6c81affec544bb108e9b4495eef813f610951b",
+      "source_bytes": 202,
+      "payload_bytes": 202,
+      "archive_bytes": 171,
+      "normalized_fields": []
+    },
+    {
+      "source": "sana-full-pipeline-final-clean.json",
+      "archive": "sana-full-pipeline-final-clean.json.gz",
+      "source_sha256": "5558f71a3294ffd666ba6a1a80d255f3646bc31816f062e67d75bb575761025f",
+      "payload_sha256": "5558f71a3294ffd666ba6a1a80d255f3646bc31816f062e67d75bb575761025f",
+      "archive_sha256": "7ea70ab1775f6810ae9db9b8a75f03b2fc183f37885aab66a619de62cea19e1a",
+      "source_bytes": 888649,
+      "payload_bytes": 888649,
+      "archive_bytes": 16560,
+      "normalized_fields": [],
+      "model": "sana-sprint",
+      "experiments": {
+        "commit": "cb0a432bd75b84a5bd11b1b403af370cf24806ac",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "sana-full-pipeline-final.json",
+      "archive": "sana-full-pipeline-final.json.gz",
+      "source_sha256": "08793e6bd2b82ef33aa368d389470a702d0730e557ef4f83ce4a72e8ed0b6e85",
+      "payload_sha256": "08793e6bd2b82ef33aa368d389470a702d0730e557ef4f83ce4a72e8ed0b6e85",
+      "archive_sha256": "b80027e297d1ccf06a136fed1f43e6c0a87f67f4cd001a0efeade0da9108eebe",
+      "source_bytes": 888649,
+      "payload_bytes": 888649,
+      "archive_bytes": 16560,
+      "normalized_fields": [],
+      "model": "sana-sprint",
+      "experiments": {
+        "commit": "958c0d4fd68bd83aeef4e285c1bbf829f48ac997",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    },
+    {
+      "source": "sana-full-pipeline-precommit.json",
+      "archive": "sana-full-pipeline-precommit.json.gz",
+      "source_sha256": "07d6f70a79731eb0d685f91297d5bc1c7805fc461e6a090519aac5c962033063",
+      "payload_sha256": "07d6f70a79731eb0d685f91297d5bc1c7805fc461e6a090519aac5c962033063",
+      "archive_sha256": "3e0f50e9007a807408187d18287475b0d8a146af0128167535154a7110958992",
+      "source_bytes": 888648,
+      "payload_bytes": 888648,
+      "archive_bytes": 16567,
+      "normalized_fields": [],
+      "model": "sana-sprint",
+      "experiments": {
+        "commit": "5a5882106f09c17c7fa250aed05acb27cf58ac73",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "84f9158c262af68eff09060edbe4b8f74f771952",
+        "dirty": false
+      }
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}

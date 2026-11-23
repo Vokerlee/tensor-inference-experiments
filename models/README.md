@@ -10,6 +10,7 @@ estimates. An architecture name alone does not define a reproducible run.
 | DINOv3 ViT-S | 256×256 image, batch1 | [Card](dinov3-small/README.md) |
 | ConvNeXt-V2 Tiny | 224×224 image, batch1 | [Card](convnextv2-tiny/README.md) |
 | SANA-Sprint0.6B | 1024×1024 image, batch1;32×32 latent;300 text tokens | [Card](sana-sprint-06b/README.md) |
+| DC-AE SANA decoder | 32×32×32 latent to1024×1024 RGB; decoder only | [Card](dc-ae-sana-decoder/README.md) |
 | ResNet18 | retained historical profile | [Card](resnet18/README.md) |
 | ResNet50 | retained historical profile | [Card](resnet50/README.md) |
 | ConvNeXt Tiny | retained historical profile | [Card](convnext-tiny/README.md) |
@@ -38,3 +39,8 @@ preserves all JSON scientific records available at the dated snapshot; its
 [per-model index](../reports/statistics/2026-11-23/models.md) includes historical
 and preliminary runs. [Archive conventions](../docs/statistics.md) specify
 integrity checks, immutable snapshots and large-array handling.
+
+[Extended complete statistics](../reports/statistics/2026-11-23-adaptive/README.md)
+add19 full reports, including all window-level phase traces and an independent
+1000-image ConvNeXt-V2 holdout. The SANA card now distinguishes denoiser-only
+and complete cold-prompt request profiles; MAC shares are not energy shares.

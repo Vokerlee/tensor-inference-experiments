@@ -32,3 +32,8 @@ statistics, exact input/checkpoint conditions and limitations accompany the repo
 [Preserved scientific statistics](../../reports/statistics/2026-11-23/models.md#convnextv2-tiny)
 include the complete dated records available at this snapshot, including earlier
 exploratory runs. Consult their original conditions and source status.
+
+[Extended moment/cohort/phase statistics](../../reports/statistics/2026-11-23-adaptive/README.md)
+preserve all subsequent comparisons. ConvNeXt-V2 includes a separate1000-image
+Imagenette holdout at allocation offset100; DINO records descriptor diagnostics.
+Preliminary and unfavorable results remain distinguishable from clean evidence.
