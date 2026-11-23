@@ -73,3 +73,16 @@ def test_complete_packed_reduction_matches_same_decisions_in_candidate_oracle():
     assert packed.fp8_products == oracle.fp8_products
     assert packed.selected_vectors == oracle.selected_vectors
     assert packed.schedule == oracle.schedule
+
+
+def test_phase_traces_reconcile_partial_windows_and_selected_rows():
+    selected = (torch.arange(35) % 3 == 0)[:, None].expand(-1, 2)
+    counters = ScheduleCounters()
+    account(selected, 256, counters, buffer_rows=8, resident_rows=32, trace=True,
+            context={"k_begin": 512, "matrix_shape": [35, 131, 768]})
+    assert len(counters.phase_trace) == counters.resident_phases == 4
+    assert sum(sum(p["rows_per_window"]) for p in counters.phase_trace) == 70
+    assert sum(sum(p["fp8_rows_per_window"]) for p in counters.phase_trace) == counters.fp8_rows
+    assert sum(sum(p["packed_mode_changes_per_window"]) for p in counters.phase_trace) == counters.packed_mode_changes
+    assert counters.phase_trace[-1]["rows_per_window"] == [3]
+    assert all(p["k_begin"] == 512 for p in counters.phase_trace)

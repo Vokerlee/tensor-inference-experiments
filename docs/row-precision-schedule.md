@@ -46,3 +46,10 @@ Quantization/statistics, queue operations, weight-format preparation, format
 switches, array fill/drain and result handling all need separate cost evidence.
 CUDA times do not estimate any of those target costs. No energy improvement is
 established by these counters alone.
+
+`--trace-schedule` preserves every resident phase's source matrix/K position,
+window row counts, accepted FP8-row counts and partitioned mode changes.
+This supports causal replay of setup/residency policies on a frozen eligibility
+stream. Such replay does not execute a changed network policy: later activations
+could differ if a real controller chose additional BF16 fallbacks. Frozen-trace
+cost analysis and modified-model quality must be reported separately.

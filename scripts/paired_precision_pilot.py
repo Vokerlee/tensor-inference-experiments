@@ -57,7 +57,7 @@ def activation_summary(values):
 
 @contextmanager
 def applied(layers, cache, case, cohort, minimum_fp8_rows=1, diagnostics=None,
-            row_buffer=0, resident_rows=1024, execution="oracle"):
+            row_buffer=0, resident_rows=1024, execution="oracle", trace_schedule=False):
     policy, _, parameter = case.partition(":")
     tolerance = float(parameter) if parameter else 0.04
     counters = {name: Counters() for name in layers}
@@ -92,7 +92,7 @@ def applied(layers, cache, case, cohort, minimum_fp8_rows=1, diagnostics=None,
                 prepared = cache[name]
             output = multiply(matrix, weight, prepared, policy=current_policy, tolerance=tolerance,
                               cohort=cohort, counters=counters[name], row_buffer=row_buffer,
-                              resident_rows=resident_rows, execution=execution)
+                              resident_rows=resident_rows, execution=execution, trace_schedule=trace_schedule)
             if module.bias is not None:
                 output += module.bias.float()
             if convolution:
@@ -168,6 +168,7 @@ def main():
     parser.add_argument("--row-buffer", type=int, default=0)
     parser.add_argument("--resident-rows", type=int, default=1024)
     parser.add_argument("--execution", choices=("oracle", "packed"), default="oracle")
+    parser.add_argument("--trace-schedule", action="store_true")
     parser.add_argument("--steps", type=int, default=2)
     parser.add_argument("--seed", type=int, default=20261123)
     parser.add_argument("--prompt", action="append")
@@ -180,6 +181,8 @@ def main():
             or (args.row_buffer and args.resident_rows % args.row_buffer)
             or (args.execution == "packed" and not args.row_buffer)):
         parser.error("packed execution needs a positive row buffer dividing the resident row count")
+    if args.trace_schedule and not args.row_buffer:
+        parser.error("schedule tracing requires a positive row buffer")
     for case in cases:
         policy, _, parameter = case.partition(":")
         if policy not in (*POLICIES, "original") or (parameter and (
@@ -237,7 +240,7 @@ def main():
     for case in cases:
         print("Running", args.model, case, flush=True)
         with applied(layers, cache, case, args.cohort, args.minimum_fp8_rows, diagnostics,
-                     args.row_buffer, args.resident_rows, args.execution) as (counters, traces, skipped):
+                     args.row_buffer, args.resident_rows, args.execution, args.trace_schedule) as (counters, traces, skipped):
             if args.model == "sana-sprint":
                 values = generation_outputs(pipe, embeddings, args, args.output / case.replace(":", "-"))
             else:
