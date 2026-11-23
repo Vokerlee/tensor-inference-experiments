@@ -63,3 +63,11 @@ def test_nonfinite_rejected(bad):
     values = torch.full((1, 32, 1, 1), bad)
     with pytest.raises(ValueError, match="finite"):
         quantize(values, torch.zeros(32))
+
+
+def test_underflowed_scale_rejected_and_small_weight_coefficient_is_scale_invariant():
+    tiny = torch.nextafter(torch.tensor(0.0), torch.tensor(1.0))
+    with pytest.raises(ValueError, match="scale"):
+        quantize(torch.full((1, 32, 1, 1), tiny), torch.zeros(32), bits=8)
+    weight = torch.tensor([1.0, -0.2, 0.5]).reshape(1, 1, 1, 3).repeat(2, 32, 1, 1)
+    torch.testing.assert_close(kernel_coefficient(weight * 1e-17), kernel_coefficient(weight))
