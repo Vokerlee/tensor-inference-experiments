@@ -31,3 +31,16 @@ samples per variant or decision.
 .venv/bin/python scripts/archive_statistics.py --verify \
     --output reports/statistics/2026-11-24-controller-replay
 ```
+
+## Complete input trace archives
+
+| Input | Original bundle index | Traces | Archive |
+|---|---|---:|---|
+| 000 | `results/decoder-inputs-20261123`, 0 | 28 | [Restore/verify](traces/input-000/README.md) |
+| 001 | `results/decoder-inputs-20261123`, 1 | 28 | [Restore/verify](traces/input-001/README.md) |
+| 002 | `results/decoder-inputs-20261123`, 2 | 28 | [Restore/verify](traces/input-002/README.md) |
+| 003 | `results/decoder-inputs-20261123`, 3 | 28 | [Restore/verify](traces/input-003/README.md) |
+| 004 | `results/decoder-inputs-holdout-20261123`, 0 | 28 | [Restore/verify](traces/input-004/README.md) |
+| 005 | `results/decoder-inputs-holdout-20261123`, 1 | 28 | [Restore/verify](traces/input-005/README.md) |
+| 006 | `results/decoder-inputs-holdout-20261123`, 2 | 28 | [Restore/verify](traces/input-006/README.md) |
+| 007 | `results/decoder-inputs-holdout-20261123`, 3 | 28 | [Restore/verify](traces/input-007/README.md) |

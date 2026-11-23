@@ -37,3 +37,9 @@ exploratory runs. Consult their original conditions and source status.
 preserve all subsequent comparisons. ConvNeXt-V2 includes a separate1000-image
 Imagenette holdout at allocation offset100; DINO records descriptor diagnostics.
 Preliminary and unfavorable results remain distinguishable from clean evidence.
+
+[Controller-replay descriptor observation](../../reports/2026-11-24-controller-replay.md)
+uses this pinned model in FP32 with official preprocessing to describe224 SANA
+control variants and eight original images. Full384-dimensional vectors and
+paired contrasts are preserved. Descriptor consistency is a fidelity diagnostic,
+not a generation-quality benchmark or an adaptive-policy quality guarantee.

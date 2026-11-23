@@ -91,3 +91,8 @@ keeps unfavorable variants, supporting evidence and concrete revisit conditions.
 The [cost and arithmetic-contract study](reports/2026-11-24-contract-validation.md)
 separates hypothetical energy break-even conditions, constructed arithmetic
 witnesses and sampled live-controller divergence.
+
+The [full controller replay study](reports/2026-11-24-controller-replay.md)
+adds complete-model live/frozen interventions, paired pixel/descriptor comparisons,
+exhaustive BF16 scale contracts and conditional stability filtering. All decision
+and sensor tapes are preserved as independently restorable input archives.
