@@ -55,7 +55,7 @@ def activation_summary(values):
 
 
 @contextmanager
-def applied(layers, cache, case, cohort):
+def applied(layers, cache, case, cohort, minimum_fp8_rows=1):
     policy, _, parameter = case.partition(":")
     tolerance = float(parameter) if parameter else 0.04
     counters = {name: Counters() for name in layers}
@@ -78,12 +78,13 @@ def applied(layers, cache, case, cohort):
             else:
                 matrix = values.reshape(-1, module.in_features).contiguous()
                 weight = module.weight
+            current_policy = "bf16" if matrix.shape[0] < minimum_fp8_rows else policy
             prepared = None
-            if policy != "bf16":
+            if current_policy != "bf16":
                 if name not in cache:
                     cache[name] = prepare_weight(weight.detach())
                 prepared = cache[name]
-            output = multiply(matrix, weight, prepared, policy=policy, tolerance=tolerance,
+            output = multiply(matrix, weight, prepared, policy=current_policy, tolerance=tolerance,
                               cohort=cohort, counters=counters[name])
             if module.bias is not None:
                 output += module.bias.float()
@@ -154,12 +155,14 @@ def main():
     parser.add_argument("--holdout-offset", type=int, default=20)
     parser.add_argument("--batch-size", type=int, default=10)
     parser.add_argument("--cohort", type=int, default=32)
+    parser.add_argument("--minimum-fp8-rows", type=int, default=1)
     parser.add_argument("--steps", type=int, default=2)
     parser.add_argument("--seed", type=int, default=20261123)
     parser.add_argument("--prompt", action="append")
     args = parser.parse_args()
     cases = list(dict.fromkeys(["original", *(args.case or DEFAULT_CASES)]))
-    if min(args.cohort, args.steps, args.samples_per_class, args.batch_size) < 1 or args.holdout_offset < 0:
+    if min(args.cohort, args.steps, args.samples_per_class, args.batch_size,
+           args.minimum_fp8_rows) < 1 or args.holdout_offset < 0:
         parser.error("positive sizes and nonnegative holdout offset required")
     for case in cases:
         policy, _, parameter = case.partition(":")
@@ -215,7 +218,7 @@ def main():
     original = reference = None
     for case in cases:
         print("Running", args.model, case, flush=True)
-        with applied(layers, cache, case, args.cohort) as (counters, traces, skipped):
+        with applied(layers, cache, case, args.cohort, args.minimum_fp8_rows) as (counters, traces, skipped):
             if args.model == "sana-sprint":
                 values = generation_outputs(pipe, embeddings, args, args.output / case.replace(":", "-"))
             else:

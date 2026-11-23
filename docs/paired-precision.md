@@ -70,3 +70,13 @@ Original-model and fixed-K128 custom-engine comparisons are separate from
 quantized policies. Paired image/feature similarity is a numerical diagnostic,
 not FID, GenEval or a downstream-task guarantee. None of these software
 executions is a target-hardware timing measurement.
+
+`--minimum-fp8-rows 2` is an explicit shape-only ablation: a matrix with one
+streamed M row retains the custom-engine BF16 K128 contract, even when the
+selected policy would allow FP8. It does not use module names, calibration,
+labels or an offline sensitivity table. Compare against the default minimum1
+with identical inputs and all other settings. Small conditioning operations
+can influence many later activations; low MAC count does not establish low
+numerical importance. This ablation tests that possibility, not a universal
+rule that one-row operations must use BF16. Its lost FP8 work and output-vector
+counts remain in the same per-layer statistics.
