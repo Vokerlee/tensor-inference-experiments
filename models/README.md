@@ -10,6 +10,14 @@ estimates. An architecture name alone does not define a reproducible run.
 | DINOv3 ViT-S | 256×256 image, batch1 | [Card](dinov3-small/README.md) |
 | ConvNeXt-V2 Tiny | 224×224 image, batch1 | [Card](convnextv2-tiny/README.md) |
 | SANA-Sprint0.6B | 1024×1024 image, batch1;32×32 latent;300 text tokens | [Card](sana-sprint-06b/README.md) |
+| ResNet18 | retained historical profile | [Card](resnet18/README.md) |
+| ResNet50 | retained historical profile | [Card](resnet50/README.md) |
+| ConvNeXt Tiny | retained historical profile | [Card](convnext-tiny/README.md) |
+| MobileNet-V3 Large | retained historical profile | [Card](mobilenet-v3-large/README.md) |
+| ViT-B/16 | retained historical profile | [Card](vit-b16/README.md) |
+| Swin-T | retained historical profile | [Card](swin-t/README.md) |
+| Stable Diffusion1.5 UNet | retained historical profile | [Card](sd15-unet/README.md) |
+| DiT-XL/2,256px | retained historical denoiser profile | [Card](dit-xl2-256/README.md) |
 
 Profiles are immutable records: add a new date/condition-specific filename
 when input size, batch, precision, coverage or implementation changes. Keep

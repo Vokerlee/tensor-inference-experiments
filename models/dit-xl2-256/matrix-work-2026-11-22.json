@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "model": "dit",
+  "torch": "2.11.0+cu128",
+  "matrix_convolution_flops": 237333676032,
+  "target_mlp_flops": 152202903552,
+  "target_fraction": 0.6413034428855275,
+  "operations": {
+    "aten::conv2d": 9437184,
+    "aten::addmm": 228868521984,
+    "aten::bmm": 8455716864
+  },
+  "excluded_flop_categories": {
+    "aten::add": 33719040,
+    "aten::mul": 33397021
+  },
+  "limitations": [
+    "Matrix/convolution FLOP inventory, not complete FLOPs or energy",
+    "Math attention and disabled MHA fast path expose matrix work",
+    "Synthetic inputs determine shapes, not quality or data-dependent switching"
+  ]
+}
