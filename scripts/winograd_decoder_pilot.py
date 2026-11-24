@@ -111,7 +111,7 @@ def main():
             "sana_decoder_feedback.py", "modern_models.py", "activation_pilot.py",
             "integer_winograd.py", "winograd_rounding.py", "winograd_integer_models.py",
             "winograd_shift_rounding.py", "plane_rounding_backend.py", "integer_segment_backend.py",
-            "plane_encoding.py")},
+            "plane_encoding.py", "integer_winograd_one_axis.py", "winograd_one_axis.py")},
         "eligible_layers": list(layers), "cases": [],
         "limitations": [
             "Known Winograd transforms are numerical baselines, not a novel convolution algorithm",
@@ -127,7 +127,7 @@ def main():
         ],
     }
     native = ENGINE / "build/libtensor_inference_engine_torch.so"
-    if any("native" in case or "shift" in case for case in (args.case or [])):
+    if any("native" in case or "shift" in case or "axis" in case for case in (args.case or [])):
         report["native_sha256"] = digest(native)
         build = ENGINE / "build/tensor_inference_engine_build.json"
         report["native_build"] = json.loads(build.read_text()) if build.exists() else None

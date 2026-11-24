@@ -3,12 +3,15 @@
 from contextlib import contextmanager
 from dataclasses import replace as replace_dataclass
 from pathlib import Path
+from math import ceil
 
 import numpy as np
 import torch
 
 from activation_pilot import digest
 from integer_winograd import convolution, prepare
+from integer_winograd_one_axis import convolution as convolution_one
+from winograd_one_axis import transform_weights as transform_one
 from winograd_reference import transform_weights, transforms
 from winograd_rounding import prepare as prepare_geometry
 from winograd_shift_rounding import ShiftGeometry, prepare as prepare_shift
@@ -30,6 +33,10 @@ POLICIES = {
     "int8-k256-a8-shift": (8, 1, False, "shift-cuda"),
     "int8-k256-a4-native": (4, 0, False, "nearest-cuda"),
     "int8-k256-a8-native": (8, 0, False, "nearest-cuda"),
+    "int8-k256-a4-axis-fit": (4, 0, False, "axis-fit"),
+    "int8-k256-a8-axis-fit": (8, 0, False, "axis-fit"),
+    "int8-k256-a4-axis-all": (4, 0, False, "axis-all"),
+    "int8-k256-a8-axis-all": (8, 0, False, "axis-all"),
 }
 
 
@@ -39,10 +46,13 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
     bits, rank, streaming = POLICIES[case][:3]
     backend = POLICIES[case][3] if len(POLICIES[case]) > 3 else "torch"
     originals = {name: layer.forward for name, layer in layers.items()}
-    weights, geometries, metadata, arrays = {}, {}, [], {}
+    weights, geometries, metadata, arrays, one_axis = {}, {}, [], {}, {}
     for index, (name, layer) in enumerate(layers.items()):
         scheme = transforms(2, dtype=torch.float32, device=layer.weight.device)
-        coefficients = transform_weights(layer.weight, scheme)
+        one_axis[name] = backend == "axis-all" or (backend == "axis-fit" and
+                         ceil(3 * layer.in_channels / 256) <= 2 * ceil(layer.in_channels / 256))
+        coefficients = (transform_one(layer.weight.float()) if one_axis[name]
+                        else transform_weights(layer.weight, scheme))
         weights[name] = prepare(coefficients, 256)
         reconstructed = weights[name].reconstructed()
         geometries[name] = (prepare_geometry(reconstructed, rank=rank).to(layer.weight.device)
@@ -51,8 +61,8 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
         arrays[f"layer{index}.weight_exponents"] = exponents
         codes, counts = torch.unique(weights[name].codes, return_counts=True)
         row = {"layer": name, "array_prefix": f"layer{index}", "rank": rank,
-               "rounding_backend": backend,
-               "original_channels": weights[name].channels,
+               "rounding_backend": backend, "lowering": "one-axis" if one_axis[name] else "two-axis",
+               "original_channels": layer.in_channels, "lowered_reduction": weights[name].channels,
                "padded_channels": weights[name].codes.shape[1],
                "weight_groups": weights[name].exponents.numel(),
                "weight_code_histogram": {str(int(code)): int(count) for code, count in zip(codes, counts)},
@@ -71,7 +81,7 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
         elif geometry is not None and backend == "shift-cuda":
             geometries[name] = prepare_shift(geometry, backend="cuda")
             arrays[f"layer{index}.packed_metadata"] = geometries[name].metadata.cpu().numpy()
-        elif geometry is None and backend == "nearest-cuda":
+        elif geometry is None and backend in ("nearest-cuda", "axis-fit", "axis-all"):
             packed = torch.zeros(reconstructed.shape[1], reconstructed.shape[0],
                                  dtype=torch.int16, device=layer.weight.device)
             geometries[name] = ShiftGeometry(packed, "cuda", rank=0)
@@ -85,9 +95,14 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
 
     def replace(name, layer):
         def forward(values):
-            result, stats = convolution(values, weights[name], layer.bias, padding=layer.padding[0],
-                                        tile_batch=tile_batch, bits=bits, geometry=geometries[name],
-                                        streaming_inverse=streaming)
+            if one_axis[name]:
+                result, stats = convolution_one(values, weights[name], geometries[name], layer.bias,
+                                                padding=layer.padding[0], tile_batch=tile_batch, bits=bits)
+            else:
+                result, stats = convolution(values, weights[name], layer.bias, padding=layer.padding[0],
+                                            tile_batch=tile_batch, bits=bits, geometry=geometries[name],
+                                            streaming_inverse=streaming)
+                stats["lowering"] = "two-axis"
             records.append({"layer": name, "input_shape": list(values.shape),
                             "output_shape": list(result.shape), **stats})
             return result
