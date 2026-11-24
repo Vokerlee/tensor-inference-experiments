@@ -17,7 +17,7 @@ def digest(path: Path) -> str:
 
 def array_references(value):
     if isinstance(value, dict):
-        for key in ("trace", "audit"):
+        for key in ("trace", "audit", "arrays", "geometry"):
             source = value.get(key)
             if isinstance(source, str) and source.endswith(".npz"):
                 yield Path(source), value[key + "_sha256"]
