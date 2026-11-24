@@ -1,0 +1,221 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a4/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4/arrays.npz",
+      "bytes": 9037718,
+      "kind": "referenced-array",
+      "sha256": "f07bd18442379dea6f5dfda18e81e23412b99d9ac1229d426e6deb2e34b7084d"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a4/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4/prepared.npz",
+      "bytes": 62499,
+      "kind": "referenced-array",
+      "sha256": "815ad2feac5472ff138446516c46aaf51dff46492e3138314cd8a1383e4b657a"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r1/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r1/arrays.npz",
+      "bytes": 8923254,
+      "kind": "referenced-array",
+      "sha256": "bc3a15e08853146e29c46d799c32e685351713c635590ec3cfb58193050f29f5"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r1/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r1/prepared.npz",
+      "bytes": 9527681,
+      "kind": "referenced-array",
+      "sha256": "93456d280a11e689f23451e9ebfb88283004c23fd8b01cf28234679634149c9e"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r4/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r4/arrays.npz",
+      "bytes": 8913191,
+      "kind": "referenced-array",
+      "sha256": "9509e39cb5eb03357197ac01e16e67c8f1e513e7a6f96bdb6ad698c4c81eefa4"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r4/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r4/prepared.npz",
+      "bytes": 11111319,
+      "kind": "referenced-array",
+      "sha256": "4441f8c07dbfab74e76eefa1bf9027607496cce87360689f0bf252abc7ca13d1"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a8/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a8/arrays.npz",
+      "bytes": 8148898,
+      "kind": "referenced-array",
+      "sha256": "3c193776b28ba46b4c7e1e891cc6f594bc06bd5ba0945be951a2b4756d2a1aac"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a8/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4/prepared.npz",
+      "bytes": 62499,
+      "kind": "referenced-array",
+      "sha256": "815ad2feac5472ff138446516c46aaf51dff46492e3138314cd8a1383e4b657a"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a8-r1/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a8-r1/arrays.npz",
+      "bytes": 8146330,
+      "kind": "referenced-array",
+      "sha256": "979a1b24bfaeadf9948702430d02e258216f9556a664a3ce3758b9510955623a"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a8-r1/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r1/prepared.npz",
+      "bytes": 9527681,
+      "kind": "referenced-array",
+      "sha256": "93456d280a11e689f23451e9ebfb88283004c23fd8b01cf28234679634149c9e"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a8-r4/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a8-r4/arrays.npz",
+      "bytes": 8148943,
+      "kind": "referenced-array",
+      "sha256": "d14021a748b28eb060d971d8acc8554ef66294bf3e43ffdea3038dfc88581c97"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a8-r4/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r4/prepared.npz",
+      "bytes": 11111319,
+      "kind": "referenced-array",
+      "sha256": "4441f8c07dbfab74e76eefa1bf9027607496cce87360689f0bf252abc7ca13d1"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a8-stream/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a8/arrays.npz",
+      "bytes": 8148898,
+      "kind": "referenced-array",
+      "sha256": "3c193776b28ba46b4c7e1e891cc6f594bc06bd5ba0945be951a2b4756d2a1aac"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/int8-k256-a8-stream/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4/prepared.npz",
+      "bytes": 62499,
+      "kind": "referenced-array",
+      "sha256": "815ad2feac5472ff138446516c46aaf51dff46492e3138314cd8a1383e4b657a"
+    },
+    {
+      "source": "integer-winograd-decoder-discovery-20261124/original/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/original/arrays.npz",
+      "bytes": 8112725,
+      "kind": "referenced-array",
+      "sha256": "edb0377695196f5c348cae994e489f1956d8afb0406e012170d132bcbae8f7aa"
+    },
+    {
+      "source": "logs/integer-winograd-discovery.log",
+      "archive": "logs/integer-winograd-discovery.log",
+      "bytes": 2015,
+      "kind": "supplement",
+      "sha256": "371eadc9841794b027490dfba0af9702e5ab11b4503490d78a79faa4e7226d48"
+    },
+    {
+      "source": "logs/native-integer-winograd-discovery.log",
+      "archive": "logs/native-integer-winograd-discovery.log",
+      "bytes": 8037,
+      "kind": "supplement",
+      "sha256": "2a94070b10e136d9eb09c4f325db884693cc259604e4da4374a2ac6ff2d12e12"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a4/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4/arrays.npz",
+      "bytes": 9037718,
+      "kind": "referenced-array",
+      "sha256": "f07bd18442379dea6f5dfda18e81e23412b99d9ac1229d426e6deb2e34b7084d"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a4/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4/prepared.npz",
+      "bytes": 62499,
+      "kind": "referenced-array",
+      "sha256": "815ad2feac5472ff138446516c46aaf51dff46492e3138314cd8a1383e4b657a"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a4-r1-native/arrays.npz",
+      "archive": "native-integer-winograd-discovery-20261124/int8-k256-a4-r1-native/arrays.npz",
+      "bytes": 8920753,
+      "kind": "referenced-array",
+      "sha256": "3c16335f479f72587040832702dc718883c8a32c1ba53ccc120b06ceec5ca305"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a4-r1-native/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r1/prepared.npz",
+      "bytes": 9527681,
+      "kind": "referenced-array",
+      "sha256": "93456d280a11e689f23451e9ebfb88283004c23fd8b01cf28234679634149c9e"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a4-r4-native/arrays.npz",
+      "archive": "native-integer-winograd-discovery-20261124/int8-k256-a4-r4-native/arrays.npz",
+      "bytes": 8911439,
+      "kind": "referenced-array",
+      "sha256": "d302ce456a000533c398065be5165070c35b87744515b818ed3115fde5909286"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a4-r4-native/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r4/prepared.npz",
+      "bytes": 11111319,
+      "kind": "referenced-array",
+      "sha256": "4441f8c07dbfab74e76eefa1bf9027607496cce87360689f0bf252abc7ca13d1"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a4-shift/arrays.npz",
+      "archive": "native-integer-winograd-discovery-20261124/int8-k256-a4-shift/arrays.npz",
+      "bytes": 8930289,
+      "kind": "referenced-array",
+      "sha256": "6eaf91d5bef1d4603075750308a54aba2953afc435fd1c6ec05879a7b4925f5a"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a4-shift/prepared.npz",
+      "archive": "native-integer-winograd-discovery-20261124/int8-k256-a4-shift/prepared.npz",
+      "bytes": 9640151,
+      "kind": "referenced-array",
+      "sha256": "df54932cb8e519b67860669fe663e6d6471345c4a8b3b10966da1856fdb0fc6d"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a8/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a8/arrays.npz",
+      "bytes": 8148898,
+      "kind": "referenced-array",
+      "sha256": "3c193776b28ba46b4c7e1e891cc6f594bc06bd5ba0945be951a2b4756d2a1aac"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a8/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4/prepared.npz",
+      "bytes": 62499,
+      "kind": "referenced-array",
+      "sha256": "815ad2feac5472ff138446516c46aaf51dff46492e3138314cd8a1383e4b657a"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/int8-k256-a8-r1-native/prepared.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/int8-k256-a4-r1/prepared.npz",
+      "bytes": 9527681,
+      "kind": "supplement",
+      "sha256": "93456d280a11e689f23451e9ebfb88283004c23fd8b01cf28234679634149c9e"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/original/arrays.npz",
+      "archive": "integer-winograd-decoder-discovery-20261124/original/arrays.npz",
+      "bytes": 8112725,
+      "kind": "referenced-array",
+      "sha256": "edb0377695196f5c348cae994e489f1956d8afb0406e012170d132bcbae8f7aa"
+    },
+    {
+      "source": "native-integer-winograd-discovery-20261124/start-provenance-audit.json",
+      "archive": "native-integer-winograd-discovery-20261124/start-provenance-audit.json",
+      "bytes": 450,
+      "kind": "supplement",
+      "sha256": "9be54226932d50c1f965783fe5f800daa8eb568d830799bc9c96e5c58d1d1bc6"
+    }
+  ],
+  "content_deduplicated": true,
+  "limitations": [
+    "Array containers and explicit supplements are preserved byte for byte",
+    "Archiving does not establish scientific validity or recover missing historical source versions",
+    "Weight checkpoints and captured operand tensors remain regenerable inputs, not archived statistics"
+  ]
+}

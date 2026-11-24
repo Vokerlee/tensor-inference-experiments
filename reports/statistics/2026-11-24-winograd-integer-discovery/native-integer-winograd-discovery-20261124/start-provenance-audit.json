@@ -1,0 +1,9 @@
+{
+  "experiments_commit": "9e6128d6e8a47137086d644fe06fb489c945a278",
+  "experiments_tracked_diff": "",
+  "engine_tracked_diff": "",
+  "engine_untracked": "build\n",
+  "engine_commit": "9fa738f3641249206634d94840a355d9240b7ffa",
+  "reason": "Untracked build symlink affected initial dirty markers; tracked executable sources and compiled library are unchanged",
+  "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534"
+}
