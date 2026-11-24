@@ -9,7 +9,7 @@ from activation_rounding import prepare_geometry
 from activation_rounding_models import reconstruct
 
 
-POLICIES = ("bf16", "uniform8", "uniform4", "qk4-v8", "q4-k8-v8", "q8-k4-v8",
+POLICIES = ("bf16", "uniform8", "qkv4-nearest", "qk4-v8", "q4-k8-v8", "q8-k4-v8",
             "qk4-r1-v8", "qkv4-raw-r1", "qkv4-balanced-r1", "qkv4-balanced-r4", "qkv8-balanced-r4")
 
 
@@ -20,6 +20,8 @@ def component_plan(policy: str):
         return [(16, 0, "raw")] * 3
     if policy.startswith("uniform"):
         return [(int(policy.removeprefix("uniform")), 0, "raw")] * 3
+    if policy == "qkv4-nearest":
+        return [(4, 0, "raw")] * 3
     if policy == "qk4-v8":
         return [(4, 0, "raw"), (4, 0, "raw"), (8, 0, "raw")]
     if policy == "q4-k8-v8":
