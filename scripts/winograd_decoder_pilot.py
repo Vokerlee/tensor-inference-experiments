@@ -73,10 +73,11 @@ def main():
     parser.add_argument("--inputs", type=Path, required=True)
     parser.add_argument("--count", type=int, default=4)
     parser.add_argument("--tile-batch", type=int, default=64)
+    parser.add_argument("--minimum-outputs", type=int, default=0)
     parser.add_argument("--case", action="append", choices=(*POLICIES, *INTEGER_POLICIES))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    if args.count < 1 or args.tile_batch < 1:
+    if args.count < 1 or args.tile_batch < 1 or args.minimum_outputs < 0:
         parser.error("positive input count and tile batch required")
     torch.set_num_threads(8)
     torch.backends.cuda.matmul.allow_tf32 = False
@@ -93,7 +94,8 @@ def main():
     directory = snapshot(*SANA)
     model = AutoencoderDC.from_pretrained(directory, subfolder="vae", torch_dtype=torch.bfloat16)
     model.eval().requires_grad_(False).to("cuda")
-    layers = eligible(model.decoder)
+    layers = {name: layer for name, layer in eligible(model.decoder).items()
+              if layer.out_channels >= args.minimum_outputs}
     args.output.mkdir(parents=True, exist_ok=False)
     report = {
         "schema": 1, "status": "running", "model": "dc-ae-sana-decoder",
@@ -103,11 +105,12 @@ def main():
         "settings": {"count": args.count, "tile_batch": args.tile_batch,
                      "floating_K": 128, "proposed_integer_K": 256,
                      "cases": args.case or list(POLICIES), "floating_activation_group": 32,
-                     "integer_activation_group": 256},
+                     "integer_activation_group": 256, "minimum_outputs": args.minimum_outputs},
         "source_sha256": {name: digest(ROOT / "scripts" / name) for name in (
             "winograd_decoder_pilot.py", "winograd_streaming.py", "winograd_reference.py",
             "sana_decoder_feedback.py", "modern_models.py", "activation_pilot.py",
-            "integer_winograd.py", "winograd_rounding.py", "winograd_integer_models.py")},
+            "integer_winograd.py", "winograd_rounding.py", "winograd_integer_models.py",
+            "winograd_shift_rounding.py", "plane_rounding_backend.py", "integer_segment_backend.py")},
         "eligible_layers": list(layers), "cases": [],
         "limitations": [
             "Known Winograd transforms are numerical baselines, not a novel convolution algorithm",
@@ -122,6 +125,11 @@ def main():
             "Integer cases use one current activation scale per K256 block and prepared per-column weight scales",
         ],
     }
+    native = ENGINE / "build/libtensor_inference_engine_torch.so"
+    if any("native" in case or "shift" in case for case in (args.case or [])):
+        report["native_sha256"] = digest(native)
+        build = ENGINE / "build/tensor_inference_engine_build.json"
+        report["native_build"] = json.loads(build.read_text()) if build.exists() else None
     path = args.output / "report.json"
     write_json(path, report)
     original = None

@@ -12,6 +12,7 @@ import torch
 import torch.nn.functional as functional
 
 from winograd_rounding import round_planes
+from winograd_shift_rounding import ShiftGeometry, round_shift
 from winograd_reference import inverse_outputs, transforms
 from winograd_streaming import map_tiles, product
 
@@ -64,7 +65,8 @@ def multiply(source: torch.Tensor, weights: IntegerWeights, *, bits: int = 8,
         raise ValueError("activation scale outside finite FP32 domain")
     stats = None
     if geometry is not None:
-        reconstructed, stats = round_planes(padded, geometry, bits, group=weights.block)
+        rounder = round_shift if isinstance(geometry, ShiftGeometry) else round_planes
+        reconstructed, stats = rounder(padded, geometry, bits, group=weights.block)
         codes = (reconstructed.reshape(grouped.shape) / scale[..., None]).round().to(torch.int8)
     else:
         codes = (grouped / scale[..., None]).round().clamp(-limit, limit).to(torch.int8)
@@ -122,10 +124,13 @@ def convolution(values: torch.Tensor, weights: IntegerWeights, bias=None, *, til
             histogram[exponent] = histogram.get(exponent, 0) + count
         if current["rounding"] is not None:
             if stats["rounding"] is None:
-                stats["rounding"] = {"bits": bits, "rank": geometry.factor.shape[-1]}
+                stats["rounding"] = {"bits": bits, "rank": geometry.rank,
+                                     "mode": current["rounding"].get("mode", "completed-proxy"),
+                                     "backend": current["rounding"].get("backend", "torch")}
             for key in ("candidate_selected", "candidate_decisions", "source_sse", "source_zeros_changed",
-                        "selected_proxy_sum", "nearest_proxy_sum", "groups", "zero_groups"):
-                stats["rounding"][key] = stats["rounding"].get(key, 0) + current["rounding"][key]
+                        "selected_proxy_sum", "nearest_proxy_sum", "groups", "zero_groups", "changed_channels"):
+                if key in current["rounding"]:
+                    stats["rounding"][key] = stats["rounding"].get(key, 0) + current["rounding"][key]
         return result if streaming_inverse else inverse(result)
 
     result, layout = map_tiles(values, weights.codes.shape[-1], consume, bias,
