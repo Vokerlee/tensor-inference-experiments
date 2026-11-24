@@ -53,3 +53,8 @@ classical forward-error analysis, and [recent emulation guarantees](https://arxi
 Correctly rounding a real dot product and reproducing one finite-reference
 observation are different specifications. This implementation alone is not
 claimed as a new PhD contribution.
+
+Measured outcome: both candidates preserve the tested BF16 observations and
+controller traces, but lose all recorded operator and complete-model timing
+cases. See the [complete performance/fidelity study](../reports/2026-11-24-selective-reference.md)
+and its preserved arrays, source identities and unfavorable prototypes.

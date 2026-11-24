@@ -37,3 +37,10 @@ exploratory runs. Consult their original conditions and source status.
 preserve all subsequent comparisons. ConvNeXt-V2 includes a separate1000-image
 Imagenette holdout at allocation offset100; DINO records descriptor diagnostics.
 Preliminary and unfavorable results remain distinguishable from clean evidence.
+
+[Selective finite-reference observations](../../reports/2026-11-24-selective-reference.md)
+validate intermediate/final BF16 fidelity and dynamic-controller arrays on the
+same three declared Imagenette inputs. Both selective implementations are slower
+than the complete native reference. All per-case timings and full controller
+arrays are preserved; this is software-emulation evidence, not device energy
+or population task accuracy. Early CNN layers contain successive32-row control blocks.

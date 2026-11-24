@@ -25,11 +25,20 @@ would justify another experiment rather than repeating the same measurement.
 
 | Source-group certification as a matrix-work saving estimate | [Convolution footprint](2026-11-24-controller-guard-footprint.md) | Roughly99% group certification still leaves81–85% of M128 cohorts flagged under one declared lowering; another lowering changes clustering. | A complete selective-reference implementation with explicit reduction order, stream batching, state/repair behavior and measured overhead; group rates alone are insufficient. |
 
-CUDA implementation cost is not target hardware time or energy. None of these
-variants is rejected because its experimental CUDA implementation is slow.
+CUDA implementation cost is not target hardware time or energy. The hardware-optimization variants above are not rejected solely because their
+experimental CUDA implementation is slow. The selective-reference variant below
+explicitly targets SOFTWARE emulator acceleration, for which software time is
+the intended metric.
 An unavailable implementation/full text is not evidence that prior research
 lacks hardware. Unmeasured ideas remain separate from measured negative results.
 
 Original source/input identities and complete statistical archives remain linked
 from the reports. Do not silently relabel old exploratory inputs as independent
 holdouts, discard unfavorable cases, or collapse incompatible counting ledgers.
+
+## Software-reference implementation results
+
+| Additional variant | Evidence | What was learned | Condition for revisiting |
+|---|---|---|---|
+| Operand-bounded exact BF16 observation with selective reference repair | [Complete campaign](2026-11-24-selective-reference.md) | No tested fidelity errors, but all12 operator and18 full-model cases are slower; full-model speedup ratios0.285–0.634. The v0 acceleration claim fails. | A materially different useful bound or execution mechanism, measured against the better complete same-contract CUDA reference with all overhead charged. |
+| Compiled guard with default precision-cast elimination | [Constructed witness and retained prototypes](2026-11-24-selective-reference.md#a-precision-cast-failure-retained-as-evidence) | Removing the BF16 round trip yields false cell acceptance; apparent faster execution can be semantically invalid. | Explicitly preserve required rounding and validate boundary witnesses after compilation. This does not imply a new general compiler bug. |
