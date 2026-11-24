@@ -1,0 +1,63 @@
+25 eligible layers; 3676122906624 original MACs
+[
+  {
+    "interface": "bf16",
+    "method": "direct",
+    "logical_macs": 3676122906624,
+    "issued_vectors": 233594880,
+    "padded_product_slots": 3827218513920,
+    "lhs_interface_capacity_bytes": 59800289280,
+    "fp32_output_capacity_bytes_if_every_segment_emits": 119600578560,
+    "weight_payload_bytes": 73734912
+  },
+  {
+    "interface": "bf16",
+    "method": "F(2,3)",
+    "logical_macs": 1633832402944,
+    "issued_vectors": 103841792,
+    "padded_product_slots": 1701343920128,
+    "lhs_interface_capacity_bytes": 26583498752,
+    "fp32_output_capacity_bytes_if_every_segment_emits": 53166997504,
+    "weight_payload_bytes": 131084288
+  },
+  {
+    "interface": "bf16",
+    "method": "F(4,3)",
+    "logical_macs": 919030726656,
+    "issued_vectors": 58411008,
+    "padded_product_slots": 957005955072,
+    "lhs_interface_capacity_bytes": 14953218048,
+    "fp32_output_capacity_bytes_if_every_segment_emits": 29906436096,
+    "weight_payload_bytes": 294939648
+  },
+  {
+    "interface": "fp8_geometry_only",
+    "method": "direct",
+    "logical_macs": 3676122906624,
+    "issued_vectors": 120471552,
+    "padded_product_slots": 3947611815936,
+    "lhs_interface_capacity_bytes": 30840717312,
+    "fp32_output_capacity_bytes_if_every_segment_emits": 61681434624,
+    "weight_payload_bytes": 36867456
+  },
+  {
+    "interface": "fp8_geometry_only",
+    "method": "F(2,3)",
+    "logical_macs": 1633832402944,
+    "issued_vectors": 66617344,
+    "padded_product_slots": 2182917128192,
+    "lhs_interface_capacity_bytes": 17054040064,
+    "fp32_output_capacity_bytes_if_every_segment_emits": 34108080128,
+    "weight_payload_bytes": 65542144
+  },
+  {
+    "interface": "fp8_geometry_only",
+    "method": "F(4,3)",
+    "logical_macs": 919030726656,
+    "issued_vectors": 37472256,
+    "padded_product_slots": 1227890884608,
+    "lhs_interface_capacity_bytes": 9592897536,
+    "fp32_output_capacity_bytes_if_every_segment_emits": 19185795072,
+    "weight_payload_bytes": 147469824
+  }
+]

@@ -1,0 +1,32 @@
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 2695.44it/s]
+original {'rmse': 0.0, 'mean_error': 0.0, 'maximum_absolute_error': 0.0, 'relative_mse': 0.0, 'psnr_unit_range': None, 'identical': True}
+int8-k256-a8-native: decoded 1/4
+int8-k256-a8-native: decoded 2/4
+int8-k256-a8-native: decoded 3/4
+int8-k256-a8-native: decoded 4/4
+int8-k256-a8-native {'rmse': 0.009870909562206421, 'mean_error': -0.00016039113203684488, 'maximum_absolute_error': 0.375, 'relative_mse': 0.00035931478381515813, 'psnr_unit_range': 40.11285654205401, 'identical': False}
+int8-k256-a4-native: decoded 1/4
+int8-k256-a4-native: decoded 2/4
+int8-k256-a4-native: decoded 3/4
+int8-k256-a4-native: decoded 4/4
+int8-k256-a4-native {'rmse': 0.0641353667637364, 'mean_error': -0.0008320808410644531, 'maximum_absolute_error': 1.0, 'relative_mse': 0.015168963483758291, 'psnr_unit_range': 23.858048347341672, 'identical': False}
+int8-k256-a4-r1-native: decoded 1/4
+int8-k256-a4-r1-native: decoded 2/4
+int8-k256-a4-r1-native: decoded 3/4
+int8-k256-a4-r1-native: decoded 4/4
+int8-k256-a4-r1-native {'rmse': 0.06281507388562067, 'mean_error': -0.0005181515589356422, 'maximum_absolute_error': 1.0, 'relative_mse': 0.014550854246520958, 'psnr_unit_range': 24.038722501118283, 'identical': False}
+int8-k256-a4-shift: decoded 1/4
+int8-k256-a4-shift: decoded 2/4
+int8-k256-a4-shift: decoded 3/4
+int8-k256-a4-shift: decoded 4/4
+int8-k256-a4-shift {'rmse': 0.06251521142442285, 'mean_error': -0.0005722657466928164, 'maximum_absolute_error': 1.0, 'relative_mse': 0.014412262020544343, 'psnr_unit_range': 24.0802859142715, 'identical': False}
+int8-k256-a8-r1-native: decoded 1/4
+int8-k256-a8-r1-native: decoded 2/4
+int8-k256-a8-r1-native: decoded 3/4
+int8-k256-a8-r1-native: decoded 4/4
+int8-k256-a8-r1-native {'rmse': 0.009621872165881562, 'mean_error': -5.954628189404806e-05, 'maximum_absolute_error': 0.416015625, 'relative_mse': 0.00034141288378620717, 'psnr_unit_range': 40.334808346758955, 'identical': False}
+int8-k256-a8-shift: decoded 1/4
+int8-k256-a8-shift: decoded 2/4
+int8-k256-a8-shift: decoded 3/4
+int8-k256-a8-shift: decoded 4/4
+int8-k256-a8-shift {'rmse': 0.009608105720418146, 'mean_error': -0.00013648377110560736, 'maximum_absolute_error': 0.537109375, 'relative_mse': 0.00034043663311824945, 'psnr_unit_range': 40.347244538535925, 'identical': False}
