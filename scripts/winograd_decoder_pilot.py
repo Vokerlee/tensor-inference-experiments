@@ -14,6 +14,7 @@ from modern_models import SANA, provenance, snapshot
 from sana_decoder_feedback import image_values, metrics, save_outputs
 from winograd_streaming import convolution, prepare
 from winograd_integer_models import POLICIES as INTEGER_POLICIES, modified as integer_modified
+from winograd_support import convolution_names as support_names
 
 
 POLICIES = {
@@ -37,9 +38,9 @@ def eligible(decoder):
 
 
 @contextmanager
-def modified(layers, case, records, tile_batch, evidence=None):
+def modified(layers, case, records, tile_batch, evidence=None, support_layers=None):
     if case in INTEGER_POLICIES:
-        with integer_modified(layers, case, records, tile_batch, evidence) as metadata:
+        with integer_modified(layers, case, records, tile_batch, evidence, support_layers) as metadata:
             yield metadata
         return
     tile, operand_dtype, bits, streaming = POLICIES[case]
@@ -112,7 +113,7 @@ def main():
             "sana_decoder_feedback.py", "modern_models.py", "activation_pilot.py",
             "integer_winograd.py", "winograd_rounding.py", "winograd_integer_models.py",
             "winograd_shift_rounding.py", "plane_rounding_backend.py", "integer_segment_backend.py",
-            "plane_encoding.py", "integer_winograd_one_axis.py", "winograd_one_axis.py", "fp8_winograd.py")},
+            "plane_encoding.py", "integer_winograd_one_axis.py", "winograd_one_axis.py", "fp8_winograd.py", "winograd_support.py")},
         "eligible_layers": list(layers), "cases": [],
         "limitations": [
             "Known Winograd transforms are numerical baselines, not a novel convolution algorithm",
@@ -148,7 +149,7 @@ def main():
                 outputs.append(result)
         else:
             with modified(layers, case, record["calls"], args.tile_batch,
-                          args.output / case / "prepared.npz") as metadata:
+                          args.output / case / "prepared.npz", support_layers=support_names(model.decoder)) as metadata:
                 record.update(metadata or {})
                 for index, values in enumerate(inputs):
                     before = len(record["calls"])
