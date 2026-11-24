@@ -105,6 +105,8 @@ def operator_rows(report, campaign, attachments):
             rows.append({"campaign": campaign, "layer": operator["layer"],
                          "bits": variant["bits"], "rank": variant.get("rank"),
                          "method": variant.get("method", "plane-proxy"),
+                         "transform_tile": report["settings"].get("tile", 2),
+                         "sampled_spatial_tiles": report["settings"]["tiles"],
                          "squared_error": squared, "relative_mse": variant["relative_mse"],
                          "sse_ratio_to_comparator": squared / baselines[variant["bits"]],
                          "comparator": "two-axis" if is_axis else "nearest",
@@ -156,16 +158,19 @@ def generate(archives, output):
         elif "totals" in report:
             mapping.extend({"campaign": campaign, **row} for row in report["totals"])
             retention.extend({"campaign": campaign, **row} for row in report["retention_variants"])
+            retention.extend({"campaign": campaign, "kind": "encoded-source-cache", **row}
+                             for row in report.get("encoded_retention_variants", []))
         else:
             raise ValueError(f"unrecognized report {campaign}")
     for name, rows in (("decoder-cases", cases), ("decoder-inputs", inputs), ("layer-calls", calls),
                        ("operators", operators), ("mapping", mapping), ("retention", retention)):
         write_table(output / f"{name}.csv", rows)
     operator_summary = []
-    for bits, rank in sorted({(row["bits"], row["rank"]) for row in operators if row["rank"] is not None}):
-        rows = [row for row in operators if (row["bits"], row["rank"]) == (bits, rank)]
-        baseline = [row for row in operators if row["bits"] == bits and row["rank"] == 0]
-        operator_summary.append({"bits": bits, "rank": rank, "layers": len(rows),
+    for bits, rank, tile in sorted({(row["bits"], row["rank"], row["transform_tile"])
+                                    for row in operators if row["rank"] is not None}):
+        rows = [row for row in operators if (row["bits"], row["rank"], row["transform_tile"]) == (bits, rank, tile)]
+        baseline = [row for row in operators if row["bits"] == bits and row["rank"] == 0 and row["transform_tile"] == tile]
+        operator_summary.append({"bits": bits, "rank": rank, "transform_tile": tile, "layers": len(rows),
                                  "aggregate_sse_ratio": sum(row["squared_error"] for row in rows)
                                                         / sum(row["squared_error"] for row in baseline),
                                  "improved_layers": sum(row["sse_ratio_to_comparator"] < 1 for row in rows)})
