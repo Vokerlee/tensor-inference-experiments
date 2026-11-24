@@ -1,0 +1,179 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "logs/winograd-axis-decoder-discovery.log",
+      "archive": "logs/winograd-axis-decoder-discovery.log",
+      "bytes": 1840,
+      "kind": "supplement",
+      "sha256": "c08dcceb76c091c9676498cda04633a0b931ed1950b8994df421f580e58bbf8c"
+    },
+    {
+      "source": "logs/winograd-axis-decoder-holdout.log",
+      "archive": "logs/winograd-axis-decoder-holdout.log",
+      "bytes": 1735,
+      "kind": "supplement",
+      "sha256": "ad3556c58ca8351b562e029c51e1d8aadcec1a92c058406fbc49250f04421a17"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-all/arrays.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-all/arrays.npz",
+      "bytes": 8670321,
+      "kind": "referenced-array",
+      "sha256": "141323f62f32a74bf1bf4f039eeeef73288f27625a3756dabfa0af8fb76350a6"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-all/prepared.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-all/prepared.npz",
+      "bytes": 51348,
+      "kind": "referenced-array",
+      "sha256": "0d15525832d783f84790d4368b143c3494117d50f90a8f304379bc674922c6f1"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-fit/arrays.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-fit/arrays.npz",
+      "bytes": 8959085,
+      "kind": "referenced-array",
+      "sha256": "2244e30b57585efc17ae4034fb4a780bf0266175e7f5c51b68e9bb74c060b831"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-fit/prepared.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-fit/prepared.npz",
+      "bytes": 63711,
+      "kind": "referenced-array",
+      "sha256": "d8c1f812e9db78286f2d94d41b3e7423464a96b747d6bbd7ae2a09a55c1432d8"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-native/arrays.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-native/arrays.npz",
+      "bytes": 9037814,
+      "kind": "referenced-array",
+      "sha256": "dc457153063a3f80bebe7506396e527eda8a18423b23b29418289452b40d036e"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-native/prepared.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-native/prepared.npz",
+      "bytes": 69071,
+      "kind": "referenced-array",
+      "sha256": "640b72b588e461fe6a0f90e42cb75f5276ddb2618909f325ca7818d259994e32"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a8-axis-all/arrays.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a8-axis-all/arrays.npz",
+      "bytes": 8139279,
+      "kind": "referenced-array",
+      "sha256": "2afecc9f72d947829f00639444f5c2cf73a1ca52d883322445e7c34b890b9a37"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a8-axis-all/prepared.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-all/prepared.npz",
+      "bytes": 51348,
+      "kind": "referenced-array",
+      "sha256": "0d15525832d783f84790d4368b143c3494117d50f90a8f304379bc674922c6f1"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a8-axis-fit/arrays.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a8-axis-fit/arrays.npz",
+      "bytes": 8127061,
+      "kind": "referenced-array",
+      "sha256": "12e1dc99468eefa964c09830d614254c020fbfba8b9ca5c52a51129a6c8fda48"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a8-axis-fit/prepared.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-axis-fit/prepared.npz",
+      "bytes": 63711,
+      "kind": "referenced-array",
+      "sha256": "d8c1f812e9db78286f2d94d41b3e7423464a96b747d6bbd7ae2a09a55c1432d8"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a8-native/arrays.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a8-native/arrays.npz",
+      "bytes": 8149086,
+      "kind": "referenced-array",
+      "sha256": "00ceda703e77ff6e4a8f2d91a6d98f0ac87a4ddf9cdc939936ce72784879e9c3"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/int8-k256-a8-native/prepared.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/int8-k256-a4-native/prepared.npz",
+      "bytes": 69071,
+      "kind": "referenced-array",
+      "sha256": "640b72b588e461fe6a0f90e42cb75f5276ddb2618909f325ca7818d259994e32"
+    },
+    {
+      "source": "winograd-axis-decoder-discovery-20261124/original/arrays.npz",
+      "archive": "winograd-axis-decoder-discovery-20261124/original/arrays.npz",
+      "bytes": 8112725,
+      "kind": "referenced-array",
+      "sha256": "edb0377695196f5c348cae994e489f1956d8afb0406e012170d132bcbae8f7aa"
+    },
+    {
+      "source": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-all/arrays.npz",
+      "archive": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-all/arrays.npz",
+      "bytes": 34783366,
+      "kind": "referenced-array",
+      "sha256": "77499f1ab38a428fbac54e337231b8308da1c9705d33edfbd8fdb527c512d348"
+    },
+    {
+      "source": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-all/prepared.npz",
+      "archive": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-all/prepared.npz",
+      "bytes": 50858,
+      "kind": "referenced-array",
+      "sha256": "c1546df80a91a848f4cc02539ad48354fe7665028e982f28703f90105bac734d"
+    },
+    {
+      "source": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-fit/arrays.npz",
+      "archive": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-fit/arrays.npz",
+      "bytes": 35253886,
+      "kind": "referenced-array",
+      "sha256": "8ff99999bb29600612eae49df3802422c87e02d02fa21bd4664031a9e1e1356c"
+    },
+    {
+      "source": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-fit/prepared.npz",
+      "archive": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-fit/prepared.npz",
+      "bytes": 63221,
+      "kind": "referenced-array",
+      "sha256": "ebc7dc3d42eff6dce332410db627538fd65cf1fa991c28e05b543f8472668191"
+    },
+    {
+      "source": "winograd-axis-decoder-holdout-20261124/int8-k256-a8-axis-all/arrays.npz",
+      "archive": "winograd-axis-decoder-holdout-20261124/int8-k256-a8-axis-all/arrays.npz",
+      "bytes": 33945434,
+      "kind": "referenced-array",
+      "sha256": "83f42885f056c4d723f6d9594533434c8698dd802778972821465ad4270dd501"
+    },
+    {
+      "source": "winograd-axis-decoder-holdout-20261124/int8-k256-a8-axis-all/prepared.npz",
+      "archive": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-all/prepared.npz",
+      "bytes": 50858,
+      "kind": "referenced-array",
+      "sha256": "c1546df80a91a848f4cc02539ad48354fe7665028e982f28703f90105bac734d"
+    },
+    {
+      "source": "winograd-axis-decoder-holdout-20261124/int8-k256-a8-axis-fit/arrays.npz",
+      "archive": "winograd-axis-decoder-holdout-20261124/int8-k256-a8-axis-fit/arrays.npz",
+      "bytes": 33943353,
+      "kind": "referenced-array",
+      "sha256": "0dffdedbc7f4a93d220130a479af7340e3220a8fb479f98356d5036ccb3a4850"
+    },
+    {
+      "source": "winograd-axis-decoder-holdout-20261124/int8-k256-a8-axis-fit/prepared.npz",
+      "archive": "winograd-axis-decoder-holdout-20261124/int8-k256-a4-axis-fit/prepared.npz",
+      "bytes": 63221,
+      "kind": "referenced-array",
+      "sha256": "ebc7dc3d42eff6dce332410db627538fd65cf1fa991c28e05b543f8472668191"
+    },
+    {
+      "source": "winograd-axis-decoder-holdout-20261124/original/arrays.npz",
+      "archive": "winograd-axis-decoder-holdout-20261124/original/arrays.npz",
+      "bytes": 33964172,
+      "kind": "referenced-array",
+      "sha256": "bbced909d0743f1436d6acc2492892549210b3db6e95842a962be90396f2227e"
+    }
+  ],
+  "content_deduplicated": true,
+  "limitations": [
+    "Array containers and explicit supplements are preserved byte for byte",
+    "Archiving does not establish scientific validity or recover missing historical source versions",
+    "Weight checkpoints and captured operand tensors remain regenerable inputs, not archived statistics"
+  ]
+}
