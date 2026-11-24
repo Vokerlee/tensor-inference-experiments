@@ -62,7 +62,7 @@ def extract(padded: torch.Tensor, first: int, last: int, rows: int, columns: int
 
 
 def map_tiles(values: torch.Tensor, outputs: int, consumer, bias: torch.Tensor | None = None,
-              *, tile: int = 2, padding: int = 1, tile_batch: int = 64):
+              *, tile: int = 2, padding: int = 1, tile_batch: int = 64, source_transform=None):
     """Transform bounded input batches and store a consumer's actual spatial tiles."""
     if (values.ndim != 4 or min(values.shape) < 1 or outputs < 1 or tile not in (2, 4)
             or padding not in (0, 1) or tile_batch < 1):
@@ -81,7 +81,9 @@ def map_tiles(values: torch.Tensor, outputs: int, consumer, bias: torch.Tensor |
     count = values.shape[0] * rows * columns
     for first in range(0, count, tile_batch):
         last = min(first + tile_batch, count)
-        transformed = transform_inputs(extract(padded, first, last, rows, columns, tile), scheme)
+        spatial_tiles = extract(padded, first, last, rows, columns, tile)
+        transformed = (transform_inputs(spatial_tiles, scheme) if source_transform is None
+                       else source_transform(spatial_tiles))
         stats["maximum_abs_transformed_input"] = max(stats["maximum_abs_transformed_input"],
                                                        float(transformed.abs().max()))
         result = consumer(transformed)

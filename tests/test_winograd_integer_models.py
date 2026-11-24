@@ -37,7 +37,8 @@ def test_native_proxy_and_causal_shift_reach_the_actual_model_consumers(tmp_path
     source = torch.randn(1, 32, 5, 7, device="cuda")
     original = model(source)
     for case in ("int8-k256-a4-native", "int8-k256-a8-native",
-                 "int8-k256-a4-r1-native", "int8-k256-a4-shift", "int8-k256-a8-shift"):
+                 "int8-k256-a4-r1-native", "int8-k256-a4-shift", "int8-k256-a8-shift",
+                 "int8-k256-a4-axis-fit", "int8-k256-a8-axis-all"):
         records = []
         with modified({"conv": model}, case, records, 3, tmp_path / f"{case}.npz"):
             result = model(source)
