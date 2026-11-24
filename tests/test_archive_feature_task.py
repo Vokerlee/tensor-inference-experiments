@@ -55,3 +55,11 @@ def test_incomplete_run_cannot_be_published_as_complete(tmp_path):
     (source / "report.json").write_text(json.dumps(report))
     with pytest.raises(ValueError, match="completed"):
         create(source, tmp_path / "archive")
+
+
+def test_archiving_from_another_checkout_uses_the_local_verified_gallery(tmp_path):
+    source, report = run_fixture(tmp_path)
+    report["gallery"] = "results/historical-checkout/gallery.npz"
+    (source / "report.json").write_text(json.dumps(report))
+    create(source, tmp_path / "archive")
+    assert verify(tmp_path / "archive") == 3

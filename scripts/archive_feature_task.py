@@ -41,7 +41,9 @@ def create(source: Path, destination: Path, shard_size: int = 500,
     destination.mkdir(parents=True, exist_ok=False)
     raw = original.read_bytes()
     (destination / "report.json.gz").write_bytes(gzip.compress(raw, mtime=0))
-    gallery = Path(report["gallery"])
+    # The producer stores gallery.npz beside report.json. Historical references
+    # may be relative to another checkout; content identity is checked below.
+    gallery = source / "gallery.npz"
     if digest(gallery) != report["gallery_sha256"]:
         raise ValueError("gallery changed")
     shutil.copyfile(gallery, destination / "gallery.npz")
