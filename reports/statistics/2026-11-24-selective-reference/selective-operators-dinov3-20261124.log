@@ -1,0 +1,5 @@
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 1232.53it/s]
+dinov3-small blocks.0.attn.qkv {'full-direct': (1.0, None), 'full-tiled': (0.849, None), 'hybrid-chains4': (0.352, 42669), 'hybrid-tensorcore': (0.286, 69822)}
+dinov3-small blocks.0.attn.proj {'full-direct': (0.771, None), 'full-tiled': (1.0, None), 'hybrid-chains4': (0.288, 43712), 'hybrid-tensorcore': (0.234, 69376)}
+dinov3-small blocks.0.mlp.fc1 {'full-direct': (1.0, None), 'full-tiled': (0.714, None), 'hybrid-chains4': (0.368, 58424), 'hybrid-tensorcore': (0.524, 110080)}
+dinov3-small blocks.0.mlp.fc2 {'full-direct': (1.0, None), 'full-tiled': (0.816, None), 'hybrid-chains4': (0.388, 31189), 'hybrid-tensorcore': (0.173, 51408)}
