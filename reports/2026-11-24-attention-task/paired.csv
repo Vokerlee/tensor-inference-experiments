@@ -1,0 +1,7 @@
+run,candidate,reference,queries,benefit,harm,accuracy_difference,bootstrap_95_lower,bootstrap_95_upper,family_lower,margin,mcnemar_two_sided,meets_predeclared_bootstrap_screen
+discovery,qkv4-balanced-r4,qkv4-nearest,100,8,6,0.02,,,,0.0,0.79052734375,False
+discovery,q4-k8-v8,uniform8,100,4,4,0.0,,,,-0.01,1.0,False
+discovery,q8-k4-v8,uniform8,100,5,6,-0.01,,,,-0.01,1.0,False
+replication,qkv4-balanced-r4,qkv4-nearest,3000,210,175,0.011666666666666667,-0.001,0.024,-0.002,0.0,0.08299749137777768,False
+replication,q4-k8-v8,uniform8,3000,123,183,-0.02,-0.031,-0.009,-0.03233333333333333,-0.01,0.000718383640821441,False
+replication,q8-k4-v8,uniform8,3000,113,176,-0.021,-0.03166666666666667,-0.010333333333333333,-0.03266666666666666,-0.01,0.0002520044022984467,False

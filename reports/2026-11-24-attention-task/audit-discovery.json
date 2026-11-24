@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "queries": 100,
+  "complete_output_checks": 900,
+  "correct": {
+    "bf16": 67,
+    "q4-k8-v8": 69,
+    "q8-k4-v8": 68,
+    "qk4-v8": 60,
+    "qkv4-balanced-r4": 65,
+    "qkv4-nearest": 63,
+    "qkv4-raw-r1": 63,
+    "uniform4-all": 51,
+    "uniform8": 69
+  },
+  "matched_reference_different_from_fused": 0,
+  "selected_linear_macs_per_forward": 5541986304,
+  "non_bf16_distinct_attention_encodings": {
+    "bf16": 0,
+    "q4-k8-v8": 2400,
+    "q8-k4-v8": 2400,
+    "qk4-v8": 2400,
+    "qkv4-balanced-r4": 1200,
+    "qkv4-nearest": 1200,
+    "qkv4-raw-r1": 1200,
+    "uniform4-all": 1200,
+    "uniform8": 1200
+  },
+  "maximum_independent_cosine_difference": 1.9984014443252818e-15,
+  "manifest_sha256": "c56f8d7c009822dc43adb5e68cc1d22f35f815bef5463e213ab5050fb58db8ca",
+  "auditor_sha256": "87d1aed629db4f7a71c6cd8f05aaf7f7b60018e2d3ff1878669a0ce699175620",
+  "limitations": [
+    "Audits preserved outputs/decisions, not a new model inference or population accuracy",
+    "Attention encoding counts deduplicate role sharing; they are not hardware energy"
+  ]
+}

@@ -106,3 +106,7 @@ controller arrays and repeated software-emulation timings are preserved.
 [Shared activation rounding report](reports/2026-11-24-activation-rounding.md)
 links complete receiving, descriptor and preliminary evidence with regenerable
 comparison tables.
+
+[Complete attention recognition replication](reports/2026-11-24-attention-task.md)
+retains all3100 evaluated queries, paired uncertainty and independent full-output
+audits, including failure of the declared accuracy-preservation screens.
