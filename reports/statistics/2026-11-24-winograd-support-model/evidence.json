@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "logs/winograd-support-decoder-discovery.log",
+      "archive": "logs/winograd-support-decoder-discovery.log",
+      "bytes": 827,
+      "kind": "supplement",
+      "sha256": "ec339a852998439d77f67b9f7ce2f9438d1befd4cfa0af5f3eff82bca072e3ae"
+    },
+    {
+      "source": "logs/winograd-support-decoder-holdout.log",
+      "archive": "logs/winograd-support-decoder-holdout.log",
+      "bytes": 1074,
+      "kind": "supplement",
+      "sha256": "533d68743fab5c13e1d6c2497c81eac08b706f1ffea26ddb939847eef0e2f339"
+    },
+    {
+      "source": "winograd-support-decoder-discovery-20261124/int8-k256-a4-support-shift/arrays.npz",
+      "archive": "winograd-support-decoder-discovery-20261124/int8-k256-a4-support-shift/arrays.npz",
+      "bytes": 8934241,
+      "kind": "referenced-array",
+      "sha256": "78192ccbdd5e9c1f8e18c83bac4224102b9bb159b4485bc266aa36d3ed1c08ba"
+    },
+    {
+      "source": "winograd-support-decoder-discovery-20261124/int8-k256-a4-support-shift/prepared.npz",
+      "archive": "winograd-support-decoder-discovery-20261124/int8-k256-a4-support-shift/prepared.npz",
+      "bytes": 7810853,
+      "kind": "referenced-array",
+      "sha256": "2a778eeac67b59f36bc204db663d86339ed3a614df9d6308e5a5acdad69cd2eb"
+    },
+    {
+      "source": "winograd-support-decoder-discovery-20261124/int8-k256-f4-a8-support-shift/arrays.npz",
+      "archive": "winograd-support-decoder-discovery-20261124/int8-k256-f4-a8-support-shift/arrays.npz",
+      "bytes": 8172640,
+      "kind": "referenced-array",
+      "sha256": "58608408d93a2222a69eb2962662c9608efa7244f436ed22c63e0560ec5ee6ff"
+    },
+    {
+      "source": "winograd-support-decoder-discovery-20261124/int8-k256-f4-a8-support-shift/prepared.npz",
+      "archive": "winograd-support-decoder-discovery-20261124/int8-k256-f4-a8-support-shift/prepared.npz",
+      "bytes": 46529475,
+      "kind": "referenced-array",
+      "sha256": "edae9f06c3f512ec4046cfd5bc1e0d87ef41f8c64fb2d11f004739d66708903b"
+    },
+    {
+      "source": "winograd-support-decoder-discovery-20261124/original/arrays.npz",
+      "archive": "winograd-support-decoder-discovery-20261124/original/arrays.npz",
+      "bytes": 8112725,
+      "kind": "referenced-array",
+      "sha256": "edb0377695196f5c348cae994e489f1956d8afb0406e012170d132bcbae8f7aa"
+    },
+    {
+      "source": "winograd-support-decoder-holdout-20261124/int8-k256-a4-support-shift/arrays.npz",
+      "archive": "winograd-support-decoder-holdout-20261124/int8-k256-a4-support-shift/arrays.npz",
+      "bytes": 35020641,
+      "kind": "referenced-array",
+      "sha256": "fa3b882d99135a72e182dd5bfcc54c2cf0814c6d7d52a29ecf114c5d6ef46622"
+    },
+    {
+      "source": "winograd-support-decoder-holdout-20261124/int8-k256-a4-support-shift/prepared.npz",
+      "archive": "winograd-support-decoder-holdout-20261124/int8-k256-a4-support-shift/prepared.npz",
+      "bytes": 7672905,
+      "kind": "referenced-array",
+      "sha256": "1957d0e095953ae912f99378cb23162c570a956db3b72f510826a0a2f498dd41"
+    },
+    {
+      "source": "winograd-support-decoder-holdout-20261124/int8-k256-f4-a8-support-shift/arrays.npz",
+      "archive": "winograd-support-decoder-holdout-20261124/int8-k256-f4-a8-support-shift/arrays.npz",
+      "bytes": 34028462,
+      "kind": "referenced-array",
+      "sha256": "87e113f9621cf619ca9c0e9c04e1c0f496ccdedf4bca68000c4bbebcaa6cf5aa"
+    },
+    {
+      "source": "winograd-support-decoder-holdout-20261124/int8-k256-f4-a8-support-shift/prepared.npz",
+      "archive": "winograd-support-decoder-holdout-20261124/int8-k256-f4-a8-support-shift/prepared.npz",
+      "bytes": 45802227,
+      "kind": "referenced-array",
+      "sha256": "8162c71f4457c64f701326dd666ad5a30fcaebc6982a88993621ea3653292d1c"
+    },
+    {
+      "source": "winograd-support-decoder-holdout-20261124/original/arrays.npz",
+      "archive": "winograd-support-decoder-holdout-20261124/original/arrays.npz",
+      "bytes": 33964172,
+      "kind": "referenced-array",
+      "sha256": "bbced909d0743f1436d6acc2492892549210b3db6e95842a962be90396f2227e"
+    }
+  ],
+  "content_deduplicated": true,
+  "limitations": [
+    "Array containers and explicit supplements are preserved byte for byte",
+    "Archiving does not establish scientific validity or recover missing historical source versions",
+    "Weight checkpoints and captured operand tensors remain regenerable inputs, not archived statistics"
+  ]
+}

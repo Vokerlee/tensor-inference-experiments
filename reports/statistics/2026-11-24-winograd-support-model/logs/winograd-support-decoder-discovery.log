@@ -1,0 +1,6 @@
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 3264.41it/s]
+original {'rmse': 0.0, 'mean_error': 0.0, 'maximum_absolute_error': 0.0, 'relative_mse': 0.0, 'psnr_unit_range': None, 'identical': True}
+int8-k256-a4-support-shift: decoded 1/1
+int8-k256-a4-support-shift {'rmse': 0.0300552600308485, 'mean_error': 0.0016598664224147797, 'maximum_absolute_error': 0.6484375, 'relative_mse': 0.005131869393429459, 'psnr_unit_range': 30.44159020536355, 'identical': False}
+int8-k256-f4-a8-support-shift: decoded 1/1
+int8-k256-f4-a8-support-shift {'rmse': 0.007885168027471174, 'mean_error': 0.001103600487112999, 'maximum_absolute_error': 0.328125, 'relative_mse': 0.00035322913686705853, 'psnr_unit_range': 42.063780954435174, 'identical': False}
