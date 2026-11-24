@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "activation-rounding-adjacent-operators-20261124/report.json",
+      "archive": "activation-rounding-adjacent-operators-20261124/report.json.gz",
+      "source_sha256": "d414725790dc02cee85a4d35c60c6a2f03f9e7036921520bc047a040283ab5ed",
+      "payload_sha256": "d414725790dc02cee85a4d35c60c6a2f03f9e7036921520bc047a040283ab5ed",
+      "archive_sha256": "b2a08c8b1df66fce285a26b8f41c09232d666bea6ba05e9895f22b3b4bdf2296",
+      "source_bytes": 212188,
+      "payload_bytes": 212188,
+      "archive_bytes": 32020,
+      "normalized_fields": [],
+      "experiments": {
+        "commit": "21d5a131a00e804c65d86e6f1dff63a72fe5027f",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "activation-rounding-dinov3-20261124/report.json",
+      "archive": "activation-rounding-dinov3-20261124/report.json.gz",
+      "source_sha256": "3d750db5b090a921d7a364d52bc2f0a65255988a75b08de95b7dce9c0b6851ce",
+      "payload_sha256": "3d750db5b090a921d7a364d52bc2f0a65255988a75b08de95b7dce9c0b6851ce",
+      "archive_sha256": "b6dd5bda59cfab88f6310fd9e9b34f473e8fbee971037d48d54c81b2bf42085a",
+      "source_bytes": 4206083,
+      "payload_bytes": 4206083,
+      "archive_bytes": 331478,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "7b9a37eacdf934c82c5cd457a459b500d22702d4",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "activation-rounding-operators-20261124/report.json",
+      "archive": "activation-rounding-operators-20261124/report.json.gz",
+      "source_sha256": "05e3544fae6db0b2343c86eed5e9be49bc7a345f48c2028e7586b4ebe210d469",
+      "payload_sha256": "05e3544fae6db0b2343c86eed5e9be49bc7a345f48c2028e7586b4ebe210d469",
+      "archive_sha256": "d6559e671cbb9e3ac4a565351acd83e9c1ebd75212ba4c0bff311f6a9038d747",
+      "source_bytes": 209365,
+      "payload_bytes": 209365,
+      "archive_bytes": 32002,
+      "normalized_fields": [],
+      "experiments": {
+        "commit": "9016ae24800460936ed92bab56c4d8947511c89c",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "activation-rounding-preliminary-sketch-20261124/report.json",
+      "archive": "activation-rounding-preliminary-sketch-20261124/report.json.gz",
+      "source_sha256": "8ae519399735266f0216be0b9249f7907f901f924e79163924e52ec757f339af",
+      "payload_sha256": "8ae519399735266f0216be0b9249f7907f901f924e79163924e52ec757f339af",
+      "archive_sha256": "c1c29928ac6dfd4cae1e9767a900a5e22a22c1103bcc222472be186fe88706d6",
+      "source_bytes": 94424,
+      "payload_bytes": 94424,
+      "archive_bytes": 26566,
+      "normalized_fields": []
+    },
+    {
+      "source": "attention-rounding-dinov3-20261124/report.json",
+      "archive": "attention-rounding-dinov3-20261124/report.json.gz",
+      "source_sha256": "2d9927ba55a54d0e0278f6e358fb511a05435fceadda3b7078f2d6d9ed4081ba",
+      "payload_sha256": "2d9927ba55a54d0e0278f6e358fb511a05435fceadda3b7078f2d6d9ed4081ba",
+      "archive_sha256": "d5904c0cb922ab7ce2c80f7aed5a0f435db25e26cfb6b216e9b1584672593aaa",
+      "source_bytes": 6595273,
+      "payload_bytes": 6595273,
+      "archive_bytes": 458004,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "a8804da8e41036dceac24dfb866c8ccdcd7e3074",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}

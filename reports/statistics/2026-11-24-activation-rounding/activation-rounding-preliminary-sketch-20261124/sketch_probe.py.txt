@@ -1,0 +1,27 @@
+import json,sys,hashlib
+from pathlib import Path
+import numpy as np
+import torch
+root=Path('/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/code/tensor-inference-experiments')
+torch.set_num_threads(8)
+rows=[]
+for model in ['convnextv2','dinov3']:
+ folder=root/f'results/selective-operators-{model}-20261124'
+ for op in json.loads((folder/'report.json').read_text())['operators']:
+  with np.load(root/op['operands'],allow_pickle=False) as f:
+   a=torch.from_numpy(f['source_bf16'].copy()).view(torch.bfloat16).float()
+   b=torch.from_numpy(f['weight_bf16'].copy()).view(torch.bfloat16).float()
+  if a.shape[1]%32:continue
+  w=b.reshape(-1,32,b.shape[1]).double()
+  h=w@w.transpose(1,2)
+  eig,vec=torch.linalg.eigh(h)
+  diag=h.diagonal(dim1=1,dim2=2)
+  records=[]
+  for rank in [1,2,4,8]:
+   u=vec[:,:,-rank:]*eig[:,-rank:].clamp_min(0).sqrt()[:,None,:]
+   residual=(diag-u.square().sum(-1)).clamp_min(0)
+   rest=h-u@u.transpose(1,2)-torch.diag_embed(residual)
+   records.append({'rank':rank,'energy_fraction':(eig[:,-rank:].sum(-1)/eig.sum(-1)).tolist(),
+                   'relative_offdiagonal_tail_norm':(torch.linalg.matrix_norm(rest,ord=2)/eig[:,-1]).tolist()})
+  rows.append({'model':model,'layer':op['layer'],'groups':h.shape[0],'N':b.shape[1],'spectra':records})
+print(json.dumps({'status':'complete','kind':'preliminary-weight-geometry','records':rows},indent=2))
