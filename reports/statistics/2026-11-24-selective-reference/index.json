@@ -1,0 +1,201 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "precision-cast-audit-20261124.json",
+      "archive": "precision-cast-audit-20261124.json.gz",
+      "source_sha256": "1a0cf6525335239678fbd7a37b06eec2f15dac1d4f6fe3f3aa91041e45b77613",
+      "payload_sha256": "1a0cf6525335239678fbd7a37b06eec2f15dac1d4f6fe3f3aa91041e45b77613",
+      "archive_sha256": "c9982ea44c0ecc2e78d451494c95ce86c32a8abfbb12d00c1d9ad7dc48373434",
+      "source_bytes": 1490,
+      "payload_bytes": 1490,
+      "archive_bytes": 734,
+      "normalized_fields": [],
+      "experiments": {
+        "commit": "76b27d95b497250ad32c34bdd4a275c87cef5ad7",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/report.json",
+      "archive": "selective-model-convnextv2-20261124/report.json.gz",
+      "source_sha256": "c131711f6e8888e0026886f75a26711af6bd5fea2c4b6a8332eeaa941594d859",
+      "payload_sha256": "c131711f6e8888e0026886f75a26711af6bd5fea2c4b6a8332eeaa941594d859",
+      "archive_sha256": "1ee0627608346a8dd119faa3fb4a5f0434bdda10573b367579259d4ff5f5975a",
+      "source_bytes": 2481939,
+      "payload_bytes": 2481939,
+      "archive_bytes": 294013,
+      "normalized_fields": [],
+      "model": "convnextv2-tiny",
+      "experiments": {
+        "commit": "c101eca8581a68f18acf5aca30f2005ead18c23b",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "selective-model-dinov3-20261124/report.json",
+      "archive": "selective-model-dinov3-20261124/report.json.gz",
+      "source_sha256": "0301398fdacd9946178e50997956f6ea99a83eda94dc74524a6e5bc2e8110eaf",
+      "payload_sha256": "0301398fdacd9946178e50997956f6ea99a83eda94dc74524a6e5bc2e8110eaf",
+      "archive_sha256": "4f8d4fa4baf9e1b14a798dcd70499e70bcf537e278e635ef79c9823b51fa39a3",
+      "source_bytes": 1832473,
+      "payload_bytes": 1832473,
+      "archive_bytes": 202904,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "c101eca8581a68f18acf5aca30f2005ead18c23b",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "selective-model-timing-convnextv2-20261124/report.json",
+      "archive": "selective-model-timing-convnextv2-20261124/report.json.gz",
+      "source_sha256": "0e5258bb312d354eab153a3a9c8b89041976ae8a56e6ec9964c6d591a01e11ac",
+      "payload_sha256": "0e5258bb312d354eab153a3a9c8b89041976ae8a56e6ec9964c6d591a01e11ac",
+      "archive_sha256": "17fe3857c91a913172ef5786321b60d398ab9111c0fc93ce9318e5629cc2cfdd",
+      "source_bytes": 72612,
+      "payload_bytes": 72612,
+      "archive_bytes": 11349,
+      "normalized_fields": [],
+      "model": "convnextv2-tiny",
+      "experiments": {
+        "commit": "76b27d95b497250ad32c34bdd4a275c87cef5ad7",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "selective-model-timing-dinov3-20261124/report.json",
+      "archive": "selective-model-timing-dinov3-20261124/report.json.gz",
+      "source_sha256": "1a8f1b7edb758a058e7063272b2a3b6f478ce24b2ecc99862099fb6a09ab6cb1",
+      "payload_sha256": "1a8f1b7edb758a058e7063272b2a3b6f478ce24b2ecc99862099fb6a09ab6cb1",
+      "archive_sha256": "b4456884a8964392bae1391c444b85e1cb322228a1efe80fe6416b90e27ebe6c",
+      "source_bytes": 72590,
+      "payload_bytes": 72590,
+      "archive_bytes": 11326,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "76b27d95b497250ad32c34bdd4a275c87cef5ad7",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/report.json",
+      "archive": "selective-operators-convnextv2-20261124/report.json.gz",
+      "source_sha256": "89aa8cf09d68b375108a5d8d4a7255595d8aebb484dcb3aadb77a633f236ddd6",
+      "payload_sha256": "89aa8cf09d68b375108a5d8d4a7255595d8aebb484dcb3aadb77a633f236ddd6",
+      "archive_sha256": "7d0c6e9f8d6c13e9c87ce9fca614c0f73176a01aa0e09c1c1158980cbc8fd144",
+      "source_bytes": 85969,
+      "payload_bytes": 85969,
+      "archive_bytes": 15166,
+      "normalized_fields": [],
+      "model": "convnextv2-tiny",
+      "experiments": {
+        "commit": "d7e23afb091beb98600de8c19c990ecdabf315f2",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "selective-operators-dinov3-20261124/report.json",
+      "archive": "selective-operators-dinov3-20261124/report.json.gz",
+      "source_sha256": "5ff8451c630cd3b38bad42c1e24557c0e5aa1fddb9687c2e3cc2479a9adaeebe",
+      "payload_sha256": "5ff8451c630cd3b38bad42c1e24557c0e5aa1fddb9687c2e3cc2479a9adaeebe",
+      "archive_sha256": "44546998c8da62ce03403e5f33684ff9c65f0686d38837d7142a56540d3a428b",
+      "source_bytes": 43229,
+      "payload_bytes": 43229,
+      "archive_bytes": 8666,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "d7e23afb091beb98600de8c19c990ecdabf315f2",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "selective-preliminary-20261124/hybrid-observation-preliminary.json",
+      "archive": "selective-preliminary-20261124/hybrid-observation-preliminary.json.gz",
+      "source_sha256": "17707c73daef19ddf3e4e06b87b5dbe8d5492238a407128f049c446e22d8986b",
+      "payload_sha256": "17707c73daef19ddf3e4e06b87b5dbe8d5492238a407128f049c446e22d8986b",
+      "archive_sha256": "e3e2ce73f4dabc15812b2484fc9c1f3250df953a95f8dc9b012946882ed51fb8",
+      "source_bytes": 4110,
+      "payload_bytes": 4110,
+      "archive_bytes": 1019,
+      "normalized_fields": []
+    },
+    {
+      "source": "selective-stages-convnextv2-20261124.json",
+      "archive": "selective-stages-convnextv2-20261124.json.gz",
+      "source_sha256": "7a2d42900937651d6a8b92c7772bcf6a0b1e0d8d069e4aadf46878d26e7a8546",
+      "payload_sha256": "7a2d42900937651d6a8b92c7772bcf6a0b1e0d8d069e4aadf46878d26e7a8546",
+      "archive_sha256": "38b3d349ed2b45c795da398227071d565de3bd39e8ae1eced2e07ceed0cc51c3",
+      "source_bytes": 132559,
+      "payload_bytes": 132559,
+      "archive_bytes": 19576,
+      "normalized_fields": [],
+      "model": "convnextv2-tiny",
+      "experiments": {
+        "commit": "7d99b4a8a957b8722c9b2f2b91cfc9d4ffd0b531",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "selective-stages-dinov3-20261124.json",
+      "archive": "selective-stages-dinov3-20261124.json.gz",
+      "source_sha256": "ce0ed0fedced88661af7ef864f169752018cea74d44c01ae9a674350decfa24d",
+      "payload_sha256": "ce0ed0fedced88661af7ef864f169752018cea74d44c01ae9a674350decfa24d",
+      "archive_sha256": "83c12d579f3e6318d3432595fe33a43de95eedaf566e98ec11e6730db337f508",
+      "source_bytes": 66893,
+      "payload_bytes": 66893,
+      "archive_bytes": 10819,
+      "normalized_fields": [],
+      "model": "dinov3-small",
+      "experiments": {
+        "commit": "7d99b4a8a957b8722c9b2f2b91cfc9d4ffd0b531",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}
