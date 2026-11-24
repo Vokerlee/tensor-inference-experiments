@@ -1,0 +1,10 @@
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 1922.23it/s]
+convnextv2-tiny 0 bf16 {'full-direct': 1.0, 'full-tiled': 0.873, 'hybrid-chains4': 0.378, 'hybrid-tensorcore': 0.385}
+convnextv2-tiny 0 dynamic8 {'full-direct': 0.867, 'full-tiled': 1.0, 'hybrid-chains4': 0.374, 'hybrid-tensorcore': 0.36}
+convnextv2-tiny 0 live4 {'full-direct': 1.0, 'full-tiled': 0.935, 'hybrid-chains4': 0.403, 'hybrid-tensorcore': 0.544}
+convnextv2-tiny 1 bf16 {'full-direct': 1.0, 'full-tiled': 0.923, 'hybrid-chains4': 0.361, 'hybrid-tensorcore': 0.331}
+convnextv2-tiny 1 dynamic8 {'full-direct': 1.0, 'full-tiled': 0.974, 'hybrid-chains4': 0.374, 'hybrid-tensorcore': 0.385}
+convnextv2-tiny 1 live4 {'full-direct': 0.931, 'full-tiled': 1.0, 'hybrid-chains4': 0.546, 'hybrid-tensorcore': 0.566}
+convnextv2-tiny 2 bf16 {'full-direct': 1.0, 'full-tiled': 0.906, 'hybrid-chains4': 0.37, 'hybrid-tensorcore': 0.297}
+convnextv2-tiny 2 dynamic8 {'full-direct': 0.976, 'full-tiled': 1.0, 'hybrid-chains4': 0.392, 'hybrid-tensorcore': 0.422}
+convnextv2-tiny 2 live4 {'full-direct': 1.0, 'full-tiled': 0.768, 'hybrid-chains4': 0.446, 'hybrid-tensorcore': 0.406}

@@ -1,0 +1,9 @@
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 1919.59it/s]
+convnextv2-tiny stages.0.blocks.0.mlp.fc2 {'full-direct': (0.84, None), 'full-tiled': (1.0, None), 'hybrid-chains4': (0.269, 6096), 'hybrid-tensorcore': (0.246, 10533)}
+convnextv2-tiny stages.1.blocks.0.mlp.fc1 {'full-direct': (1.0, None), 'full-tiled': (0.701, None), 'hybrid-chains4': (0.331, 13553), 'hybrid-tensorcore': (0.292, 26740)}
+convnextv2-tiny stages.1.blocks.0.mlp.fc2 {'full-direct': (1.0, None), 'full-tiled': (0.872, None), 'hybrid-chains4': (0.346, 12915), 'hybrid-tensorcore': (0.315, 22132)}
+convnextv2-tiny stages.2.blocks.0.mlp.fc1 {'full-direct': (1.0, None), 'full-tiled': (0.872, None), 'hybrid-chains4': (0.309, 21059), 'hybrid-tensorcore': (0.248, 42015)}
+convnextv2-tiny stages.2.blocks.0.mlp.fc2 {'full-direct': (1.0, None), 'full-tiled': (0.895, None), 'hybrid-chains4': (0.421, 24754), 'hybrid-tensorcore': (0.479, 40771)}
+convnextv2-tiny stages.3.blocks.0.mlp.fc1 {'full-direct': (1.0, None), 'full-tiled': (0.795, None), 'hybrid-chains4': (0.385, 15584), 'hybrid-tensorcore': (0.28, 30453)}
+convnextv2-tiny stages.3.blocks.0.mlp.fc2 {'full-direct': (1.0, None), 'full-tiled': (0.773, None), 'hybrid-chains4': (0.379, 18193), 'hybrid-tensorcore': (0.298, 27243)}
+convnextv2-tiny head.fc {'full-direct': (1.0, None), 'full-tiled': (0.755, None), 'hybrid-chains4': (0.26, 285), 'hybrid-tensorcore': (0.173, 503)}
