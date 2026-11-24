@@ -1,0 +1,62 @@
+[
+  {
+    "condition_sha256": "dccf94119d0bc090ff305394742ae1f67fb209dbe0dae5056a6f6f136ff99cdb",
+    "checkpoint": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+    "prompt": "A red ceramic teapot on a wooden table, soft daylight, detailed photograph.",
+    "seed": 20261123,
+    "steps": 2,
+    "guidance_scale": 4.5,
+    "resolution": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "condition_sha256": "e92e66a41b84fdea38c97b5a7a1e13d7e7e604b8147d3d7fa6403b08ab5d9d2b",
+    "checkpoint": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+    "prompt": "A glass of water and a silver spoon on a white linen tablecloth, detailed studio photograph.",
+    "seed": 20261223,
+    "steps": 2,
+    "guidance_scale": 4.5,
+    "resolution": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "condition_sha256": "c5dc9bf2b2fb2c5319fae7c1bdd54ed10efc63f78e38dce64f78cf04bf92a3dd",
+    "checkpoint": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+    "prompt": "A neon sign reading OPEN above a rainy city street at night, cinematic photograph.",
+    "seed": 20261224,
+    "steps": 2,
+    "guidance_scale": 4.5,
+    "resolution": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "condition_sha256": "24db49bd343f71eb7a9903a4927d0b7ec38a059bf09c4f373d85911179d64ea8",
+    "checkpoint": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+    "prompt": "An aerial photograph of a winding river through dense green forest, fine natural textures.",
+    "seed": 20261225,
+    "steps": 2,
+    "guidance_scale": 4.5,
+    "resolution": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "condition_sha256": "696127a47443d7c6305a7f6018fb1e3d5426954f729194240e41ec64edf91f17",
+    "checkpoint": "aa76e7f4f4928f378716b6716a2130fba3caf5b1",
+    "prompt": "A watercolor painting of a snow-covered village with warm lights in the windows.",
+    "seed": 20261226,
+    "steps": 2,
+    "guidance_scale": 4.5,
+    "resolution": [
+      1024,
+      1024
+    ]
+  }
+]

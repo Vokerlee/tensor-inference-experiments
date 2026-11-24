@@ -110,3 +110,9 @@ comparison tables.
 [Complete attention recognition replication](reports/2026-11-24-attention-task.md)
 retains all3100 evaluated queries, paired uncertainty and independent full-output
 audits, including failure of the declared accuracy-preservation screens.
+
+[Joint transform/precision study](reports/2026-11-24-winograd.md) compares
+full-decoder Winograd, native bounded rounding, FP8, structural support and mixed
+precision/lowering controls. Complete arrays and paired-work tables are preserved;
+[reproduction instructions](docs/reproduce-winograd.md) distinguish numerical
+oracles, actual interface geometry and unmeasured hardware energy.

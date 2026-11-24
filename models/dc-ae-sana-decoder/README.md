@@ -46,3 +46,11 @@ reference work, energy or target-hardware correctness.
 retains both chosen dense lowerings and all row-cohort alternatives for the
 predeclared local patches. High group certification does not imply proportional
 reference-matrix savings; actual target im2col mapping is not asserted.
+
+[Joint precision/transform and complete Winograd study](../../reports/2026-11-24-winograd.md)
+compares native rounding, one-axis lowering, FP8 controls, producer support and
+mixed BF16/F2/F4 execution on five reused decoder conditions. The shape-only
+mixed controls improve all four follow-up pixel-MSE comparisons and issue17.66%
+fewer input vectors than their uniform eight-bit F2 controls. This is not a
+hardware-energy or population-level generation-quality result. All full output
+arrays, coefficient/format metadata and unfavorable cases are archived.

@@ -66,3 +66,11 @@ fidelity and MAC coverage do not establish generation quality or energy.
 validate the known nearest-neighbor transformation, coefficient precision and
 conversion before duplication, with complete per-branch statistics. Dense MAC
 reductions and pixel fidelity remain distinct from hardware energy/task quality.
+
+[Joint precision/transform and complete Winograd study](../../reports/2026-11-24-winograd.md)
+compares native rounding, one-axis lowering, FP8 controls, producer support and
+mixed BF16/F2/F4 execution on five reused decoder conditions. The shape-only
+mixed controls improve all four follow-up pixel-MSE comparisons and issue17.66%
+fewer input vectors than their uniform eight-bit F2 controls. This is not a
+hardware-energy or population-level generation-quality result. All full output
+arrays, coefficient/format metadata and unfavorable cases are archived.

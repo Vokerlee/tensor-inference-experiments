@@ -1,0 +1,348 @@
+{
+  "schema": 1,
+  "source_sha256": "879800270687d9229d2e44d023c2e43efee9524571ce73189a934b44524beb46",
+  "provenance": [
+    {
+      "campaign": "winograd-axis-decoder-discovery-20261124",
+      "status": "complete",
+      "source_commit": "4c13632ea6c6e2f2db047fc1447c5861c06ae19d",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "6b7e3060eb2b1f2b48112eeda24ddea3868878ba6e0791d52e75ee7ff074e67a"
+    },
+    {
+      "campaign": "winograd-axis-decoder-holdout-20261124",
+      "status": "complete",
+      "source_commit": "4c13632ea6c6e2f2db047fc1447c5861c06ae19d",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "8314c7157a85ad91b321d658d985cbb77d5f161ba31b4ee34e3d7f49991f7a4c"
+    },
+    {
+      "campaign": "winograd-f4-decoder-discovery-20261124",
+      "status": "complete",
+      "source_commit": "af37b856eb8c49e29c3a08c175e96b83e17ea67f",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "b868cc01a7f5fb8e89039174188fe8e014adbcc9664c0d6d8367df484022bf8c"
+    },
+    {
+      "campaign": "winograd-f4-decoder-holdout-20261124",
+      "status": "complete",
+      "source_commit": "af37b856eb8c49e29c3a08c175e96b83e17ea67f",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "2c5503f08409f67abba2b2d5aa424f39ed87c34ea4c42c5f87326748de4fd606"
+    },
+    {
+      "campaign": "winograd-decoder-discovery-20261124",
+      "status": "complete",
+      "source_commit": "0c169d1376affd17080d0cce8acc7b6d338ecfea",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": null,
+      "json_payload_sha256": "ce5ce8b21b557b8fe1fd0ada6e9264beef3be0749db57d34b979678f0bd217c1"
+    },
+    {
+      "campaign": "winograd-decoder-holdout-20261124",
+      "status": "complete",
+      "source_commit": "0c169d1376affd17080d0cce8acc7b6d338ecfea",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": null,
+      "json_payload_sha256": "42992f0f6c70472f919ee60abf05d89604cd6814fc9aff19170bde994670dc88"
+    },
+    {
+      "campaign": "winograd-mapping-20261124",
+      "status": "complete",
+      "source_commit": "107f5a7083561c13e4e06517779755455904e270",
+      "source_dirty": true,
+      "interpretation": "source marked dirty; clean ledger archived separately",
+      "native_sha256": null,
+      "json_payload_sha256": "1690607ad802d1d8d25aa82c609964f184374add6f4b28004ce53f34dfb73f6c"
+    },
+    {
+      "campaign": "winograd-mapping-clean-20261124",
+      "status": "complete",
+      "source_commit": "bd773568197231cf7f8704813c80da3c58598aea",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": null,
+      "json_payload_sha256": "0cca0d3b2870fda4342ba34e0a86d5ba62756f32354e4d1ab98b73a4504f407c"
+    },
+    {
+      "campaign": "winograd-fp8-decoder-discovery-20261124",
+      "status": "complete",
+      "source_commit": "6213c374097ee7468b00e5d89b6530bfed680eb1",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": null,
+      "json_payload_sha256": "7768d710314bac6b9caed8fe7acdbdc0b82643f97d0e34cb9f414df29ad52ca1"
+    },
+    {
+      "campaign": "winograd-fp8-decoder-holdout-20261124",
+      "status": "complete",
+      "source_commit": "6213c374097ee7468b00e5d89b6530bfed680eb1",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": null,
+      "json_payload_sha256": "41cd308558b5f077a4a0237b1a3a8ce44fffe6c611341f4859851d2ccddf42d6"
+    },
+    {
+      "campaign": "integer-winograd-decoder-discovery-20261124",
+      "status": "complete",
+      "source_commit": "d86d81f1db49c47e034b1422f5cd647aa94bc6e7",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": null,
+      "json_payload_sha256": "d6bec822f4d083b68d76a6811662c25430eea29df3959016ea4c3207793971f2"
+    },
+    {
+      "campaign": "native-integer-winograd-discovery-20261124",
+      "status": "running",
+      "source_commit": "9e6128d6e8a47137086d644fe06fb489c945a278",
+      "source_dirty": true,
+      "interpretation": "superseded scale-retirement contract; interrupted",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "99d7fc54db4fecbb1c96e5c2c66bd38f35e5a09405ec6d364d1e3b09568acb93"
+    },
+    {
+      "campaign": "winograd-mixed-decoder-discovery-20261124",
+      "status": "complete",
+      "source_commit": "12aded6fd1b5168cb4285d9b970ca6ab2e6e3240",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "7e62e80a0c89aa422d587477382bd9b00821c38f2bc4198e3307dc5252514e8a"
+    },
+    {
+      "campaign": "winograd-mixed-decoder-holdout-20261124",
+      "status": "complete",
+      "source_commit": "12aded6fd1b5168cb4285d9b970ca6ab2e6e3240",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "558d98232fc5542035a1156fc593260be0c0aae4afd8778292d72a081021d05c"
+    },
+    {
+      "campaign": "native-matched-winograd-discovery-20261124",
+      "status": "complete",
+      "source_commit": "bd773568197231cf7f8704813c80da3c58598aea",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "ae6a062fb1af58105d30060d88867dd5066c595252ab56e91581dfbf2e05065f"
+    },
+    {
+      "campaign": "native-matched-winograd-holdout-20261124",
+      "status": "complete",
+      "source_commit": "bd773568197231cf7f8704813c80da3c58598aea",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "e9544c563985817399b52dcc39aa04feec987c77d5e7c6ba3666be25f5157ab8"
+    },
+    {
+      "campaign": "winograd-encoded-retention-20261124",
+      "status": "complete",
+      "source_commit": "25c7f4eeead81228885159890b89bb9b4b4f387b",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": null,
+      "json_payload_sha256": "faee12cbdb9c50f860b1e413ee47b9e8ed32e87434005113ea5330acd396e7dd"
+    },
+    {
+      "campaign": "winograd-axis-operators-20261124",
+      "status": "complete",
+      "source_commit": "a6a80b57571b0c122905c9763c7dfacbb402ddef",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "25b6bb67e498fa22c4cb9f59da282a313702ede27c9755f41071c4cf8d5d1023"
+    },
+    {
+      "campaign": "winograd-f4-operators-20261124",
+      "status": "complete",
+      "source_commit": "51d0fe476cd35d5ce43eeba458e961fb1c581883",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": null,
+      "json_payload_sha256": "144706d05b5f9567e1ee9bb9c746dbf2a32358a487a0c60ee655e21b6971b640"
+    },
+    {
+      "campaign": "winograd-plane-rounding-20261124",
+      "status": "complete",
+      "source_commit": "8fae9b1209a3546fb76f497992e19a8fe7c92e84",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": null,
+      "json_payload_sha256": "744c90b0708c16ea69e3b6e1560ae3ce03905f4ad379d485125b22f500b90e35"
+    },
+    {
+      "campaign": "winograd-support-decoder-discovery-20261124",
+      "status": "complete",
+      "source_commit": "d72b671666cf3d2c1347e5ee671b00ee74d63916",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "f12092c55baaa30328274d6dea7e990b742695db301dd793ece03682bb0d164e"
+    },
+    {
+      "campaign": "winograd-support-decoder-holdout-20261124",
+      "status": "complete",
+      "source_commit": "d72b671666cf3d2c1347e5ee671b00ee74d63916",
+      "source_dirty": false,
+      "interpretation": "canonical",
+      "native_sha256": "33143a5b53cdf43bd62e80bf27a18f4543843a2da62091101e5a755e1bae6534",
+      "json_payload_sha256": "ad00d95bb5960856e5b473b8219bc03b25da29dd2cdf16f956888157bc60b0ed"
+    }
+  ],
+  "archive_records": 22,
+  "logical_attachments": 943,
+  "decoder_container_audits": 87,
+  "per_input_audits": 189,
+  "distinct_reused_input_conditions": 5,
+  "duplicate_canonical_policy_checks": 14,
+  "operator_container_audits": 550,
+  "operator_summary": [
+    {
+      "bits": 4,
+      "rank": 0,
+      "transform_tile": 2,
+      "layers": 25,
+      "aggregate_sse_ratio": 1.0,
+      "improved_layers": 6
+    },
+    {
+      "bits": 4,
+      "rank": 0,
+      "transform_tile": 4,
+      "layers": 25,
+      "aggregate_sse_ratio": 1.0,
+      "improved_layers": 4
+    },
+    {
+      "bits": 4,
+      "rank": 1,
+      "transform_tile": 2,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.9354426670696756,
+      "improved_layers": 25
+    },
+    {
+      "bits": 4,
+      "rank": 1,
+      "transform_tile": 4,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.6861631555176754,
+      "improved_layers": 25
+    },
+    {
+      "bits": 4,
+      "rank": 4,
+      "transform_tile": 2,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.9348268093969269,
+      "improved_layers": 25
+    },
+    {
+      "bits": 4,
+      "rank": 4,
+      "transform_tile": 4,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.5478944789364966,
+      "improved_layers": 25
+    },
+    {
+      "bits": 4,
+      "rank": 16,
+      "transform_tile": 2,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.9352633807452743,
+      "improved_layers": 25
+    },
+    {
+      "bits": 4,
+      "rank": 16,
+      "transform_tile": 4,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.5146512297223127,
+      "improved_layers": 25
+    },
+    {
+      "bits": 8,
+      "rank": 0,
+      "transform_tile": 2,
+      "layers": 25,
+      "aggregate_sse_ratio": 1.0,
+      "improved_layers": 9
+    },
+    {
+      "bits": 8,
+      "rank": 0,
+      "transform_tile": 4,
+      "layers": 25,
+      "aggregate_sse_ratio": 1.0,
+      "improved_layers": 2
+    },
+    {
+      "bits": 8,
+      "rank": 1,
+      "transform_tile": 2,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.9638648609869488,
+      "improved_layers": 24
+    },
+    {
+      "bits": 8,
+      "rank": 1,
+      "transform_tile": 4,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.7191486188577477,
+      "improved_layers": 25
+    },
+    {
+      "bits": 8,
+      "rank": 4,
+      "transform_tile": 2,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.9560879925275457,
+      "improved_layers": 24
+    },
+    {
+      "bits": 8,
+      "rank": 4,
+      "transform_tile": 4,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.5953217174387296,
+      "improved_layers": 25
+    },
+    {
+      "bits": 8,
+      "rank": 16,
+      "transform_tile": 2,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.9570902189889541,
+      "improved_layers": 24
+    },
+    {
+      "bits": 8,
+      "rank": 16,
+      "transform_tile": 4,
+      "layers": 25,
+      "aggregate_sse_ratio": 0.5643547426144832,
+      "improved_layers": 25
+    }
+  ],
+  "limitations": [
+    "Decoder cases reuse one discovery and four older holdout inputs; not independent new prompts",
+    "Pixel fidelity is not generation task quality or an energy estimate",
+    "Preliminary records are preserved and audited, but excluded from canonical interpretation",
+    "Floating group32 and proposed integer K256 numerical contracts must not be pooled",
+    "Shape ledgers describe interface capacity, not energy or mandatory SRAM transactions"
+  ]
+}
