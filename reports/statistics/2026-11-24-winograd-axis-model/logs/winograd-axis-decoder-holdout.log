@@ -1,0 +1,22 @@
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 3616.22it/s]
+original {'rmse': 0.0, 'mean_error': 0.0, 'maximum_absolute_error': 0.0, 'relative_mse': 0.0, 'psnr_unit_range': None, 'identical': True}
+int8-k256-a4-axis-fit: decoded 1/4
+int8-k256-a4-axis-fit: decoded 2/4
+int8-k256-a4-axis-fit: decoded 3/4
+int8-k256-a4-axis-fit: decoded 4/4
+int8-k256-a4-axis-fit {'rmse': 0.06480032556579433, 'mean_error': -0.000488045159727335, 'maximum_absolute_error': 1.0, 'relative_mse': 0.015485139291197514, 'psnr_unit_range': 23.768456243368135, 'identical': False}
+int8-k256-a8-axis-fit: decoded 1/4
+int8-k256-a8-axis-fit: decoded 2/4
+int8-k256-a8-axis-fit: decoded 3/4
+int8-k256-a8-axis-fit: decoded 4/4
+int8-k256-a8-axis-fit {'rmse': 0.01031077824856554, 'mean_error': -2.2152593980232876e-05, 'maximum_absolute_error': 0.55859375, 'relative_mse': 0.00039205196414388135, 'psnr_unit_range': 39.73417106619837, 'identical': False}
+int8-k256-a4-axis-all: decoded 1/4
+int8-k256-a4-axis-all: decoded 2/4
+int8-k256-a4-axis-all: decoded 3/4
+int8-k256-a4-axis-all: decoded 4/4
+int8-k256-a4-axis-all {'rmse': 0.05902742574354768, 'mean_error': -0.0006599921422700087, 'maximum_absolute_error': 1.0, 'relative_mse': 0.01284897332961942, 'psnr_unit_range': 24.578923129325126, 'identical': False}
+int8-k256-a8-axis-all: decoded 1/4
+int8-k256-a8-axis-all: decoded 2/4
+int8-k256-a8-axis-all: decoded 3/4
+int8-k256-a8-axis-all: decoded 4/4
+int8-k256-a8-axis-all {'rmse': 0.009166632433742512, 'mean_error': 0.00012473265329996744, 'maximum_absolute_error': 0.533203125, 'relative_mse': 0.0003098706014239143, 'psnr_unit_range': 40.755803655310515, 'identical': False}
