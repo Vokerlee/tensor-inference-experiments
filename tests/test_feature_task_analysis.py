@@ -35,3 +35,10 @@ def test_exact_discordance_tail_and_invalid_inputs():
     with pytest.raises(ValueError):
         paired([2], [0], [0])
     assert np.isfinite(exact_mcnemar(1000, 1100))
+
+
+def test_one_query_per_class_cannot_produce_a_within_class_interval():
+    result = paired([True, False, True], [False, True, False], [0, 1, 2])
+    assert not result["stratified_bootstrap_estimable"]
+    assert result["stratified_bootstrap_95"] is None
+    assert result["primary_family_one_sided_lower"] is None

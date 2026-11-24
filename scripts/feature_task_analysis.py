@@ -38,14 +38,17 @@ def paired(candidate, reference, classes, *, samples: int = 20_000, seed: int = 
         resampled = rng.multinomial(len(values), counts / len(values), size=samples)
         draws += resampled[:, 2] - resampled[:, 0]
     means = draws / len(difference)
+    _, class_counts = np.unique(classes, return_counts=True)
+    estimable = bool(np.all(class_counts >= 2))
     benefit, harm = int((difference == 1).sum()), int((difference == -1).sum())
     alpha = 0.05 / len(PRIMARY)
     result = {
         "queries": len(difference), "candidate_correct": int(candidate.sum()),
         "reference_correct": int(reference.sum()), "benefit": benefit, "harm": harm,
         "accuracy_difference": float(difference.mean()),
-        "stratified_bootstrap_95": np.quantile(means, [0.025, 0.975]).tolist(),
-        "primary_family_one_sided_lower": float(np.quantile(means, alpha)),
+        "stratified_bootstrap_estimable": estimable,
+        "stratified_bootstrap_95": np.quantile(means, [0.025, 0.975]).tolist() if estimable else None,
+        "primary_family_one_sided_lower": float(np.quantile(means, alpha)) if estimable else None,
         "bootstrap_samples": samples, "seed": seed, "primary_lower_alpha": alpha,
         "exact_mcnemar_two_sided": exact_mcnemar(benefit, harm),
         "bootstrap_degenerate": bool(benefit + harm == 0),
@@ -55,7 +58,8 @@ def paired(candidate, reference, classes, *, samples: int = 20_000, seed: int = 
         # strata and AM-GM give P(no harms) <= (1 - average_harm_probability)**n.
         # Use this finite-sample bound instead of a falsely exact zero interval.
         result["zero_discordance_harm_upper"] = -math.expm1(math.log(alpha) / len(difference))
-        result["primary_family_one_sided_lower"] = -result["zero_discordance_harm_upper"]
+        if estimable:
+            result["primary_family_one_sided_lower"] = -result["zero_discordance_harm_upper"]
     return result
 
 
@@ -89,11 +93,12 @@ def summarize(report: dict, *, primary_run: bool = False) -> dict:
         row.update({"candidate": candidate, "reference": reference, "margin": margin,
                     "predeclared_primary_run": primary_run})
         lower = row["primary_family_one_sided_lower"]
-        row["meets_predeclared_bootstrap_screen"] = bool(primary_run and lower > margin)
+        row["meets_predeclared_bootstrap_screen"] = bool(primary_run and lower is not None and lower > margin)
         comparisons.append(row)
     return {"policies": summaries, "primary_comparisons": comparisons,
             "limitations": [
                 "Fixed CIFAR100 class composition, fixed gallery and checkpoint; not a universal quality guarantee",
+                "One observation per class cannot estimate a within-class bootstrap interval",
                 "Percentile bootstrap is approximate; Bonferroni screening does not make it an exact test",
                 "Discovery outcomes are descriptive and cannot pass a replication acceptance screen",
                 "Exact McNemar tests equality on discordant pairs, not the 1pp noninferiority margin",
