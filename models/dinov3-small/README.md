@@ -43,3 +43,10 @@ uses this pinned model in FP32 with official preprocessing to describe224 SANA
 control variants and eight original images. Full384-dimensional vectors and
 paired contrasts are preserved. Descriptor consistency is a fidelity diagnostic,
 not a generation-quality benchmark or an adaptive-policy quality guarantee.
+
+[Selective finite-reference observations](../../reports/2026-11-24-selective-reference.md)
+validate intermediate/final BF16 fidelity and dynamic-controller arrays on the
+same three declared Imagenette inputs. Both selective implementations are slower
+than the complete native reference. All per-case timings and full controller
+arrays are preserved; this is software-emulation evidence, not device energy
+or population task accuracy. DINOv3 height1 control has no subsequent row block.

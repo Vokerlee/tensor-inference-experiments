@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "sources_sha256": {
+    "selective-operators-convnextv2-20261124/report.json": "89aa8cf09d68b375108a5d8d4a7255595d8aebb484dcb3aadb77a633f236ddd6",
+    "selective-model-convnextv2-20261124/report.json": "c131711f6e8888e0026886f75a26711af6bd5fea2c4b6a8332eeaa941594d859",
+    "selective-model-timing-convnextv2-20261124/report.json": "0e5258bb312d354eab153a3a9c8b89041976ae8a56e6ec9964c6d591a01e11ac",
+    "selective-stages-convnextv2-20261124.json": "7a2d42900937651d6a8b92c7772bcf6a0b1e0d8d069e4aadf46878d26e7a8546",
+    "selective-operators-dinov3-20261124/report.json": "5ff8451c630cd3b38bad42c1e24557c0e5aa1fddb9687c2e3cc2479a9adaeebe",
+    "selective-model-dinov3-20261124/report.json": "0301398fdacd9946178e50997956f6ea99a83eda94dc74524a6e5bc2e8110eaf",
+    "selective-model-timing-dinov3-20261124/report.json": "1a8f1b7edb758a058e7063272b2a3b6f478ce24b2ecc99862099fb6a09ab6cb1",
+    "selective-stages-dinov3-20261124.json": "ce0ed0fedced88661af7ef864f169752018cea74d44c01ae9a674350decfa24d",
+    "precision-cast-audit-20261124.json": "1a0cf6525335239678fbd7a37b06eec2f15dac1d4f6fe3f3aa91041e45b77613"
+  },
+  "operator_cases": 12,
+  "model_audits": 72,
+  "compared_intermediate_events": 2214,
+  "model_timing_cases": 18,
+  "hybrid_operator_speedup_range": [
+    0.1732726219938511,
+    0.5238752548773425
+  ],
+  "hybrid_model_speedup_range": [
+    0.28498076182865895,
+    0.6342423871737952
+  ],
+  "hybrid_cases_reaching_1_25": 0,
+  "cast_audit": {
+    "False": {
+      "accepted": [
+        true,
+        true,
+        true
+      ],
+      "differences_from_eager": 3
+    },
+    "True": {
+      "accepted": [
+        false,
+        false,
+        false
+      ],
+      "differences_from_eager": 0
+    }
+  },
+  "aggregate_model_timings": [
+    {
+      "model": "convnextv2-tiny",
+      "policy": "bf16",
+      "inputs": 3,
+      "mean_of_median_wall_ms": {
+        "full-direct": 9.15499598098298,
+        "full-tiled": 10.1616420239831,
+        "hybrid-chains4": 24.784930632449687,
+        "hybrid-tensorcore": 27.455593963774543
+      },
+      "best_full_wall_ms": 9.15499598098298,
+      "speedup_over_best_full": {
+        "hybrid-chains4": 0.36937751074424213,
+        "hybrid-tensorcore": 0.33344738391244655
+      }
+    },
+    {
+      "model": "convnextv2-tiny",
+      "policy": "dynamic8",
+      "inputs": 3,
+      "mean_of_median_wall_ms": {
+        "full-direct": 12.002525385469198,
+        "full-tiled": 11.414674343541265,
+        "hybrid-chains4": 29.82171232967327,
+        "hybrid-tensorcore": 29.230806976556778
+      },
+      "best_full_wall_ms": 11.316781009857854,
+      "speedup_over_best_full": {
+        "hybrid-chains4": 0.37948126132909554,
+        "hybrid-tensorcore": 0.38715253461643934
+      }
+    },
+    {
+      "model": "convnextv2-tiny",
+      "policy": "live4",
+      "inputs": 3,
+      "mean_of_median_wall_ms": {
+        "full-direct": 21.11334497264276,
+        "full-tiled": 23.145574377849698,
+        "hybrid-chains4": 43.91078134843459,
+        "hybrid-tensorcore": 41.85555630829185
+      },
+      "best_full_wall_ms": 20.519660979819793,
+      "speedup_over_best_full": {
+        "hybrid-chains4": 0.46730348105161457,
+        "hybrid-tensorcore": 0.49024939075423823
+      }
+    },
+    {
+      "model": "dinov3-small",
+      "policy": "bf16",
+      "inputs": 3,
+      "mean_of_median_wall_ms": {
+        "full-direct": 10.786097341527542,
+        "full-tiled": 12.579225314160189,
+        "hybrid-chains4": 30.70192035132398,
+        "hybrid-tensorcore": 29.326364669638377
+      },
+      "best_full_wall_ms": 10.786097341527542,
+      "speedup_over_best_full": {
+        "hybrid-chains4": 0.3513167000012234,
+        "hybrid-tensorcore": 0.36779524032497635
+      }
+    },
+    {
+      "model": "dinov3-small",
+      "policy": "dynamic8",
+      "inputs": 3,
+      "mean_of_median_wall_ms": {
+        "full-direct": 16.563721039953332,
+        "full-tiled": 18.42766534537077,
+        "hybrid-chains4": 41.41206635783116,
+        "hybrid-tensorcore": 32.45166933629662
+      },
+      "best_full_wall_ms": 16.563721039953332,
+      "speedup_over_best_full": {
+        "hybrid-chains4": 0.3999733048051846,
+        "hybrid-tensorcore": 0.5104119873866428
+      }
+    },
+    {
+      "model": "dinov3-small",
+      "policy": "live4",
+      "inputs": 3,
+      "mean_of_median_wall_ms": {
+        "full-direct": 31.89573165339728,
+        "full-tiled": 33.16863370127976,
+        "hybrid-chains4": 53.36351727601141,
+        "hybrid-tensorcore": 52.10506097258379
+      },
+      "best_full_wall_ms": 31.316073688988883,
+      "speedup_over_best_full": {
+        "hybrid-chains4": 0.5868442577915765,
+        "hybrid-tensorcore": 0.6010178877914857
+      }
+    }
+  ]
+}

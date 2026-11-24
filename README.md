@@ -96,3 +96,9 @@ The [full controller replay study](reports/2026-11-24-controller-replay.md)
 adds complete-model live/frozen interventions, paired pixel/descriptor comparisons,
 exhaustive BF16 scale contracts and conditional stability filtering. All decision
 and sensor tapes are preserved as independently restorable input archives.
+
+The [selective-reference study](reports/2026-11-24-selective-reference.md)
+measures independently bounded exact BF16 observations against complete native
+reference execution. Full-model/control fidelity holds on the tested inputs,
+but both selective implementations are slower. Complete per-output audits,
+controller arrays and repeated software-emulation timings are preserved.
