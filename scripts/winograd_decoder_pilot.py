@@ -3,6 +3,8 @@
 
 import argparse
 import json
+import hashlib
+from math import ceil
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -29,6 +31,12 @@ POLICIES = {
 }
 
 
+MIXED_POLICIES = {
+    "mixed-bf16-f4-int8-f2": "int8-k256-a8-native",
+    "mixed-bf16-f4-fp8-f2": "fp8-k256-f2",
+}
+
+
 def eligible(decoder):
     return {name: layer for name, layer in decoder.named_modules()
             if isinstance(layer, torch.nn.Conv2d) and layer.groups == 1
@@ -39,6 +47,26 @@ def eligible(decoder):
 
 @contextmanager
 def modified(layers, case, records, tile_batch, evidence=None, support_layers=None):
+    if case in MIXED_POLICIES:
+        narrow = {name: layer for name, layer in layers.items()
+                  if layer.padding == (1, 1)
+                  and 9 * ceil(layer.in_channels / 128) <= 16 * ceil(layer.in_channels / 256)}
+        wide = {name: layer for name, layer in layers.items() if name not in narrow}
+
+        def check_spatial_shape(layer, inputs):
+            if any(size % 4 for size in inputs[0].shape[-2:]):
+                raise ValueError("mixed shape rule requires spatial dimensions divisible by4")
+
+        handles = [layer.register_forward_pre_hook(check_spatial_shape) for layer in narrow.values()]
+        try:
+            with modified(narrow, "f4-bf16", records, tile_batch) as floating:
+                with integer_modified(wide, MIXED_POLICIES[case], records, tile_batch, evidence) as integer:
+                    yield {**integer, **floating, "mixed_narrow_layers": list(narrow),
+                           "mixed_wide_policy": MIXED_POLICIES[case]}
+        finally:
+            for handle in handles:
+                handle.remove()
+        return
     if case in INTEGER_POLICIES:
         with integer_modified(layers, case, records, tile_batch, evidence, support_layers) as metadata:
             yield metadata
@@ -52,15 +80,24 @@ def modified(layers, case, records, tile_batch, evidence=None, support_layers=No
             result, stats = convolution(values, coefficients[name], layer.bias,
                                         padding=layer.padding[0], tile_batch=tile_batch, bits=bits,
                                         reduction_block=128, streaming_inverse=streaming)
+            vectors = ((tile + 2) ** 2 * values.shape[0] * ceil(result.shape[-2] / tile)
+                       * ceil(result.shape[-1] / tile) * ceil(layer.in_channels / 128)
+                       * ceil(layer.out_channels / 128))
             records.append({"layer": name, "input_shape": list(values.shape),
-                            "output_shape": list(result.shape), **stats})
+                            "output_shape": list(result.shape), "K": 128, "N": 128,
+                            "operand_format": str(operand_dtype), "floating_partial_vectors": vectors,
+                            **stats})
             return result
         return forward
 
     try:
         for name, layer in layers.items():
             layer.forward = replace(name, layer)
-        yield
+        yield {"floating_weight_preparation": [
+            {"layer": name, "tile": tile, "operand_dtype": str(operand_dtype),
+             "coefficient_sha256": hashlib.sha256(value.coefficients.detach().contiguous().view(
+                 torch.uint8).cpu().numpy().tobytes()).hexdigest()}
+            for name, value in coefficients.items()]}
     finally:
         for name, layer in layers.items():
             layer.forward = originals[name]
@@ -75,7 +112,7 @@ def main():
     parser.add_argument("--count", type=int, default=4)
     parser.add_argument("--tile-batch", type=int, default=64)
     parser.add_argument("--minimum-outputs", type=int, default=0)
-    parser.add_argument("--case", action="append", choices=(*POLICIES, *INTEGER_POLICIES))
+    parser.add_argument("--case", action="append", choices=(*POLICIES, *INTEGER_POLICIES, *MIXED_POLICIES))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.count < 1 or args.tile_batch < 1 or args.minimum_outputs < 0:
@@ -130,7 +167,7 @@ def main():
         ],
     }
     native = ENGINE / "build/libtensor_inference_engine_torch.so"
-    if any("native" in case or "shift" in case or "axis" in case for case in (args.case or [])):
+    if any("native" in case or "shift" in case or "axis" in case or "mixed" in case for case in (args.case or [])):
         report["native_sha256"] = digest(native)
         build = ENGINE / "build/tensor_inference_engine_build.json"
         report["native_build"] = json.loads(build.read_text()) if build.exists() else None
