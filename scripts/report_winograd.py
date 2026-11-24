@@ -21,6 +21,9 @@ PRELIMINARY = {
 }
 
 
+VECTOR_FIELDS = ("integer_partial_vectors", "fp8_partial_vectors", "floating_partial_vectors")
+
+
 def scalar_metrics(values, reference):
     """Independent NumPy calculation; no producer metric helper is imported."""
     error = values.astype(np.float64) - reference.astype(np.float64)
@@ -63,11 +66,13 @@ def decoder_rows(report, campaign, attachments):
         reference = {key: data[key].copy() for key in ("raw", "images")}
     for case in report["cases"]:
         with np.load(attachments[case["arrays"].removeprefix("results/")], allow_pickle=False) as data:
-            raw_digest = hashlib.sha256(data["raw"].tobytes()).hexdigest()
             for array, metric in (("raw", "raw_vs_original"), ("images", "image_vs_original")):
-                audit_fields(scalar_metrics(data[array], reference[array]), case[metric])
+                values = data[array]
+                if array == "raw":
+                    raw_digest = hashlib.sha256(values.tobytes()).hexdigest()
+                audit_fields(scalar_metrics(values, reference[array]), case[metric])
                 for index, recorded in enumerate(case["per_input"]):
-                    audit_fields(scalar_metrics(data[array][index], reference[array][index]), recorded[metric])
+                    audit_fields(scalar_metrics(values[index], reference[array][index]), recorded[metric])
         common = {"campaign": campaign, "case": case["case"],
                   "preliminary": campaign in PRELIMINARY,
                   "minimum_outputs": report["settings"].get("minimum_outputs", 0),
@@ -78,14 +83,17 @@ def decoder_rows(report, campaign, attachments):
                         **case["image_vs_original"], "layer_calls": len(case["calls"]),
                         "integer_partial_vectors": sum(call.get("integer_partial_vectors", 0)
                                                        for call in case["calls"]),
-                        "fp8_partial_vectors": sum(call.get("fp8_partial_vectors", 0) for call in case["calls"])})
+                        "fp8_partial_vectors": sum(call.get("fp8_partial_vectors", 0) for call in case["calls"]),
+                        "floating_partial_vectors": sum(call.get("floating_partial_vectors", 0) for call in case["calls"]),
+                        "issued_partial_vectors": (sum(call.get(key, 0) for call in case["calls"] for key in VECTOR_FIELDS)
+                            if all(any(key in call for key in VECTOR_FIELDS) for call in case["calls"]) else None)})
         for row in case["per_input"]:
             inputs.append({**common, "input_index": row["index"], **row["image_vs_original"]})
         for call in case["calls"]:
             calls.append({**common, "layer": call["layer"], "input_index": call["input_index"],
                           **{key: call.get(key) for key in (
                               "K", "N", "activation_bits", "weight_bits", "operand_format", "original_channels", "lowering", "lowered_reduction",
-                              "padded_channels", "activation_groups", "zero_groups", "integer_partial_vectors", "fp8_partial_vectors",
+                              "padded_channels", "activation_groups", "zero_groups", "integer_partial_vectors", "fp8_partial_vectors", "floating_partial_vectors",
                               "output_dequant_scalar_multiplications")},
                           "rounding": json.dumps(call.get("rounding"), sort_keys=True, separators=(",", ":")),
                           "exponent_histogram": json.dumps(call.get("exponent_histogram"), sort_keys=True),
@@ -188,6 +196,30 @@ def generate(archives, output):
                 raise ValueError("repeated canonical policy changed its complete raw output")
             duplicate_checks += 1
         previous[key] = row["raw_output_sha256"]
+    native = "native-matched-winograd-holdout-20261124"
+    contrasts = [
+        (native, "int8-k256-a4-shift", native, "int8-k256-a4-native"),
+        (native, "int8-k256-a8-shift", native, "int8-k256-a8-native"),
+        ("winograd-mixed-decoder-holdout-20261124", "mixed-bf16-f4-int8-f2", native, "int8-k256-a8-native"),
+        ("winograd-mixed-decoder-holdout-20261124", "mixed-bf16-f4-fp8-f2",
+         "winograd-fp8-decoder-holdout-20261124", "fp8-k256-f2"),
+        ("winograd-support-decoder-holdout-20261124", "int8-k256-a4-support-shift", native, "int8-k256-a4-shift"),
+        ("winograd-support-decoder-holdout-20261124", "int8-k256-f4-a8-support-shift",
+         "winograd-f4-decoder-holdout-20261124", "int8-k256-f4-a8-shift"),
+    ]
+    paired = []
+    for campaign, policy, baseline_campaign, baseline in contrasts:
+        selected = {row["input_index"]: row for row in inputs if row["campaign"] == campaign and row["case"] == policy}
+        reference = {row["input_index"]: row for row in inputs
+                     if row["campaign"] == baseline_campaign and row["case"] == baseline}
+        for index in sorted(selected.keys() & reference.keys()):
+            row, control = selected[index], reference[index]
+            if row["capture_sha256"] != control["capture_sha256"] or row["minimum_outputs"] != control["minimum_outputs"]:
+                raise ValueError("paired decoder contrast has incompatible input/scope")
+            paired.append({"campaign": campaign, "case": policy, "comparator_campaign": baseline_campaign,
+                           "comparator": baseline, "input_index": index,
+                           "image_mse_ratio": row["rmse"] ** 2 / control["rmse"] ** 2})
+    write_table(output / "paired-inputs.csv", paired)
     write_json(output / "input-conditions.json", list(conditions.values()))
     for name, rows in (("decoder-cases", cases), ("decoder-inputs", inputs), ("layer-calls", calls),
                        ("operators", operators), ("mapping", mapping), ("retention", retention)):
