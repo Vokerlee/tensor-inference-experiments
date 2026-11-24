@@ -1,0 +1,12 @@
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 3573.31it/s]
+original {'rmse': 0.0, 'mean_error': 0.0, 'maximum_absolute_error': 0.0, 'relative_mse': 0.0, 'psnr_unit_range': None, 'identical': True}
+fp8-k256-f2: decoded 1/4
+fp8-k256-f2: decoded 2/4
+fp8-k256-f2: decoded 3/4
+fp8-k256-f2: decoded 4/4
+fp8-k256-f2 {'rmse': 0.017933367019824727, 'mean_error': -0.0006583242987593015, 'maximum_absolute_error': 0.640625, 'relative_mse': 0.0011859992491180403, 'psnr_unit_range': 34.92676326525477, 'identical': False}
+fp8-k256-f4: decoded 1/4
+fp8-k256-f4: decoded 2/4
+fp8-k256-f4: decoded 3/4
+fp8-k256-f4: decoded 4/4
+fp8-k256-f4 {'rmse': 0.055642792962570964, 'mean_error': -0.0013120793737471104, 'maximum_absolute_error': 1.0, 'relative_mse': 0.011417698816574912, 'psnr_unit_range': 25.09182157870764, 'identical': False}

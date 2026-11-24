@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "logs/winograd-fp8-decoder-discovery.log",
+      "archive": "logs/winograd-fp8-decoder-discovery.log",
+      "bytes": 765,
+      "kind": "supplement",
+      "sha256": "c9d8c841b3512bcb022b51addab13d610714c98e4e6812555f1b5f3987c25998"
+    },
+    {
+      "source": "logs/winograd-fp8-decoder-holdout.log",
+      "archive": "logs/winograd-fp8-decoder-holdout.log",
+      "bytes": 908,
+      "kind": "supplement",
+      "sha256": "004f0eb9e11c22dc56a78d2cc49ff14a878fb62f42b112109dabfeaf754772e3"
+    },
+    {
+      "source": "winograd-fp8-decoder-discovery-20261124/fp8-k256-f2/arrays.npz",
+      "archive": "winograd-fp8-decoder-discovery-20261124/fp8-k256-f2/arrays.npz",
+      "bytes": 8229982,
+      "kind": "referenced-array",
+      "sha256": "e37fc417a81a61deb4d5bbd84d459856568cb7ed25e11cf5846755fb27293704"
+    },
+    {
+      "source": "winograd-fp8-decoder-discovery-20261124/fp8-k256-f2/prepared.npz",
+      "archive": "winograd-fp8-decoder-discovery-20261124/fp8-k256-f2/prepared.npz",
+      "bytes": 64972,
+      "kind": "referenced-array",
+      "sha256": "ca1a0daac2a1e71dded3f6377287fc9ea9a18f1c4b89e730a7b2302af4e5ca2b"
+    },
+    {
+      "source": "winograd-fp8-decoder-discovery-20261124/fp8-k256-f4/arrays.npz",
+      "archive": "winograd-fp8-decoder-discovery-20261124/fp8-k256-f4/arrays.npz",
+      "bytes": 8317922,
+      "kind": "referenced-array",
+      "sha256": "32fb98a256215f01de8481bde2be1a0337e15fe8868f2e5cb2f4ba3d17e909ca"
+    },
+    {
+      "source": "winograd-fp8-decoder-discovery-20261124/fp8-k256-f4/prepared.npz",
+      "archive": "winograd-fp8-decoder-discovery-20261124/fp8-k256-f4/prepared.npz",
+      "bytes": 135122,
+      "kind": "referenced-array",
+      "sha256": "b5b1258c72527ed9885fa97d5bb24c7637ad7ff7352fb93923b7ef6ba7a549b8"
+    },
+    {
+      "source": "winograd-fp8-decoder-discovery-20261124/original/arrays.npz",
+      "archive": "winograd-fp8-decoder-discovery-20261124/original/arrays.npz",
+      "bytes": 8112725,
+      "kind": "referenced-array",
+      "sha256": "edb0377695196f5c348cae994e489f1956d8afb0406e012170d132bcbae8f7aa"
+    },
+    {
+      "source": "winograd-fp8-decoder-holdout-20261124/fp8-k256-f2/arrays.npz",
+      "archive": "winograd-fp8-decoder-holdout-20261124/fp8-k256-f2/arrays.npz",
+      "bytes": 34059516,
+      "kind": "referenced-array",
+      "sha256": "f22e26a3fec700185d1efc66f4f8883cb9221bfc7b0a67ac18228996da7a0af3"
+    },
+    {
+      "source": "winograd-fp8-decoder-holdout-20261124/fp8-k256-f2/prepared.npz",
+      "archive": "winograd-fp8-decoder-holdout-20261124/fp8-k256-f2/prepared.npz",
+      "bytes": 64719,
+      "kind": "referenced-array",
+      "sha256": "94c744f918732ffbaf7b33360b7c97075540ff026cafa89962058f48760cc89b"
+    },
+    {
+      "source": "winograd-fp8-decoder-holdout-20261124/fp8-k256-f4/arrays.npz",
+      "archive": "winograd-fp8-decoder-holdout-20261124/fp8-k256-f4/arrays.npz",
+      "bytes": 34110784,
+      "kind": "referenced-array",
+      "sha256": "6ee26cf3b5a5d5355d669b1a52ed73120c4a9702054319be8570b7dfe6a13b43"
+    },
+    {
+      "source": "winograd-fp8-decoder-holdout-20261124/fp8-k256-f4/prepared.npz",
+      "archive": "winograd-fp8-decoder-holdout-20261124/fp8-k256-f4/prepared.npz",
+      "bytes": 134821,
+      "kind": "referenced-array",
+      "sha256": "73bf06e7c0b91a1add548ba6faf3e5ca6d1070f6c8b6baeb3216fc0447b310a3"
+    },
+    {
+      "source": "winograd-fp8-decoder-holdout-20261124/original/arrays.npz",
+      "archive": "winograd-fp8-decoder-holdout-20261124/original/arrays.npz",
+      "bytes": 33964172,
+      "kind": "referenced-array",
+      "sha256": "bbced909d0743f1436d6acc2492892549210b3db6e95842a962be90396f2227e"
+    }
+  ],
+  "content_deduplicated": true,
+  "limitations": [
+    "Array containers and explicit supplements are preserved byte for byte",
+    "Archiving does not establish scientific validity or recover missing historical source versions",
+    "Weight checkpoints and captured operand tensors remain regenerable inputs, not archived statistics"
+  ]
+}
