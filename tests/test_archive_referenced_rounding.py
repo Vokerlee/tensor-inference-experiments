@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from archive_selective_reference_evidence import create, verify_all
+from archive_selective_reference_evidence import attachment_paths, create, restore, verify_all
 
 
 def test_geometry_and_statistical_array_references_are_preserved_once(tmp_path):
@@ -40,3 +40,27 @@ def test_wrong_referenced_hash_is_rejected_before_creating_an_archive(tmp_path):
     with pytest.raises(ValueError):
         create(source, [report], [], target)
     assert not target.exists()
+
+
+def test_content_aliases_restore_every_original_reference_without_losing_bytes(tmp_path):
+    root = tmp_path / "results"
+    root.mkdir()
+    first, second = root / "left.npz", root / "right.npz"
+    first.write_bytes(b"same recorded numerical payload")
+    second.write_bytes(first.read_bytes())
+    checksum = hashlib.sha256(first.read_bytes()).hexdigest()
+    report = root / "report.json"
+    report.write_text(json.dumps({"rows": [{"arrays": str(path), "arrays_sha256": checksum}
+                                          for path in (first, second)]}))
+    archive = tmp_path / "archive"
+    create(root, [report], [], archive, deduplicate=True)
+    assert verify_all(archive) == (1, 2)
+    paths = attachment_paths(archive)
+    assert paths["left.npz"] == paths["right.npz"]
+    assert len(list(archive.glob("*.npz"))) == 1
+    target = tmp_path / "restored"
+    restore(archive, target)
+    for name in ("left.npz", "right.npz", "report.json"):
+        assert (target / name).read_bytes() == (root / name).read_bytes()
+    with pytest.raises(FileExistsError):
+        restore(archive, target)

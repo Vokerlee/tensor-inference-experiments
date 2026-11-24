@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 
-LOCAL_FIELDS = {("settings", "library"), ("settings", "output"), ("snapshot",)}
+LOCAL_FIELDS = {("settings", "library"), ("settings", "output"), ("snapshot",), ("profile",)}
 
 
 def digest(data: bytes) -> str:

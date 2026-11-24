@@ -44,3 +44,16 @@ def test_unreviewed_path_rejected_before_creating_archive(tmp_path):
     with pytest.raises(ValueError, match="unreviewed"):
         archive(tmp_path, destination, [source])
     assert not destination.exists()
+
+
+def test_declared_profile_path_normalization_preserves_numerical_values():
+    from archive_statistics import portable_payload
+    import json
+
+    raw = json.dumps({"profile": "/home/research/models/geometry.json", "macs": 123456,
+                      "profile_sha256": "fixed-profile-identity"}).encode()
+    payload, changed = portable_payload(raw)
+    value = json.loads(payload)
+    assert value["profile"] == "<local-path>/geometry.json"
+    assert value["macs"] == 123456 and value["profile_sha256"] == "fixed-profile-identity"
+    assert changed == ["/profile"]

@@ -2,6 +2,7 @@
 """Preserve selective-reference JSON, referenced arrays and explicit supplements."""
 
 import argparse
+import gzip
 import hashlib
 import json
 import shutil
@@ -45,7 +46,8 @@ def verify_all(destination: Path) -> tuple[int, int]:
     return len(records["files"]), len(evidence["files"])
 
 
-def create(root: Path, reports: list[Path], supplements: list[Path], destination: Path) -> None:
+def create(root: Path, reports: list[Path], supplements: list[Path], destination: Path,
+           deduplicate: bool = False) -> None:
     root = root.resolve()
     prepared = {}
     for report in reports:
@@ -62,22 +64,49 @@ def create(root: Path, reports: list[Path], supplements: list[Path], destination
             raise ValueError("supplement duplicates an array")
         prepared[path] = {"kind": "supplement", "sha256": digest(path)}
     archive(root, destination, reports)
-    evidence = {"schema": 1, "files": [], "limitations": [
+    evidence = {"schema": 1, "files": [], "content_deduplicated": deduplicate, "limitations": [
         "Array containers and explicit supplements are preserved byte for byte",
         "Archiving does not establish scientific validity or recover missing historical source versions",
         "Weight checkpoints and captured operand tensors remain regenerable inputs, not archived statistics"]}
+    stored = {}
     for path, descriptor in sorted(prepared.items()):
         relative = path.relative_to(root)
-        target = destination / relative
-        if target.exists():
-            raise FileExistsError(target)
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(path, target)
-        evidence["files"].append({"source": relative.as_posix(), "archive": relative.as_posix(),
+        archived = stored.get(descriptor["sha256"], relative) if deduplicate else relative
+        target = destination / archived
+        if archived == relative:
+            if target.exists():
+                raise FileExistsError(target)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(path, target)
+            stored[descriptor["sha256"]] = archived
+        evidence["files"].append({"source": relative.as_posix(), "archive": archived.as_posix(),
                                   "bytes": path.stat().st_size, **descriptor})
     (destination / "evidence.json").write_text(json.dumps(evidence, indent=2) + "\n")
     verify_all(destination)
 
+
+
+def attachment_paths(destination: Path) -> dict[str, Path]:
+    evidence = json.loads((destination / "evidence.json").read_text())
+    return {relative_path(entry["source"]).as_posix(): destination / relative_path(entry["archive"])
+            for entry in evidence["files"]}
+
+
+def restore(destination: Path, output: Path) -> None:
+    """Restore archived JSON payloads and every logical attachment into a new tree."""
+    verify_all(destination)
+    index = json.loads((destination / "index.json").read_text())
+    output.mkdir(parents=True, exist_ok=False)
+    for entry in index["files"]:
+        target = output / relative_path(entry["source"])
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(gzip.decompress((destination / relative_path(entry["archive"])).read_bytes()))
+    for source, path in attachment_paths(destination).items():
+        target = output / source
+        if target.exists():
+            raise FileExistsError(target)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, target)
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -86,14 +115,20 @@ def main() -> None:
     parser.add_argument("--supplement", type=Path, nargs="*", default=[])
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--verify", action="store_true")
+    parser.add_argument("--deduplicate", action="store_true")
+    parser.add_argument("--restore", type=Path)
     args = parser.parse_args()
-    if args.verify:
+    if args.restore:
+        if args.input or args.supplement:
+            parser.error("restoration accepts no input files")
+        restore(args.output, args.restore)
+    elif args.verify:
         if args.input or args.supplement:
             parser.error("verification accepts no input files")
     else:
         if not args.input:
             parser.error("archive creation requires explicit reports")
-        create(args.root, args.input, args.supplement, args.output)
+        create(args.root, args.input, args.supplement, args.output, args.deduplicate)
     records, attachments = verify_all(args.output)
     print(f"Verified {records} complete JSON records and {attachments} byte-exact attachments")
 
