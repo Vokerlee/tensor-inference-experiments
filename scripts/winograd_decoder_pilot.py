@@ -13,6 +13,7 @@ from activation_pilot import ENGINE, ROOT, digest, revision, write_json
 from modern_models import SANA, provenance, snapshot
 from sana_decoder_feedback import image_values, metrics, save_outputs
 from winograd_streaming import convolution, prepare
+from winograd_integer_models import POLICIES as INTEGER_POLICIES, modified as integer_modified
 
 
 POLICIES = {
@@ -36,7 +37,11 @@ def eligible(decoder):
 
 
 @contextmanager
-def modified(layers, case, records, tile_batch):
+def modified(layers, case, records, tile_batch, evidence=None):
+    if case in INTEGER_POLICIES:
+        with integer_modified(layers, case, records, tile_batch, evidence) as metadata:
+            yield metadata
+        return
     tile, operand_dtype, bits, streaming = POLICIES[case]
     originals = {name: layer.forward for name, layer in layers.items()}
     coefficients = {name: prepare(layer.weight, tile, operand_dtype) for name, layer in layers.items()}
@@ -68,7 +73,7 @@ def main():
     parser.add_argument("--inputs", type=Path, required=True)
     parser.add_argument("--count", type=int, default=4)
     parser.add_argument("--tile-batch", type=int, default=64)
-    parser.add_argument("--case", action="append", choices=POLICIES)
+    parser.add_argument("--case", action="append", choices=(*POLICIES, *INTEGER_POLICIES))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.count < 1 or args.tile_batch < 1:
@@ -95,11 +100,14 @@ def main():
         "experiments": revision(ROOT), "engine": revision(ENGINE), "torch": torch.__version__,
         "gpu": torch.cuda.get_device_name(), "checkpoint": provenance(*SANA, directory),
         "inputs": manifest, "input_sha256": digest(source),
-        "settings": {"count": args.count, "tile_batch": args.tile_batch, "K": 128,
-                     "cases": args.case or list(POLICIES), "activation_group": 32},
+        "settings": {"count": args.count, "tile_batch": args.tile_batch,
+                     "floating_K": 128, "proposed_integer_K": 256,
+                     "cases": args.case or list(POLICIES), "floating_activation_group": 32,
+                     "integer_activation_group": 256},
         "source_sha256": {name: digest(ROOT / "scripts" / name) for name in (
             "winograd_decoder_pilot.py", "winograd_streaming.py", "winograd_reference.py",
-            "sana_decoder_feedback.py", "modern_models.py", "activation_pilot.py")},
+            "sana_decoder_feedback.py", "modern_models.py", "activation_pilot.py",
+            "integer_winograd.py", "winograd_rounding.py", "winograd_integer_models.py")},
         "eligible_layers": list(layers), "cases": [],
         "limitations": [
             "Known Winograd transforms are numerical baselines, not a novel convolution algorithm",
@@ -110,6 +118,8 @@ def main():
             "Tile-batch working sets are bounded, but transformed weights are cached on the GPU",
             "GPU runtime and allocator memory are not target-chip latency or energy",
             "Input images are reused captured decoder states, not new independent prompts",
+            "Integer cases propose INT8 K256, not native FP8; their INT4 codes do not imply extra throughput",
+            "Integer cases use one current activation scale per K256 block and prepared per-column weight scales",
         ],
     }
     path = args.output / "report.json"
@@ -126,7 +136,9 @@ def main():
                     raise ValueError("original replay differs from captured decoder output")
                 outputs.append(result)
         else:
-            with modified(layers, case, record["calls"], args.tile_batch):
+            with modified(layers, case, record["calls"], args.tile_batch,
+                          args.output / case / "prepared.npz") as metadata:
+                record.update(metadata or {})
                 for index, values in enumerate(inputs):
                     before = len(record["calls"])
                     result = model.decode(torch.from_numpy(values[None]).to("cuda", torch.bfloat16),
