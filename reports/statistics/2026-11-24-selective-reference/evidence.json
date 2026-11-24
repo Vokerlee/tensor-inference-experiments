@@ -1,0 +1,416 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "hybrid-observation-cast-elision-preliminary-20261124.log",
+      "archive": "hybrid-observation-cast-elision-preliminary-20261124.log",
+      "bytes": 1162,
+      "kind": "supplement",
+      "sha256": "720f50bb6d32f8ca367c4258e1be9d72a07da2f2061edd4fe134c746184af651"
+    },
+    {
+      "source": "hybrid-observation-compiled-preliminary-20261124.log",
+      "archive": "hybrid-observation-compiled-preliminary-20261124.log",
+      "bytes": 1162,
+      "kind": "supplement",
+      "sha256": "720f50bb6d32f8ca367c4258e1be9d72a07da2f2061edd4fe134c746184af651"
+    },
+    {
+      "source": "hybrid-observation-native-preliminary-20261124.log",
+      "archive": "hybrid-observation-native-preliminary-20261124.log",
+      "bytes": 2150,
+      "kind": "supplement",
+      "sha256": "b447a0a71d3647e57f010c24e00bc04dc26f023117fc184910d18633e539c080"
+    },
+    {
+      "source": "hybrid-observation-preliminary-20261124.log",
+      "archive": "hybrid-observation-preliminary-20261124.log",
+      "bytes": 2570,
+      "kind": "supplement",
+      "sha256": "e0568f70aeb733df29975206a5813a0d6456f14c147b4c47a0be0a456c9ee4d6"
+    },
+    {
+      "source": "hybrid-observation-preserved-casts-preliminary-20261124.log",
+      "archive": "hybrid-observation-preserved-casts-preliminary-20261124.log",
+      "bytes": 1165,
+      "kind": "supplement",
+      "sha256": "6f4ededbadd67792863114969c502e051caf0d65f8c9996dc0aa4e4e9f1f5de3"
+    },
+    {
+      "source": "precision-cast-audit-20261124.log",
+      "archive": "precision-cast-audit-20261124.log",
+      "bytes": 147,
+      "kind": "supplement",
+      "sha256": "02ecc636817e359414f483bea322934e5e677761136ffbff999000a479118fc7"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/bf16-00-full-direct-controls.npz",
+      "archive": "selective-model-convnextv2-20261124/bf16-00-full-direct-controls.npz",
+      "bytes": 212,
+      "kind": "referenced-array",
+      "sha256": "fdeb9f49cdd5a637d261900c14de4f4f9699c0a9a8366bccf5cd5e7b33278fc2"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/bf16-01-full-direct-controls.npz",
+      "archive": "selective-model-convnextv2-20261124/bf16-01-full-direct-controls.npz",
+      "bytes": 212,
+      "kind": "referenced-array",
+      "sha256": "fdeb9f49cdd5a637d261900c14de4f4f9699c0a9a8366bccf5cd5e7b33278fc2"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/bf16-02-full-direct-controls.npz",
+      "archive": "selective-model-convnextv2-20261124/bf16-02-full-direct-controls.npz",
+      "bytes": 212,
+      "kind": "referenced-array",
+      "sha256": "fdeb9f49cdd5a637d261900c14de4f4f9699c0a9a8366bccf5cd5e7b33278fc2"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/dynamic8-00-full-direct-controls.npz",
+      "archive": "selective-model-convnextv2-20261124/dynamic8-00-full-direct-controls.npz",
+      "bytes": 692193,
+      "kind": "referenced-array",
+      "sha256": "adbe9ba45139f3e3226881c70b84bf57882c495e29e6d3215d1c3ca8aa540705"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/dynamic8-01-full-direct-controls.npz",
+      "archive": "selective-model-convnextv2-20261124/dynamic8-01-full-direct-controls.npz",
+      "bytes": 680151,
+      "kind": "referenced-array",
+      "sha256": "1ef66486256800fc0dda47268fb77fae8fc80ea68d78ef1f6cd0a5b3ba079c3a"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/dynamic8-02-full-direct-controls.npz",
+      "archive": "selective-model-convnextv2-20261124/dynamic8-02-full-direct-controls.npz",
+      "bytes": 687435,
+      "kind": "referenced-array",
+      "sha256": "f8ea21aa2d6cebba2ca99442d197063980aa8af34010bd6338b7001a6b0abe31"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/live4-00-full-direct-controls.npz",
+      "archive": "selective-model-convnextv2-20261124/live4-00-full-direct-controls.npz",
+      "bytes": 1210367,
+      "kind": "referenced-array",
+      "sha256": "94c6dd0e21a6e0805e2597fa37008d89eaaf4b59c32af923d328470986db89ae"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/live4-01-full-direct-controls.npz",
+      "archive": "selective-model-convnextv2-20261124/live4-01-full-direct-controls.npz",
+      "bytes": 1205508,
+      "kind": "referenced-array",
+      "sha256": "203e99909057afc6a154dd0e5656820a3139bba2e3517bdd2b48cffd452e3879"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124/live4-02-full-direct-controls.npz",
+      "archive": "selective-model-convnextv2-20261124/live4-02-full-direct-controls.npz",
+      "bytes": 1206561,
+      "kind": "referenced-array",
+      "sha256": "c80ab9867f69d6ec40fe897b843b45830b3d5818abfa12088d3d5a1515ea26ad"
+    },
+    {
+      "source": "selective-model-convnextv2-20261124.log",
+      "archive": "selective-model-convnextv2-20261124.log",
+      "bytes": 1929,
+      "kind": "supplement",
+      "sha256": "ac1fb4a868875acac3863a1b390a4a4a740e5ddf1d8aaeca41a235ea871f4994"
+    },
+    {
+      "source": "selective-model-dinov3-20261124/bf16-00-full-direct-controls.npz",
+      "archive": "selective-model-dinov3-20261124/bf16-00-full-direct-controls.npz",
+      "bytes": 212,
+      "kind": "referenced-array",
+      "sha256": "fdeb9f49cdd5a637d261900c14de4f4f9699c0a9a8366bccf5cd5e7b33278fc2"
+    },
+    {
+      "source": "selective-model-dinov3-20261124/bf16-01-full-direct-controls.npz",
+      "archive": "selective-model-dinov3-20261124/bf16-01-full-direct-controls.npz",
+      "bytes": 212,
+      "kind": "referenced-array",
+      "sha256": "fdeb9f49cdd5a637d261900c14de4f4f9699c0a9a8366bccf5cd5e7b33278fc2"
+    },
+    {
+      "source": "selective-model-dinov3-20261124/bf16-02-full-direct-controls.npz",
+      "archive": "selective-model-dinov3-20261124/bf16-02-full-direct-controls.npz",
+      "bytes": 212,
+      "kind": "referenced-array",
+      "sha256": "fdeb9f49cdd5a637d261900c14de4f4f9699c0a9a8366bccf5cd5e7b33278fc2"
+    },
+    {
+      "source": "selective-model-dinov3-20261124/dynamic8-00-full-direct-controls.npz",
+      "archive": "selective-model-dinov3-20261124/dynamic8-00-full-direct-controls.npz",
+      "bytes": 222086,
+      "kind": "referenced-array",
+      "sha256": "33c3b7474d94d9e3f389e79784a0b7773fbd4f042ec1c1d2c25051260fcbeaf5"
+    },
+    {
+      "source": "selective-model-dinov3-20261124/dynamic8-01-full-direct-controls.npz",
+      "archive": "selective-model-dinov3-20261124/dynamic8-01-full-direct-controls.npz",
+      "bytes": 224115,
+      "kind": "referenced-array",
+      "sha256": "e5382824f8d3148e46e4d8b9947d74a9c59611e33eac6911701dca084f2e9b09"
+    },
+    {
+      "source": "selective-model-dinov3-20261124/dynamic8-02-full-direct-controls.npz",
+      "archive": "selective-model-dinov3-20261124/dynamic8-02-full-direct-controls.npz",
+      "bytes": 221178,
+      "kind": "referenced-array",
+      "sha256": "e05b08f649ae4d62149b97f1f78ebda5d04be1d89f43f1354aa182e570bd67cb"
+    },
+    {
+      "source": "selective-model-dinov3-20261124/live4-00-full-direct-controls.npz",
+      "archive": "selective-model-dinov3-20261124/live4-00-full-direct-controls.npz",
+      "bytes": 372421,
+      "kind": "referenced-array",
+      "sha256": "589d65c145c3a79021618098763a73d55523e1cb712c9dc7ccbe4125ce950acf"
+    },
+    {
+      "source": "selective-model-dinov3-20261124/live4-01-full-direct-controls.npz",
+      "archive": "selective-model-dinov3-20261124/live4-01-full-direct-controls.npz",
+      "bytes": 375024,
+      "kind": "referenced-array",
+      "sha256": "4788fc24cdd837055d8189d12d8e325b839ae4b88bd8ecd07bce7bfdf68cd599"
+    },
+    {
+      "source": "selective-model-dinov3-20261124/live4-02-full-direct-controls.npz",
+      "archive": "selective-model-dinov3-20261124/live4-02-full-direct-controls.npz",
+      "bytes": 374206,
+      "kind": "referenced-array",
+      "sha256": "5b5359ae3dbe1a319cae88592ffd5ef9d3fb0ef3839695b86e724476b457bc83"
+    },
+    {
+      "source": "selective-model-dinov3-20261124.log",
+      "archive": "selective-model-dinov3-20261124.log",
+      "bytes": 1824,
+      "kind": "supplement",
+      "sha256": "e86db4f81e4aad4aa7de2422d223a9d290119c7adf9b3f988d0d5684012682b8"
+    },
+    {
+      "source": "selective-model-timing-convnextv2-20261124.log",
+      "archive": "selective-model-timing-convnextv2-20261124.log",
+      "bytes": 1218,
+      "kind": "supplement",
+      "sha256": "aa633ad18015703316194e60e98743a00e61287fa9565e0fda12e363d9c600b0"
+    },
+    {
+      "source": "selective-model-timing-dinov3-20261124.log",
+      "archive": "selective-model-timing-dinov3-20261124.log",
+      "bytes": 1191,
+      "kind": "supplement",
+      "sha256": "0bd7f7ed9162fe7f76ab93118ab11171e098d725001ffe081741bd7720566817"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-00-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-00-hybrid-chains4-audit.npz",
+      "bytes": 312075,
+      "kind": "referenced-array",
+      "sha256": "18243c606bfb21ce857abe84c1d26b18ea9f836b5a2800bd2c6eb8f1c0e03b9e"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-00-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-00-hybrid-tensorcore-audit.npz",
+      "bytes": 312357,
+      "kind": "referenced-array",
+      "sha256": "649fc1bdd3d1fbd3c755caf76565ce185e9d0fb30afb2a8f91766e27918e07f7"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-01-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-01-hybrid-chains4-audit.npz",
+      "bytes": 2399557,
+      "kind": "referenced-array",
+      "sha256": "23776c870a337ee316e16eb7ae4fb3e077c15cecca0e373562411e5d43397bb3"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-01-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-01-hybrid-tensorcore-audit.npz",
+      "bytes": 2419460,
+      "kind": "referenced-array",
+      "sha256": "badad3d805e186ea905058b53256ca0b7d19b7239ee0243cad91d01b921b9fe5"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-02-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-02-hybrid-chains4-audit.npz",
+      "bytes": 621743,
+      "kind": "referenced-array",
+      "sha256": "45e311a8c7067d0703af894028f3b8a3ddaed681a23d82f9b7bbb1134ec18fa8"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-02-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-02-hybrid-tensorcore-audit.npz",
+      "bytes": 625920,
+      "kind": "referenced-array",
+      "sha256": "3f6b1f62b1f61bc2c8d4ba25f42f96a2dae8e2c3233d98395a00ee5c4696cfa6"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-03-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-03-hybrid-chains4-audit.npz",
+      "bytes": 3651855,
+      "kind": "referenced-array",
+      "sha256": "9cfc2688e2f58cdcea689bcaac762cfd763320d8a0964ce3b85c3bec7e065814"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-03-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-03-hybrid-tensorcore-audit.npz",
+      "bytes": 3663417,
+      "kind": "referenced-array",
+      "sha256": "582fd0d096664b14218182ec5499598f8d99fef5eb99f75bc33bd64fee4023fa"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-04-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-04-hybrid-chains4-audit.npz",
+      "bytes": 948394,
+      "kind": "referenced-array",
+      "sha256": "25eaa52919472f86203af358b06a9478dbe4dcc3c1874dcf6d724f1e4538c643"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-04-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-04-hybrid-tensorcore-audit.npz",
+      "bytes": 954642,
+      "kind": "referenced-array",
+      "sha256": "940d0ca7dcc4e5c4c3e12c9bbd9bc6055717701d03a3b84e658e30ad62cdbba0"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-05-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-05-hybrid-chains4-audit.npz",
+      "bytes": 1830949,
+      "kind": "referenced-array",
+      "sha256": "87675fd2ec5cd72f6103385a503f9dacdf8aef000eb5748c4cf3c0a0fed8943f"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-05-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-05-hybrid-tensorcore-audit.npz",
+      "bytes": 1845538,
+      "kind": "referenced-array",
+      "sha256": "ea0535f2914692d5bfc08294eda62c9837210eda73a92c8a1ce053e8ab37bc82"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-06-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-06-hybrid-chains4-audit.npz",
+      "bytes": 479773,
+      "kind": "referenced-array",
+      "sha256": "24e1c8b71178e9d34d8a53549994adc73f4892d0573560c780b34c8a09d46f66"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-06-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-06-hybrid-tensorcore-audit.npz",
+      "bytes": 478870,
+      "kind": "referenced-array",
+      "sha256": "cd3c0a62179a9fbb0623a191c17d12827238dadefc9fbc1036e302ca8e435ad5"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-07-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-07-hybrid-chains4-audit.npz",
+      "bytes": 13786,
+      "kind": "referenced-array",
+      "sha256": "b13f1e1da78ba1f3d2d4fa04b2df2cb8dc53356a0f5b0131f57e7275ba06c62b"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124/operator-07-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-convnextv2-20261124/operator-07-hybrid-tensorcore-audit.npz",
+      "bytes": 13834,
+      "kind": "referenced-array",
+      "sha256": "7188edf402a4445daf7c569e9e651b6e1f708e159f03bca935e76509d502fcc2"
+    },
+    {
+      "source": "selective-operators-convnextv2-20261124.log",
+      "archive": "selective-operators-convnextv2-20261124.log",
+      "bytes": 1485,
+      "kind": "supplement",
+      "sha256": "0e0e6b3e36f33590dc40f893fe27bb5ee836d54104feb5eef5589773a528310d"
+    },
+    {
+      "source": "selective-operators-dinov3-20261124/operator-00-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-dinov3-20261124/operator-00-hybrid-chains4-audit.npz",
+      "bytes": 3834162,
+      "kind": "referenced-array",
+      "sha256": "7e6870c496891e9e8ad6a08e94c77d9a491c9d4089fa06989f61f8bffdaedd1b"
+    },
+    {
+      "source": "selective-operators-dinov3-20261124/operator-00-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-dinov3-20261124/operator-00-hybrid-tensorcore-audit.npz",
+      "bytes": 3829508,
+      "kind": "referenced-array",
+      "sha256": "72e23e281bf6345f054d997850b2f5a5a06f76b31fdc0b0d3e30122ef53ba65a"
+    },
+    {
+      "source": "selective-operators-dinov3-20261124/operator-01-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-dinov3-20261124/operator-01-hybrid-chains4-audit.npz",
+      "bytes": 343327,
+      "kind": "referenced-array",
+      "sha256": "addc36bb89a4f9307ec8617562befea4a13d27b664f21eedee51e2f6654f3ed0"
+    },
+    {
+      "source": "selective-operators-dinov3-20261124/operator-01-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-dinov3-20261124/operator-01-hybrid-tensorcore-audit.npz",
+      "bytes": 341483,
+      "kind": "referenced-array",
+      "sha256": "a996c3b4574326ce4946532ff7e372ba477f9f3fd088b282cbd24431047be42f"
+    },
+    {
+      "source": "selective-operators-dinov3-20261124/operator-02-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-dinov3-20261124/operator-02-hybrid-chains4-audit.npz",
+      "bytes": 4889732,
+      "kind": "referenced-array",
+      "sha256": "6a2696f912564df1a1def20bed024908a801ddc714a42718ce5d3573146a6835"
+    },
+    {
+      "source": "selective-operators-dinov3-20261124/operator-02-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-dinov3-20261124/operator-02-hybrid-tensorcore-audit.npz",
+      "bytes": 4922331,
+      "kind": "referenced-array",
+      "sha256": "fb786f1b860d9ba6ea2dd1f51dd04e2e4a7dcb8660de7fe6011a03d7824c91c3"
+    },
+    {
+      "source": "selective-operators-dinov3-20261124/operator-03-hybrid-chains4-audit.npz",
+      "archive": "selective-operators-dinov3-20261124/operator-03-hybrid-chains4-audit.npz",
+      "bytes": 1243457,
+      "kind": "referenced-array",
+      "sha256": "327eeb59cbc32e67401ac4082ac6c07b5eb77a75556a4275026fe8b82af47672"
+    },
+    {
+      "source": "selective-operators-dinov3-20261124/operator-03-hybrid-tensorcore-audit.npz",
+      "archive": "selective-operators-dinov3-20261124/operator-03-hybrid-tensorcore-audit.npz",
+      "bytes": 1238942,
+      "kind": "referenced-array",
+      "sha256": "79a7424989f6c3bd440bc5de41cedcd4f775cb25626346af54be3050f6261b09"
+    },
+    {
+      "source": "selective-operators-dinov3-20261124.log",
+      "archive": "selective-operators-dinov3-20261124.log",
+      "bytes": 783,
+      "kind": "supplement",
+      "sha256": "f920e32832c1c436408b06c04f671cb31062c963909a4d9d1dfc6f60a2526104"
+    },
+    {
+      "source": "selective-preliminary-20261124/hybrid_observation.py.txt",
+      "archive": "selective-preliminary-20261124/hybrid_observation.py.txt",
+      "bytes": 8394,
+      "kind": "supplement",
+      "sha256": "f26bc6058fe420fa3fcc9fe43ca9b8cbd5d323ff31ed628e537e6f536126d960"
+    },
+    {
+      "source": "selective-preliminary-20261124/time-hybrid-observation.py.txt",
+      "archive": "selective-preliminary-20261124/time-hybrid-observation.py.txt",
+      "bytes": 1286,
+      "kind": "supplement",
+      "sha256": "2cdccd9f54487accc433e698694e3a9ff2d05dd5da3d23c8224f94d52cfe3e16"
+    },
+    {
+      "source": "selective-stages-convnextv2-20261124.log",
+      "archive": "selective-stages-convnextv2-20261124.log",
+      "bytes": 0,
+      "kind": "supplement",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "selective-stages-dinov3-20261124.log",
+      "archive": "selective-stages-dinov3-20261124.log",
+      "bytes": 0,
+      "kind": "supplement",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limitations": [
+    "Array containers and explicit supplements are preserved byte for byte",
+    "Archiving does not establish scientific validity or recover missing historical source versions",
+    "Weight checkpoints and captured operand tensors remain regenerable inputs, not archived statistics"
+  ]
+}

@@ -1,0 +1,18 @@
+import json,time,torch
+from hybrid_observation import hybrid,prepare,full_reference
+from integer_segment_backend import load_native
+load_native();torch.set_num_threads(8)
+records=[]
+with torch.inference_mode():
+ for m,n,k in [(256,256,128),(256,256,512),(256,256,2048),(1024,1024,1024)]:
+  torch.manual_seed(17);a=torch.randn(m,k,device='cuda').bfloat16();b=torch.randn(k,n,device='cuda').bfloat16();w=prepare(b)
+  reference=full_reference(a,b)
+  for backend in ['reference','chains4','tensorcore']:
+   fn=(lambda:full_reference(a,b)) if backend=='reference' else (lambda:hybrid(a,w,backend=backend))
+   result=fn();torch.cuda.synchronize();times=[]
+   for repeat in range(5):
+    start=time.perf_counter();result=fn();torch.cuda.synchronize();times.append((time.perf_counter()-start)*1000)
+   tensor=result if backend=='reference' else result.output
+   record={'shape':[m,n,k],'backend':backend,'times_ms':times,'fallback':None if backend=='reference' else result.fallback_outputs/tensor.numel(),'bf16_mismatches':int((tensor.view(torch.int16)!=reference.view(torch.int16)).sum())}
+   records.append(record);print(record,flush=True)
+json.dump({'status':'complete','kind':'preliminary-private-prototype','records':records},open('/tmp/hybrid-observation-preliminary.json','w'),indent=2)
