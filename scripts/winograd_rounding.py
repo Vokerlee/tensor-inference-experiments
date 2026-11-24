@@ -12,6 +12,7 @@ import torch
 
 from winograd_reference import transforms
 from plane_encoding import PlaneEncoding
+from winograd_support import validate as validate_support
 
 
 @dataclass(frozen=True)
@@ -22,6 +23,7 @@ class PlaneGeometry:
     eigenvalues: torch.Tensor
     metric: torch.Tensor  # Audit-only full metric; not needed by runtime rounding.
     backend: str = "torch"
+    active_planes: torch.Tensor | None = None
 
     @property
     def rank(self):
@@ -29,10 +31,12 @@ class PlaneGeometry:
 
     def to(self, device):
         return PlaneGeometry(*(value.to(device).contiguous() for value in (
-            self.factor, self.diagonal, self.normalizer, self.eigenvalues, self.metric)), backend=self.backend)
+            self.factor, self.diagonal, self.normalizer, self.eigenvalues, self.metric)), backend=self.backend,
+            active_planes=None if self.active_planes is None else self.active_planes.to(device))
 
 
-def prepare(coefficients: torch.Tensor, tile: int = 2, rank: int = 4) -> PlaneGeometry:
+def prepare(coefficients: torch.Tensor, tile: int = 2, rank: int = 4,
+            active_planes: torch.Tensor | None = None) -> PlaneGeometry:
     planes, channels, outputs = coefficients.shape
     if planes != (tile + 2) ** 2 or not 1 <= rank <= planes or channels < 1 or outputs < 1:
         raise ValueError("valid [planes,C,O] transformed weights and rank required")
@@ -42,17 +46,25 @@ def prepare(coefficients: torch.Tensor, tile: int = 2, rank: int = 4) -> PlaneGe
     inverse = transforms(tile).output
     basis = torch.einsum("ip,jq->pqij", inverse, inverse).reshape(planes, tile ** 2)
     gram = torch.einsum("pco,qco->cpq", weight, weight) * (basis @ basis.t())[None]
+    if active_planes is not None:
+        active_planes = active_planes.detach().cpu().bool()
+        if active_planes.shape != (planes,) or not active_planes.any():
+            raise ValueError("nonempty compatible active-plane mask required")
+        gram *= active_planes[None, :, None] * active_planes[None, None, :]
     normalizer = gram.diagonal(dim1=1, dim2=2).amax(1).clamp_min(torch.finfo(torch.float64).tiny)
     metric = gram / normalizer[:, None, None]
     eigenvalues, directions = torch.linalg.eigh(metric)
     eigenvalues = eigenvalues.clamp_min(0)
     factor = (directions[:, :, -rank:] * eigenvalues[:, None, -rank:].sqrt()).float()
+    if active_planes is not None:
+        factor[:, ~active_planes] = 0
     diagonal = (metric.diagonal(dim1=1, dim2=2) - factor.double().square().sum(-1)).clamp_min(0).float()
-    return PlaneGeometry(factor, diagonal, normalizer, eigenvalues, metric)
+    return PlaneGeometry(factor, diagonal, normalizer, eigenvalues, metric, active_planes=active_planes)
 
 
 def encode_planes(source: torch.Tensor, geometry: PlaneGeometry, bits: int = 4,
                   group: int = 32) -> PlaneEncoding:
+    validate_support(source, geometry.active_planes)
     if geometry.backend == "cuda":
         from plane_rounding_backend import encode_native
         return encode_native(source, geometry, bits, group)

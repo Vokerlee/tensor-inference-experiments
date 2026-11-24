@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import torch
 
 from plane_encoding import PlaneEncoding
+from winograd_support import validate as validate_support
 
 
 @dataclass(frozen=True)
@@ -13,6 +14,7 @@ class ShiftGeometry:
     backend: str = "torch"
 
     rank: int = 1
+    active_planes: torch.Tensor | None = None
 
 
 def prepare(geometry, *, backend="torch") -> ShiftGeometry:
@@ -26,7 +28,7 @@ def prepare(geometry, *, backend="torch") -> ShiftGeometry:
     diagonal_exponent = diagonal.clamp_min(2.**-126).log2().ceil().clamp(-126, 0).int()
     diagonal_code = torch.where(diagonal > 0, 1 - diagonal_exponent, 0)
     packed = ((diagonal_code << 8) | (code & 255)).short().contiguous()
-    return ShiftGeometry(packed, backend)
+    return ShiftGeometry(packed, backend, active_planes=geometry.active_planes)
 
 
 def reference(source: torch.Tensor, metadata: torch.Tensor, bits: int = 4, group: int = 256):
@@ -72,6 +74,7 @@ def reference(source: torch.Tensor, metadata: torch.Tensor, bits: int = 4, group
 
 
 def encode_shift(source, geometry: ShiftGeometry, bits=4, group=256):
+    validate_support(source, geometry.active_planes)
     if geometry.backend == "cuda":
         from integer_segment_backend import load_native
         load_native()

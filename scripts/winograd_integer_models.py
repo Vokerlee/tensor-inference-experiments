@@ -16,6 +16,7 @@ from winograd_one_axis import transform_weights as transform_one
 from winograd_reference import transform_weights, transforms
 from winograd_rounding import prepare as prepare_geometry
 from winograd_shift_rounding import ShiftGeometry, prepare as prepare_shift
+from winograd_support import nearest_planes
 
 
 @dataclass(frozen=True)
@@ -28,6 +29,9 @@ class Policy:
 
 
 POLICIES = {
+    "int8-k256-a4-support-shift": Policy(4, rank=1, backend="support-shift-cuda"),
+    "int8-k256-a8-support-shift": Policy(8, rank=1, backend="support-shift-cuda"),
+    "int8-k256-f4-a8-support-shift": Policy(8, rank=1, backend="support-shift-cuda", tile=4),
     "fp8-k256-f2": Policy(8, backend="fp8"),
     "fp8-k256-f4": Policy(8, backend="fp8", tile=4),
     "int8-k256-a8": Policy(8),
@@ -61,7 +65,7 @@ POLICIES = {
 
 @contextmanager
 def modified(layers: dict, case: str, records: list, tile_batch: int,
-             evidence: Path | None = None):
+             evidence: Path | None = None, support_layers=None):
     policy = POLICIES[case]
     bits, rank, streaming = policy.bits, policy.rank, policy.streaming
     backend, tile = policy.backend, policy.tile
@@ -75,7 +79,9 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
                         else transform_weights(layer.weight, scheme))
         weights[name] = prepare_fp8(coefficients) if backend == "fp8" else prepare(coefficients, 256)
         reconstructed = weights[name].reconstructed()
-        geometries[name] = (prepare_geometry(reconstructed, tile=tile, rank=rank).to(layer.weight.device)
+        active = (nearest_planes(tile) if backend.startswith("support-") and name in (support_layers or set())
+                  else None)
+        geometries[name] = (prepare_geometry(reconstructed, tile=tile, rank=rank, active_planes=active).to(layer.weight.device)
                             if rank else None)
         exponents = weights[name].exponents.cpu().numpy()
         arrays[f"layer{index}.weight_exponents"] = exponents
@@ -89,6 +95,9 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
                "weight_numeric_value_histogram": {str(float(code)): int(count) for code, count in zip(codes, counts)},
                "transformed_weight_sse": float((reconstructed[:, :coefficients.shape[1]] - coefficients).double().square().sum())}
         geometry = geometries[name]
+        row["active_transform_planes"] = int(active.sum()) if active is not None else (tile + 2) ** 2
+        if active is not None:
+            arrays[f"layer{index}.active_planes"] = active.numpy()
         if geometry is not None:
             for key in ("factor", "diagonal", "normalizer", "eigenvalues", "metric"):
                 arrays[f"layer{index}.{key}"] = getattr(geometry, key).cpu().numpy()
@@ -99,7 +108,7 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
                 shares.sum() / (energy > 0).sum().clamp_min(1))
         if geometry is not None and backend == "cuda":
             geometries[name] = replace_dataclass(geometry, backend="cuda")
-        elif geometry is not None and backend == "shift-cuda":
+        elif geometry is not None and backend in ("shift-cuda", "support-shift-cuda"):
             geometries[name] = prepare_shift(geometry, backend="cuda")
             arrays[f"layer{index}.packed_metadata"] = geometries[name].metadata.cpu().numpy()
         elif geometry is None and backend in ("nearest-cuda", "axis-fit", "axis-all"):
