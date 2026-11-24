@@ -105,13 +105,14 @@ def main():
         "settings": {"count": args.count, "tile_batch": args.tile_batch,
                      "floating_K": 128, "proposed_integer_K": 256,
                      "cases": args.case or list(POLICIES), "floating_activation_group": 32,
-                     "integer_activation_group": 256, "minimum_outputs": args.minimum_outputs},
+                     "integer_activation_group": 256, "fp8_activation_group": 256,
+                     "fp8_format": "e4m3fn", "minimum_outputs": args.minimum_outputs},
         "source_sha256": {name: digest(ROOT / "scripts" / name) for name in (
             "winograd_decoder_pilot.py", "winograd_streaming.py", "winograd_reference.py",
             "sana_decoder_feedback.py", "modern_models.py", "activation_pilot.py",
             "integer_winograd.py", "winograd_rounding.py", "winograd_integer_models.py",
             "winograd_shift_rounding.py", "plane_rounding_backend.py", "integer_segment_backend.py",
-            "plane_encoding.py", "integer_winograd_one_axis.py", "winograd_one_axis.py")},
+            "plane_encoding.py", "integer_winograd_one_axis.py", "winograd_one_axis.py", "fp8_winograd.py")},
         "eligible_layers": list(layers), "cases": [],
         "limitations": [
             "Known Winograd transforms are numerical baselines, not a novel convolution algorithm",
@@ -123,6 +124,7 @@ def main():
             "GPU runtime and allocator memory are not target-chip latency or energy",
             "Input images are reused captured decoder states, not new independent prompts",
             "Integer cases propose INT8 K256, not native FP8; their INT4 codes do not imply extra throughput",
+            "FP8 controls decode E4M3 operands to BF16 for the oracle; they do not measure native FP8 timing or a specified accumulation graph",
             "Integer cases use one current activation scale per K256 block and prepared per-column weight scales",
         ],
     }

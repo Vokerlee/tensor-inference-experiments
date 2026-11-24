@@ -10,6 +10,7 @@ import torch
 
 from activation_pilot import digest
 from integer_winograd import convolution, prepare
+from fp8_winograd import convolution as convolution_fp8, prepare as prepare_fp8
 from integer_winograd_one_axis import convolution as convolution_one
 from winograd_one_axis import transform_weights as transform_one
 from winograd_reference import transform_weights, transforms
@@ -27,6 +28,8 @@ class Policy:
 
 
 POLICIES = {
+    "fp8-k256-f2": Policy(8, backend="fp8"),
+    "fp8-k256-f4": Policy(8, backend="fp8", tile=4),
     "int8-k256-a8": Policy(8),
     "int8-k256-a4": Policy(4),
     "int8-k256-a4-r1": Policy(4, rank=1),
@@ -70,7 +73,7 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
                          ceil(3 * layer.in_channels / 256) <= 2 * ceil(layer.in_channels / 256))
         coefficients = (transform_one(layer.weight.float()) if one_axis[name]
                         else transform_weights(layer.weight, scheme))
-        weights[name] = prepare(coefficients, 256)
+        weights[name] = prepare_fp8(coefficients) if backend == "fp8" else prepare(coefficients, 256)
         reconstructed = weights[name].reconstructed()
         geometries[name] = (prepare_geometry(reconstructed, tile=tile, rank=rank).to(layer.weight.device)
                             if rank else None)
@@ -82,7 +85,8 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
                "original_channels": layer.in_channels, "lowered_reduction": weights[name].channels,
                "padded_channels": weights[name].codes.shape[1],
                "weight_groups": weights[name].exponents.numel(),
-               "weight_code_histogram": {str(int(code)): int(count) for code, count in zip(codes, counts)},
+               "weight_format": "fp8_e4m3fn" if backend == "fp8" else "int8",
+               "weight_numeric_value_histogram": {str(float(code)): int(count) for code, count in zip(codes, counts)},
                "transformed_weight_sse": float((reconstructed[:, :coefficients.shape[1]] - coefficients).double().square().sum())}
         geometry = geometries[name]
         if geometry is not None:
@@ -112,7 +116,10 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
 
     def replace(name, layer):
         def forward(values):
-            if one_axis[name]:
+            if backend == "fp8":
+                result, stats = convolution_fp8(values, weights[name], layer.bias, tile=tile,
+                                                padding=layer.padding[0], tile_batch=tile_batch)
+            elif one_axis[name]:
                 result, stats = convolution_one(values, weights[name], geometries[name], layer.bias,
                                                 padding=layer.padding[0], tile_batch=tile_batch, bits=bits)
             else:

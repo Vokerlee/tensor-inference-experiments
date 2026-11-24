@@ -48,3 +48,18 @@ def test_native_proxy_and_causal_shift_reach_the_actual_model_consumers(tmp_path
         assert records[0]["rounding"]["backend"].startswith("cuda")
         assert records[0]["rounding"]["source_zeros_changed"] == 0
         assert torch.equal(model(source), original)
+
+
+@torch.inference_mode()
+def test_fp8_policies_feed_real_model_consumers_and_restore_weights():
+    model = torch.nn.Conv2d(32, 32, 3, padding=1).eval()
+    source = torch.randn(1, 32, 5, 7)
+    original = model(source)
+    for case in ("fp8-k256-f2", "fp8-k256-f4"):
+        records = []
+        with modified({"conv": model}, case, records, 3):
+            result = model(source)
+        assert not torch.equal(result, original)
+        assert records[0]["operand_format"] == "fp8_e4m3fn"
+        assert records[0]["fp8_partial_vectors"] > 0
+        assert torch.equal(model(source), original)
