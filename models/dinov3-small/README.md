@@ -57,3 +57,11 @@ A large local QKV improvement does not transfer to rank1 full-model fidelity.
 Both descriptor campaigns reuse the same ten images; task recognition is a
 separate experiment. All favorable, unfavorable and preliminary statistics
 remain recoverable.
+
+[Frozen-feature CIFAR100 task](../../reports/2026-11-24-attention-task.md)
+adds100 discovery and3000 disjoint replication images with a fixed2000-training-
+image gallery. Uniform INT8 gives64.367%; Q-only/K-only INT4 give62.367%/62.267%
+and fail the declared1pp-loss screen. Balanced rank4 superiority is not
+established. This is a constructed descriptor-recognition task, not the model's
+published classification benchmark. All27900 policy outputs are independently
+audited and preserved.

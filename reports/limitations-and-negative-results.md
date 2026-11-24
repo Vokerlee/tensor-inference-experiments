@@ -52,3 +52,12 @@ comparator but remains far from uniform INT8. Local metric improvement is
 insufficient as an acceptance criterion. The preliminary exact-grid alternative
 and all corrected variants are preserved separately; no target-energy saving
 is inferred from reconstructed operand bits or software execution.
+
+## Attention rounding fails the declared recognition screen
+
+[Complete3000-query replication](2026-11-24-attention-task.md) rejects the tested
+Q-only/K-only INT4 configurations under the1pp-loss acceptance rule. Their point
+losses against uniform INT8 are2.0/2.1pp. Balanced rank4 gains1.167pp over nearest
+QKV4, but its declared family lower bound remains below zero. All primary
+screens fail. Retain the complete result; do not select a favorable100-image
+point estimate or descriptor-MSE ranking as a replacement acceptance criterion.
