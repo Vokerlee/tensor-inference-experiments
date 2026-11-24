@@ -49,7 +49,8 @@ def main():
     for campaign in CAMPAIGNS:
         path = args.archive / campaign / "report.json.gz"
         report = json.loads(gzip.decompress(path.read_bytes()))
-        assert report["status"] == "complete" and report["invalid_cases"] == 0
+        if report["status"] != "complete" or report["invalid_cases"]:
+            raise ValueError("incomplete campaign or recorded invalid cases")
         provenance.append({"campaign": campaign, "source_commit": report["experiments"]["commit"],
                            "source_dirty": report["experiments"]["dirty"], "archive_sha256": digest(path)})
         for operator in report.get("operators", []):
