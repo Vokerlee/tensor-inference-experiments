@@ -3,9 +3,10 @@
 import torch
 
 from integer_segment_backend import load_native
+from plane_encoding import PlaneEncoding
 
 
-def round_native(source, geometry, bits, group):
+def encode_native(source, geometry, bits, group):
     load_native()
     output, exponent, selected, invalid = torch.ops.tensor_inference_engine.plane_rounding(
         source.contiguous(), geometry.factor.contiguous(), geometry.diagonal.contiguous(),
@@ -13,7 +14,7 @@ def round_native(source, geometry, bits, group):
     if int(invalid.item()):
         raise ValueError("native plane rounding reported invalid arithmetic")
     levels, counts = torch.unique(exponent, return_counts=True)
-    return output, {
+    statistics = {
         "bits": bits, "rank": geometry.rank, "mode": "completed-proxy", "backend": "cuda-rn-scalar",
         "groups": exponent.numel(), "zero_groups": int((source.reshape(
             source.shape[0], source.shape[1], -1, group).abs().amax(-1) == 0).sum()),
@@ -22,3 +23,5 @@ def round_native(source, geometry, bits, group):
         "source_zeros_changed": int(((source == 0) & (output != 0)).sum()),
         "exponent_histogram": {str(int(level)): int(count) for level, count in zip(levels, counts)},
     }
+
+    return PlaneEncoding(output, exponent, statistics)

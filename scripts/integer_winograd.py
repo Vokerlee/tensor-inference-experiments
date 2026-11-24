@@ -11,8 +11,8 @@ from dataclasses import dataclass
 import torch
 import torch.nn.functional as functional
 
-from winograd_rounding import round_planes
-from winograd_shift_rounding import ShiftGeometry, round_shift
+from winograd_rounding import encode_planes
+from winograd_shift_rounding import ShiftGeometry, encode_shift
 from winograd_reference import inverse_outputs, transforms
 from winograd_streaming import map_tiles, product
 
@@ -59,16 +59,25 @@ def multiply(source: torch.Tensor, weights: IntegerWeights, *, bits: int = 8,
     grouped = padded.reshape(planes, rows, -1, weights.block)
     maximum = grouped.abs().amax(-1)
     limit = (1 << (bits - 1)) - 1
-    exponent = torch.where(maximum > 0, (maximum / limit).log2().ceil(), 0).int()
-    scale = torch.ldexp(torch.ones_like(maximum), exponent)
-    if not torch.isfinite(scale).all() or (scale <= 0).any():
-        raise ValueError("activation scale outside finite FP32 domain")
     stats = None
     if geometry is not None:
-        rounder = round_shift if isinstance(geometry, ShiftGeometry) else round_planes
-        reconstructed, stats = rounder(padded, geometry, bits, group=weights.block)
-        codes = (reconstructed.reshape(grouped.shape) / scale[..., None]).round().to(torch.int8)
+        encoder = encode_shift if isinstance(geometry, ShiftGeometry) else encode_planes
+        encoded = encoder(padded, geometry, bits, group=weights.block)
+        exponent, stats = encoded.exponents, encoded.statistics
+        if exponent.shape != maximum.shape:
+            raise ValueError("encoder returned incompatible group exponents")
+        scale = torch.ldexp(torch.ones_like(maximum), exponent)
+        recovered = encoded.reconstructed.reshape(grouped.shape) / scale[..., None]
+        rounded = recovered.round()
+        valid = torch.isfinite(recovered) & (recovered == rounded) & (rounded.abs() <= limit)
+        if not bool(valid.all()):
+            raise ValueError("encoded code range/grid does not match its authoritative scale")
+        codes = rounded.to(torch.int8)
     else:
+        exponent = torch.where(maximum > 0, (maximum / limit).log2().ceil(), 0).int()
+        scale = torch.ldexp(torch.ones_like(maximum), exponent)
+        if not torch.isfinite(scale).all() or (scale <= 0).any():
+            raise ValueError("activation scale outside finite FP32 domain")
         codes = (grouped / scale[..., None]).round().clamp(-limit, limit).to(torch.int8)
     weight_scales = torch.ldexp(torch.ones_like(weights.exponents, dtype=torch.float32), weights.exponents)
     accumulated = None
@@ -92,7 +101,7 @@ def multiply(source: torch.Tensor, weights: IntegerWeights, *, bits: int = 8,
         "original_channels": weights.channels, "padded_channels": channels,
         "activation_groups": maximum.numel(), "zero_groups": int((maximum == 0).sum()),
         "exponent_histogram": {str(int(level)): int(count) for level, count in zip(levels, counts)},
-        "rounding": stats,
+        "rounding": stats, "code_grid_validated": geometry is not None,
         "integer_partial_vectors": planes * rows * (channels // weights.block)
                                    * ((weights.codes.shape[-1] + 127) // 128),
         "output_dequant_scalar_multiplications": 2 * planes * rows * (channels // weights.block)

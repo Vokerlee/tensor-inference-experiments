@@ -4,15 +4,15 @@ from dataclasses import dataclass
 
 import torch
 
+from plane_encoding import PlaneEncoding
+
 
 @dataclass(frozen=True)
 class ShiftGeometry:
     metadata: torch.Tensor
     backend: str = "torch"
 
-    @property
-    def rank(self):
-        return 1
+    rank: int = 1
 
 
 def prepare(geometry, *, backend="torch") -> ShiftGeometry:
@@ -71,7 +71,7 @@ def reference(source: torch.Tensor, metadata: torch.Tensor, bits: int = 4, group
     return output, exponent, changed
 
 
-def round_shift(source, geometry: ShiftGeometry, bits=4, group=256):
+def encode_shift(source, geometry: ShiftGeometry, bits=4, group=256):
     if geometry.backend == "cuda":
         from integer_segment_backend import load_native
         load_native()
@@ -84,10 +84,18 @@ def round_shift(source, geometry: ShiftGeometry, bits=4, group=256):
     else:
         raise ValueError("unknown shift rounding backend")
     levels, counts = torch.unique(exponent, return_counts=True)
-    return output, {"bits": bits, "rank": 1, "mode": "power2-greedy", "backend": geometry.backend,
+    statistics = {"bits": bits, "rank": geometry.rank,
+                    "mode": "power2-greedy" if geometry.rank else "nearest", "backend": geometry.backend,
                     "groups": exponent.numel(), "zero_groups": int((source.reshape(
                         source.shape[0], source.shape[1], -1, group).abs().amax(-1) == 0).sum()),
-                    "changed_channels": int(changed.sum()), "candidate_decisions": changed.numel(),
+                    "changed_channels": int(changed.sum()), "candidate_decisions": changed.numel() if geometry.rank else 0,
                     "source_sse": float((output - source.float()).double().square().sum()),
                     "source_zeros_changed": int(((source == 0) & (output != 0)).sum()),
                     "exponent_histogram": {str(int(level)): int(count) for level, count in zip(levels, counts)}}
+
+    return PlaneEncoding(output, exponent, statistics)
+
+
+def round_shift(source, geometry, bits=4, group=256):
+    encoded = encode_shift(source, geometry, bits, group)
+    return encoded.reconstructed, encoded.statistics

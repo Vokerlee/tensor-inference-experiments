@@ -11,6 +11,7 @@ from dataclasses import dataclass
 import torch
 
 from winograd_reference import transforms
+from plane_encoding import PlaneEncoding
 
 
 @dataclass(frozen=True)
@@ -50,11 +51,11 @@ def prepare(coefficients: torch.Tensor, tile: int = 2, rank: int = 4) -> PlaneGe
     return PlaneGeometry(factor, diagonal, normalizer, eigenvalues, metric)
 
 
-def round_planes(source: torch.Tensor, geometry: PlaneGeometry, bits: int = 4,
-                 group: int = 32) -> tuple[torch.Tensor, dict]:
+def encode_planes(source: torch.Tensor, geometry: PlaneGeometry, bits: int = 4,
+                  group: int = 32) -> PlaneEncoding:
     if geometry.backend == "cuda":
-        from plane_rounding_backend import round_native
-        return round_native(source, geometry, bits, group)
+        from plane_rounding_backend import encode_native
+        return encode_native(source, geometry, bits, group)
     if geometry.backend != "torch":
         raise ValueError("unknown plane rounding backend")
     if (source.ndim != 3 or source.shape[0] != geometry.factor.shape[1]
@@ -99,7 +100,7 @@ def round_planes(source: torch.Tensor, geometry: PlaneGeometry, bits: int = 4,
     codes = torch.where(selected[None], codes, nearest)
     reconstructed = codes * scale
     levels, counts = torch.unique(exponent, return_counts=True)
-    return reconstructed, {
+    statistics = {
         "bits": bits, "rank": geometry.factor.shape[-1], "decision_planes": planes,
         "groups": maximum.numel(), "zero_groups": int((maximum == 0).sum()),
         "candidate_selected": int(selected.sum()), "candidate_decisions": selected.numel(),
@@ -109,3 +110,10 @@ def round_planes(source: torch.Tensor, geometry: PlaneGeometry, bits: int = 4,
         "nearest_proxy_sum": float(baseline_cost.double().sum()),
         "exponent_histogram": {str(int(level)): int(count) for level, count in zip(levels, counts)},
     }
+
+    return PlaneEncoding(reconstructed, exponent, statistics)
+
+
+def round_planes(source, geometry, bits=4, group=32):
+    encoded = encode_planes(source, geometry, bits, group)
+    return encoded.reconstructed, encoded.statistics

@@ -110,7 +110,8 @@ def main():
             "winograd_decoder_pilot.py", "winograd_streaming.py", "winograd_reference.py",
             "sana_decoder_feedback.py", "modern_models.py", "activation_pilot.py",
             "integer_winograd.py", "winograd_rounding.py", "winograd_integer_models.py",
-            "winograd_shift_rounding.py", "plane_rounding_backend.py", "integer_segment_backend.py")},
+            "winograd_shift_rounding.py", "plane_rounding_backend.py", "integer_segment_backend.py",
+            "plane_encoding.py")},
         "eligible_layers": list(layers), "cases": [],
         "limitations": [
             "Known Winograd transforms are numerical baselines, not a novel convolution algorithm",
