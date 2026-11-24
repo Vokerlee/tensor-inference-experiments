@@ -1,0 +1,73 @@
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 3019.50it/s]
+original {'rmse': 0.0, 'mean_error': 0.0, 'maximum_absolute_error': 0.0, 'relative_mse': 0.0, 'psnr_unit_range': None, 'identical': True}
+int8-k256-a8: decoded 1/1
+int8-k256-a8 {'rmse': 0.003591108304942779, 'mean_error': 0.0007189965496460596, 'maximum_absolute_error': 0.11328125, 'relative_mse': 7.326416801402105e-05, 'psnr_unit_range': 48.8954299340716, 'identical': False}
+int8-k256-a4: decoded 1/1
+int8-k256-a4 {'rmse': 0.03162873973710981, 'mean_error': 0.0014932664732138317, 'maximum_absolute_error': 0.56640625, 'relative_mse': 0.005683271331755887, 'psnr_unit_range': 29.99836224838996, 'identical': False}
+int8-k256-a4-r1-native: decoded 1/1
+int8-k256-a4-r1-native {'rmse': 0.029880337645780575, 'mean_error': 0.0021353798607985177, 'maximum_absolute_error': 0.84765625, 'relative_mse': 0.005072308000428337, 'psnr_unit_range': 30.49228998661682, 'identical': False}
+int8-k256-a4-r4-native: decoded 1/1
+int8-k256-a4-r4-native {'rmse': 0.029618359363208044, 'mean_error': 0.001885698487361272, 'maximum_absolute_error': 0.57421875, 'relative_mse': 0.004983754168002155, 'psnr_unit_range': 30.56878003664687, 'identical': False}
+int8-k256-a4-shift: decoded 1/1
+int8-k256-a4-shift {'rmse': 0.029877555877864243, 'mean_error': 0.0016537625342607498, 'maximum_absolute_error': 0.66015625, 'relative_mse': 0.005071363611711819, 'psnr_unit_range': 30.493098653981505, 'identical': False}
+Traceback (most recent call last):
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/scripts/winograd_decoder_pilot.py", line 178, in <module>
+    main()
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/scripts/winograd_decoder_pilot.py", line 152, in main
+    result = model.decode(torch.from_numpy(values[None]).to("cuda", torch.bfloat16),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/diffusers/utils/accelerate_utils.py", line 46, in wrapper
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/diffusers/models/autoencoders/autoencoder_dc.py", line 623, in decode
+    decoded = self._decode(z)
+              ^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/diffusers/models/autoencoders/autoencoder_dc.py", line 600, in _decode
+    decoded = self.decoder(z)
+              ^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/diffusers/models/autoencoders/autoencoder_dc.py", line 373, in forward
+    hidden_states = up_block(hidden_states)
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/nn/modules/container.py", line 253, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/diffusers/models/autoencoders/autoencoder_dc.py", line 52, in forward
+    hidden_states = self.conv1(hidden_states)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/scripts/winograd_integer_models.py", line 81, in forward
+    result, stats = convolution(values, weights[name], layer.bias, padding=layer.padding[0],
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/scripts/integer_winograd.py", line 136, in convolution
+    result, layout = map_tiles(values, weights.codes.shape[-1], consume, bias,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vokerlee/projects/phd-topic/energy-efficient-inference-phd/.research-local/night-development-20261124/tensor-inference-experiments/scripts/winograd_streaming.py", line 97, in map_tiles
+    channels = torch.arange(outputs, device=values.device)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
