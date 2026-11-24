@@ -25,3 +25,22 @@ def test_modified_outputs_feed_both_layers_and_context_restores_originals(tmp_pa
     assert all(row["K"] == 256 and row["rounding"] is not None for row in records)
     assert (tmp_path / "prepared.npz").exists() and metadata["geometry_sha256"]
     torch.testing.assert_close(model(source), reference, rtol=0, atol=0)
+
+
+@torch.inference_mode()
+def test_native_proxy_and_causal_shift_reach_the_actual_model_consumers(tmp_path):
+    import pytest
+    if not torch.cuda.is_available():
+        pytest.skip("CUDA required")
+    torch.manual_seed(13)
+    model = torch.nn.Conv2d(32, 32, 3, padding=1).cuda().eval()
+    source = torch.randn(1, 32, 5, 7, device="cuda")
+    original = model(source)
+    for case in ("int8-k256-a4-r1-native", "int8-k256-a4-shift", "int8-k256-a8-shift"):
+        records = []
+        with modified({"conv": model}, case, records, 3, tmp_path / f"{case}.npz"):
+            result = model(source)
+        assert not torch.equal(result, original)
+        assert records[0]["rounding"]["backend"].startswith("cuda")
+        assert records[0]["rounding"]["source_zeros_changed"] == 0
+        assert torch.equal(model(source), original)

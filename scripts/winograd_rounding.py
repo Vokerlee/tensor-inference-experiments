@@ -20,10 +20,15 @@ class PlaneGeometry:
     normalizer: torch.Tensor
     eigenvalues: torch.Tensor
     metric: torch.Tensor  # Audit-only full metric; not needed by runtime rounding.
+    backend: str = "torch"
+
+    @property
+    def rank(self):
+        return self.factor.shape[-1]
 
     def to(self, device):
-        return PlaneGeometry(*(value.to(device) for value in (
-            self.factor, self.diagonal, self.normalizer, self.eigenvalues, self.metric)))
+        return PlaneGeometry(*(value.to(device).contiguous() for value in (
+            self.factor, self.diagonal, self.normalizer, self.eigenvalues, self.metric)), backend=self.backend)
 
 
 def prepare(coefficients: torch.Tensor, tile: int = 2, rank: int = 4) -> PlaneGeometry:
@@ -47,6 +52,11 @@ def prepare(coefficients: torch.Tensor, tile: int = 2, rank: int = 4) -> PlaneGe
 
 def round_planes(source: torch.Tensor, geometry: PlaneGeometry, bits: int = 4,
                  group: int = 32) -> tuple[torch.Tensor, dict]:
+    if geometry.backend == "cuda":
+        from plane_rounding_backend import round_native
+        return round_native(source, geometry, bits, group)
+    if geometry.backend != "torch":
+        raise ValueError("unknown plane rounding backend")
     if (source.ndim != 3 or source.shape[0] != geometry.factor.shape[1]
             or source.shape[2] != geometry.factor.shape[0] or group < 1 or source.shape[2] % group or bits not in (4, 8) or geometry.factor.device != source.device):
         raise ValueError("compatible [planes,M,C], aligned channel groups and INT4/8 required")
