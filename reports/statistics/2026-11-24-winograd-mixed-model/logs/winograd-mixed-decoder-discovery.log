@@ -1,0 +1,6 @@
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 3613.33it/s]
+original {'rmse': 0.0, 'mean_error': 0.0, 'maximum_absolute_error': 0.0, 'relative_mse': 0.0, 'psnr_unit_range': None, 'identical': True}
+mixed-bf16-f4-int8-f2: decoded 1/1
+mixed-bf16-f4-int8-f2 {'rmse': 0.002853738412060013, 'mean_error': 0.00028207960228125256, 'maximum_absolute_error': 0.08984375, 'relative_mse': 4.6266104830341626e-05, 'psnr_unit_range': 50.89171678003758, 'identical': False}
+mixed-bf16-f4-fp8-f2: decoded 1/1
+mixed-bf16-f4-fp8-f2 {'rmse': 0.006167368866339561, 'mean_error': 0.0010444968938827515, 'maximum_absolute_error': 0.17578125, 'relative_mse': 0.00021608989759952852, 'psnr_unit_range': 44.198001518501286, 'identical': False}

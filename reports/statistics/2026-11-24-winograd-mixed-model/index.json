@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "winograd-mixed-decoder-discovery-20261124/report.json",
+      "archive": "winograd-mixed-decoder-discovery-20261124/report.json.gz",
+      "source_sha256": "7e62e80a0c89aa422d587477382bd9b00821c38f2bc4198e3307dc5252514e8a",
+      "payload_sha256": "7e62e80a0c89aa422d587477382bd9b00821c38f2bc4198e3307dc5252514e8a",
+      "archive_sha256": "67e8512c69f34d36a1fcd7d3fced9b6a3cb6e428bceceae630ff638bdafd63c2",
+      "source_bytes": 327242,
+      "payload_bytes": 327242,
+      "archive_bytes": 50001,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder",
+      "experiments": {
+        "commit": "12aded6fd1b5168cb4285d9b970ca6ab2e6e3240",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "9fa738f3641249206634d94840a355d9240b7ffa",
+        "dirty": false
+      }
+    },
+    {
+      "source": "winograd-mixed-decoder-holdout-20261124/report.json",
+      "archive": "winograd-mixed-decoder-holdout-20261124/report.json.gz",
+      "source_sha256": "558d98232fc5542035a1156fc593260be0c0aae4afd8778292d72a081021d05c",
+      "payload_sha256": "558d98232fc5542035a1156fc593260be0c0aae4afd8778292d72a081021d05c",
+      "archive_sha256": "82e4fa1992cb910904ab5ea0b3e0272f15d2e2525f0559d2439fde865b0163f2",
+      "source_bytes": 492989,
+      "payload_bytes": 492989,
+      "archive_bytes": 57333,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder",
+      "experiments": {
+        "commit": "12aded6fd1b5168cb4285d9b970ca6ab2e6e3240",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "9fa738f3641249206634d94840a355d9240b7ffa",
+        "dirty": false
+      }
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}
