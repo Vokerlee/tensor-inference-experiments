@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "winograd-decoder-discovery-20261124/report.json",
+      "archive": "winograd-decoder-discovery-20261124/report.json.gz",
+      "source_sha256": "ce5ce8b21b557b8fe1fd0ada6e9264beef3be0749db57d34b979678f0bd217c1",
+      "payload_sha256": "ce5ce8b21b557b8fe1fd0ada6e9264beef3be0749db57d34b979678f0bd217c1",
+      "archive_sha256": "c99e124d914eee82829d3cbcef45f690a0a4c38ed246d911c895c529ccb473a2",
+      "source_bytes": 182038,
+      "payload_bytes": 182038,
+      "archive_bytes": 13582,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder",
+      "experiments": {
+        "commit": "0c169d1376affd17080d0cce8acc7b6d338ecfea",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "winograd-decoder-holdout-20261124/report.json",
+      "archive": "winograd-decoder-holdout-20261124/report.json.gz",
+      "source_sha256": "42992f0f6c70472f919ee60abf05d89604cd6814fc9aff19170bde994670dc88",
+      "payload_sha256": "42992f0f6c70472f919ee60abf05d89604cd6814fc9aff19170bde994670dc88",
+      "archive_sha256": "78370668b599ddc7e95c43334369d46b625c88a893c54c203c18a4bfc03d6630",
+      "source_bytes": 612395,
+      "payload_bytes": 612395,
+      "archive_bytes": 40044,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder",
+      "experiments": {
+        "commit": "0c169d1376affd17080d0cce8acc7b6d338ecfea",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "winograd-mapping-20261124/report.json",
+      "archive": "winograd-mapping-20261124/report.json.gz",
+      "source_sha256": "320cab2a6db0e95b8423fa0dd70d76d924bd8a652a0ebb2ed7f3264157bde843",
+      "payload_sha256": "1690607ad802d1d8d25aa82c609964f184374add6f4b28004ce53f34dfb73f6c",
+      "archive_sha256": "34f2401229dda4e3dc5f4dc611915a0d43d32d2d970cf33afb0a112174d5c81e",
+      "source_bytes": 147696,
+      "payload_bytes": 147549,
+      "archive_bytes": 5027,
+      "normalized_fields": [
+        "/profile"
+      ],
+      "experiments": {
+        "commit": "107f5a7083561c13e4e06517779755455904e270",
+        "dirty": true
+      },
+      "engine": {
+        "commit": "dc0a769e9e3fea9c19b6e77d140f9e6a578e7dcc",
+        "dirty": false
+      }
+    },
+    {
+      "source": "winograd-mapping-clean-20261124/report.json",
+      "archive": "winograd-mapping-clean-20261124/report.json.gz",
+      "source_sha256": "19bf6b9a4070923c3f1ccb66e2ff2b8038ecfbb2eebdfff39ef934747af54990",
+      "payload_sha256": "0cca0d3b2870fda4342ba34e0a86d5ba62756f32354e4d1ab98b73a4504f407c",
+      "archive_sha256": "e8c7c84f59d2e30f615c41098409ba38baf42254a8727702390683afd0a0de33",
+      "source_bytes": 147714,
+      "payload_bytes": 147550,
+      "archive_bytes": 5019,
+      "normalized_fields": [
+        "/profile"
+      ],
+      "experiments": {
+        "commit": "bd773568197231cf7f8704813c80da3c58598aea",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "9fa738f3641249206634d94840a355d9240b7ffa",
+        "dirty": false
+      }
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}

@@ -1,0 +1,37 @@
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 2620.39it/s]
+original {'rmse': 0.0, 'mean_error': 0.0, 'maximum_absolute_error': 0.0, 'relative_mse': 0.0, 'psnr_unit_range': None, 'identical': True}
+f2-bf16: decoded 1/4
+f2-bf16: decoded 2/4
+f2-bf16: decoded 3/4
+f2-bf16: decoded 4/4
+f2-bf16 {'rmse': 0.0032172766212648423, 'mean_error': 0.00042806627849737805, 'maximum_absolute_error': 0.16015625, 'relative_mse': 3.8171352372586206e-05, 'psnr_unit_range': 49.850231937545644, 'identical': False}
+f2-a8: decoded 1/4
+f2-a8: decoded 2/4
+f2-a8: decoded 3/4
+f2-a8: decoded 4/4
+f2-a8 {'rmse': 0.005758303422911616, 'mean_error': 0.000413264458378156, 'maximum_absolute_error': 0.29296875, 'relative_mse': 0.0001222784236907524, 'psnr_unit_range': 44.79410909056782, 'identical': False}
+f2-a4: decoded 1/4
+f2-a4: decoded 2/4
+f2-a4: decoded 3/4
+f2-a4: decoded 4/4
+f2-a4 {'rmse': 0.05404632951178833, 'mean_error': -0.0025640858026842275, 'maximum_absolute_error': 1.0, 'relative_mse': 0.010771920761022834, 'psnr_unit_range': 25.3446759054085, 'identical': False}
+f4-bf16: decoded 1/4
+f4-bf16: decoded 2/4
+f4-bf16: decoded 3/4
+f4-bf16: decoded 4/4
+f4-bf16 {'rmse': 0.006021882511130536, 'mean_error': 0.00041458817819754284, 'maximum_absolute_error': 0.27734375, 'relative_mse': 0.00013372890750427995, 'psnr_unit_range': 44.40535443931954, 'identical': False}
+f4-a8: decoded 1/4
+f4-a8: decoded 2/4
+f4-a8: decoded 3/4
+f4-a8: decoded 4/4
+f4-a8 {'rmse': 0.018271928600638726, 'mean_error': 0.0003935874750216802, 'maximum_absolute_error': 0.826171875, 'relative_mse': 0.0012312025877676016, 'psnr_unit_range': 34.764312209588155, 'identical': False}
+f2-bf16-stream: decoded 1/4
+f2-bf16-stream: decoded 2/4
+f2-bf16-stream: decoded 3/4
+f2-bf16-stream: decoded 4/4
+f2-bf16-stream {'rmse': 0.003226732116572074, 'mean_error': 0.0004300375779469808, 'maximum_absolute_error': 0.205078125, 'relative_mse': 3.839605137517985e-05, 'psnr_unit_range': 49.82474176489181, 'identical': False}
+f2-a8-stream: decoded 1/4
+f2-a8-stream: decoded 2/4
+f2-a8-stream: decoded 3/4
+f2-a8-stream: decoded 4/4
+f2-a8-stream {'rmse': 0.005727036604428533, 'mean_error': 0.0004162290133535862, 'maximum_absolute_error': 0.40625, 'relative_mse': 0.00012095411786324742, 'psnr_unit_range': 44.84140082158003, 'identical': False}
