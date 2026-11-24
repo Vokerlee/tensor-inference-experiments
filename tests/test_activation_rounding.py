@@ -67,3 +67,13 @@ def test_invalid_source_and_geometry_contracts_are_rejected():
         prepare_geometry(torch.ones(32, 4), 33)
     with pytest.raises(ValueError):
         round_groups(torch.full((1, 32), float("nan")), prepare_geometry(torch.ones(32, 4), 1))
+
+
+def test_exact_grid_points_are_forced_even_with_nonzero_feedback_state():
+    source = torch.zeros(1, 32, dtype=torch.bfloat16)
+    source[0, 0] = 0.43359375
+    weight = torch.ones(32, 3)
+    weight[0] = 10
+    for selection in ("candidate", "proxy", "spectral"):
+        result = round_groups(source, prepare_geometry(weight, 1), selection=selection)
+        assert not result.reconstructed[0, 1:].count_nonzero()

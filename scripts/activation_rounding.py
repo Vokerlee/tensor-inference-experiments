@@ -97,7 +97,7 @@ def round_groups(source: torch.Tensor, geometry: GroupGeometry, bits: int = 4,
         raise ValueError("geometry groups/device must match source")
     nearest = values.round().clamp(-limit, limit)
     lower = values.floor().clamp(-limit, limit)
-    upper = (values.floor() + 1).clamp(-limit, limit)
+    upper = values.ceil().clamp(-limit, limit)
     state = torch.zeros(*values.shape[:2], geometry.rank, device=source.device)
     nearest_state = torch.zeros_like(state)
     diagonal_cost = torch.zeros_like(scale)
