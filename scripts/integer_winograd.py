@@ -12,7 +12,8 @@ import torch
 import torch.nn.functional as functional
 
 from winograd_rounding import round_planes
-from winograd_streaming import product
+from winograd_reference import inverse_outputs, transforms
+from winograd_streaming import map_tiles, product
 
 
 @dataclass(frozen=True)
@@ -47,7 +48,7 @@ def prepare(coefficients: torch.Tensor, block: int = 256) -> IntegerWeights:
 
 
 def multiply(source: torch.Tensor, weights: IntegerWeights, *, bits: int = 8,
-             geometry=None) -> tuple[torch.Tensor, dict]:
+             geometry=None, partial_transform=None) -> tuple[torch.Tensor, dict]:
     if (source.ndim != 3 or source.shape[0] != weights.codes.shape[0]
             or source.shape[2] != weights.channels or bits not in (4, 8)
             or not torch.isfinite(source).all()):
@@ -78,6 +79,8 @@ def multiply(source: torch.Tensor, weights: IntegerWeights, *, bits: int = 8,
         # for these integer partials. This is a numerical oracle, not INT8 timing.
         partial = product(lhs, rhs)
         partial = partial * scale[:, :, block, None] * weight_scales[:, block, None, :]
+        if partial_transform is not None:
+            partial = partial_transform(partial)
         accumulated = partial if accumulated is None else accumulated + partial
     if not torch.isfinite(accumulated).all():
         raise ValueError("nonfinite dequantized partial accumulation")
@@ -93,3 +96,38 @@ def multiply(source: torch.Tensor, weights: IntegerWeights, *, bits: int = 8,
         "output_dequant_scalar_multiplications": 2 * planes * rows * (channels // weights.block)
                                                 * weights.codes.shape[-1],
     }
+
+
+def convolution(values: torch.Tensor, weights: IntegerWeights, bias=None, *, tile: int = 2,
+                padding: int = 1, tile_batch: int = 64, bits: int = 8, geometry=None,
+                streaming_inverse: bool = False):
+    scheme = transforms(tile, dtype=torch.float32, device=values.device)
+    stats = {"activation_bits": bits, "weight_bits": 8, "K": weights.block, "N": 128,
+             "original_channels": weights.channels, "padded_channels": weights.codes.shape[1],
+             "activation_groups": 0, "zero_groups": 0, "integer_partial_vectors": 0,
+             "output_dequant_scalar_multiplications": 0, "exponent_histogram": {},
+             "rounding": None, "streaming_inverse": streaming_inverse}
+
+    def inverse(products):
+        return inverse_outputs(products, scheme)
+
+    def consume(source):
+        result, current = multiply(source, weights, bits=bits, geometry=geometry,
+                                   partial_transform=inverse if streaming_inverse else None)
+        for key in ("activation_groups", "zero_groups", "integer_partial_vectors",
+                    "output_dequant_scalar_multiplications"):
+            stats[key] += current[key]
+        for exponent, count in current["exponent_histogram"].items():
+            histogram = stats["exponent_histogram"]
+            histogram[exponent] = histogram.get(exponent, 0) + count
+        if current["rounding"] is not None:
+            if stats["rounding"] is None:
+                stats["rounding"] = {"bits": bits, "rank": geometry.factor.shape[-1]}
+            for key in ("candidate_selected", "candidate_decisions", "source_sse", "source_zeros_changed",
+                        "selected_proxy_sum", "nearest_proxy_sum", "groups", "zero_groups"):
+                stats["rounding"][key] = stats["rounding"].get(key, 0) + current["rounding"][key]
+        return result if streaming_inverse else inverse(result)
+
+    result, layout = map_tiles(values, weights.codes.shape[-1], consume, bias,
+                               tile=tile, padding=padding, tile_batch=tile_batch)
+    return result, {**layout, **stats}
