@@ -68,7 +68,8 @@ def decoder_rows(report, campaign, attachments):
                     audit_fields(scalar_metrics(data[array][index], reference[array][index]), recorded[metric])
         common = {"campaign": campaign, "case": case["case"],
                   "preliminary": campaign in PRELIMINARY,
-                  "minimum_outputs": report["settings"].get("minimum_outputs", 0)}
+                  "minimum_outputs": report["settings"].get("minimum_outputs", 0),
+                  "software_tile_batch": report["settings"]["tile_batch"]}
         records.append({**common, "inputs": report["settings"]["count"],
                         **case["image_vs_original"], "layer_calls": len(case["calls"]),
                         "integer_partial_vectors": sum(call.get("integer_partial_vectors", 0)
@@ -78,7 +79,7 @@ def decoder_rows(report, campaign, attachments):
         for call in case["calls"]:
             calls.append({**common, "layer": call["layer"], "input_index": call["input_index"],
                           **{key: call.get(key) for key in (
-                              "K", "N", "activation_bits", "weight_bits", "original_channels",
+                              "K", "N", "activation_bits", "weight_bits", "original_channels", "lowering", "lowered_reduction",
                               "padded_channels", "activation_groups", "zero_groups", "integer_partial_vectors",
                               "output_dequant_scalar_multiplications")},
                           "rounding": json.dumps(call.get("rounding"), sort_keys=True, separators=(",", ":")),
@@ -91,7 +92,9 @@ def operator_rows(report, campaign, attachments):
     for operator in report["operators"]:
         with np.load(attachments[operator["arrays"].removeprefix("results/")], allow_pickle=False) as data:
             reference = data["reference"].astype(np.float64)
-        baselines = {row["bits"]: row["squared_error"] for row in operator["variants"] if not row["rank"]}
+        is_axis = "method" in operator["variants"][0]
+        baselines = {row["bits"]: row["squared_error"] for row in operator["variants"]
+                     if (row["method"] == "two-axis" if is_axis else not row["rank"])}
         for variant in operator["variants"]:
             with np.load(attachments[variant["arrays"].removeprefix("results/")], allow_pickle=False) as data:
                 error = data["output"].astype(np.float64) - reference
@@ -100,22 +103,36 @@ def operator_rows(report, campaign, attachments):
                 audit_fields({"squared_error": squared, "relative_mse": squared / energy if energy else None,
                               "maximum_absolute_error": float(np.abs(error).max())}, variant)
             rows.append({"campaign": campaign, "layer": operator["layer"],
-                         "bits": variant["bits"], "rank": variant["rank"],
+                         "bits": variant["bits"], "rank": variant.get("rank"),
+                         "method": variant.get("method", "plane-proxy"),
                          "squared_error": squared, "relative_mse": variant["relative_mse"],
-                         "sse_ratio_to_nearest": squared / baselines[variant["bits"]],
+                         "sse_ratio_to_comparator": squared / baselines[variant["bits"]],
+                         "comparator": "two-axis" if is_axis else "nearest",
                          "source_zeros_changed": variant["statistics"].get("source_zeros_changed", 0)})
     return rows
 
 
-def generate(archive, output):
-    verified = verify_all(archive)
-    attachments = attachment_paths(archive)
-    index = json.loads((archive / "index.json").read_text())
+def generate(archives, output):
+    if isinstance(archives, Path):
+        archives = [archives]
+    verified = [verify_all(archive) for archive in archives]
+    attachments, entries = {}, []
+    for archive in archives:
+        current = attachment_paths(archive)
+        if attachments.keys() & current.keys():
+            raise ValueError("overlapping logical attachment paths")
+        attachments.update(current)
+        index = json.loads((archive / "index.json").read_text())
+        entries.extend((archive, entry) for entry in index["files"])
     output.mkdir(parents=True, exist_ok=True)
     cases, inputs, calls, operators, mapping, retention, provenance = [], [], [], [], [], [], []
-    for entry in index["files"]:
+    campaigns = set()
+    for archive, entry in entries:
         report = json.loads(gzip.decompress((archive / entry["archive"]).read_bytes()))
         campaign = Path(entry["source"]).parts[0]
+        if campaign in campaigns:
+            raise ValueError("duplicate campaign identity")
+        campaigns.add(campaign)
         if report.get("status") != "complete" and campaign not in PRELIMINARY:
             raise ValueError(f"unexpected incomplete campaign {campaign}")
         if report["experiments"]["dirty"] and campaign not in PRELIMINARY:
@@ -133,6 +150,9 @@ def generate(archive, output):
             calls.extend(current[2])
         elif "operators" in report:
             operators.extend(operator_rows(report, campaign, attachments))
+            for operator in report["operators"]:
+                mapping.extend({"campaign": campaign, "layer": operator["layer"], **row}
+                               for row in operator.get("work", []))
         elif "totals" in report:
             mapping.extend({"campaign": campaign, **row} for row in report["totals"])
             retention.extend({"campaign": campaign, **row} for row in report["retention_variants"])
@@ -142,15 +162,16 @@ def generate(archive, output):
                        ("operators", operators), ("mapping", mapping), ("retention", retention)):
         write_table(output / f"{name}.csv", rows)
     operator_summary = []
-    for bits, rank in sorted({(row["bits"], row["rank"]) for row in operators}):
+    for bits, rank in sorted({(row["bits"], row["rank"]) for row in operators if row["rank"] is not None}):
         rows = [row for row in operators if (row["bits"], row["rank"]) == (bits, rank)]
-        baseline = [row for row in operators if row["bits"] == bits and not row["rank"]]
+        baseline = [row for row in operators if row["bits"] == bits and row["rank"] == 0]
         operator_summary.append({"bits": bits, "rank": rank, "layers": len(rows),
                                  "aggregate_sse_ratio": sum(row["squared_error"] for row in rows)
                                                         / sum(row["squared_error"] for row in baseline),
-                                 "improved_layers": sum(row["sse_ratio_to_nearest"] < 1 for row in rows)})
+                                 "improved_layers": sum(row["sse_ratio_to_comparator"] < 1 for row in rows)})
     summary = {"schema": 1, "source_sha256": digest(Path(__file__)), "provenance": provenance,
-               "archive_records": verified[0], "logical_attachments": verified[1],
+               "archive_records": sum(row[0] for row in verified),
+               "logical_attachments": sum(row[1] for row in verified),
                "decoder_container_audits": len(cases), "per_input_audits": len(inputs),
                "operator_container_audits": len(operators), "operator_summary": operator_summary,
                "limitations": [
@@ -165,10 +186,13 @@ def generate(archive, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--archive", type=Path, default=ROOT / "reports/statistics/2026-11-24-winograd")
+    parser.add_argument("--archive", type=Path, action="append")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    summary = generate(args.archive, args.output)
+    archives = args.archive or sorted((ROOT / "reports/statistics").glob("2026-11-24-winograd-*"))
+    if not archives:
+        parser.error("at least one statistical archive required")
+    summary = generate(archives, args.output)
     print(f"Audited {summary['decoder_container_audits']} decoder and "
           f"{summary['operator_container_audits']} operator containers")
 
