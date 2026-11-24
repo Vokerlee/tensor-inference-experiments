@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import torch
+import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from winograd_reference import inverse_outputs, transforms
@@ -11,13 +12,15 @@ from winograd_rounding import prepare, round_planes
 from winograd_streaming import encode
 
 
-def test_isolated_channel_metric_matches_the_complete_spatial_output():
+@pytest.mark.parametrize("tile", [2, 4])
+def test_isolated_channel_metric_matches_the_complete_spatial_output(tile):
     torch.manual_seed(813)
-    weights = torch.randn(16, 32, 7, dtype=torch.float64)
-    geometry = prepare(weights, rank=4)
-    error = torch.randn(16, dtype=torch.float64)
+    planes = (tile + 2) ** 2
+    weights = torch.randn(planes, 32, 7, dtype=torch.float64)
+    geometry = prepare(weights, tile=tile, rank=4)
+    error = torch.randn(planes, dtype=torch.float64)
     perturbed = error[:, None, None] * weights[:, 11:12]
-    expected = inverse_outputs(perturbed, transforms()).square().sum()
+    expected = inverse_outputs(perturbed, transforms(tile)).square().sum()
     actual = error @ geometry.metric[11] @ error * geometry.normalizer[11]
     torch.testing.assert_close(actual, expected, rtol=1e-12, atol=1e-12)
 

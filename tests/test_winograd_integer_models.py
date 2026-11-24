@@ -38,7 +38,9 @@ def test_native_proxy_and_causal_shift_reach_the_actual_model_consumers(tmp_path
     original = model(source)
     for case in ("int8-k256-a4-native", "int8-k256-a8-native",
                  "int8-k256-a4-r1-native", "int8-k256-a4-shift", "int8-k256-a8-shift",
-                 "int8-k256-a4-axis-fit", "int8-k256-a8-axis-all"):
+                 "int8-k256-a4-axis-fit", "int8-k256-a8-axis-all",
+                 "int8-k256-f4-a8-native", "int8-k256-f4-a8-r1-native",
+                 "int8-k256-f4-a8-shift"):
         records = []
         with modified({"conv": model}, case, records, 3, tmp_path / f"{case}.npz"):
             result = model(source)
