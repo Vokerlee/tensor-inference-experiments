@@ -42,3 +42,13 @@ holdouts, discard unfavorable cases, or collapse incompatible counting ledgers.
 |---|---|---|---|
 | Operand-bounded exact BF16 observation with selective reference repair | [Complete campaign](2026-11-24-selective-reference.md) | No tested fidelity errors, but all12 operator and18 full-model cases are slower; full-model speedup ratios0.285–0.634. The v0 acceleration claim fails. | A materially different useful bound or execution mechanism, measured against the better complete same-contract CUDA reference with all overhead charged. |
 | Compiled guard with default precision-cast elimination | [Constructed witness and retained prototypes](2026-11-24-selective-reference.md#a-precision-cast-failure-retained-as-evidence) | Removing the BF16 round trip yields false cell acceptance; apparent faster execution can be semantically invalid. | Explicitly preserve required rounding and validate boundary witnesses after compilation. This does not imply a new general compiler bug. |
+
+## Shared receiving-geometry activation rounding
+
+[Complete comparison](2026-11-24-activation-rounding.md): first-QKV rank1 INT4
+receiving SSE falls to0.1052 of nearest rounding, but the ten-image full-model
+descriptor mean worsens from0.080346 to0.080774 relative MSE. Rank4 improves this
+comparator but remains far from uniform INT8. Local metric improvement is
+insufficient as an acceptance criterion. The preliminary exact-grid alternative
+and all corrected variants are preserved separately; no target-energy saving
+is inferred from reconstructed operand bits or software execution.

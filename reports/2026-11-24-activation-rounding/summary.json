@@ -1,0 +1,168 @@
+{
+  "schema": 1,
+  "source_sha256": "17c8ed75d38495fbe1666074c1ee7ecda7e053085de844a6ea72370c3199adee",
+  "provenance": [
+    {
+      "campaign": "activation-rounding-operators-20261124",
+      "source_commit": "9016ae24800460936ed92bab56c4d8947511c89c",
+      "source_dirty": false,
+      "archive_sha256": "d6559e671cbb9e3ac4a565351acd83e9c1ebd75212ba4c0bff311f6a9038d747"
+    },
+    {
+      "campaign": "activation-rounding-adjacent-operators-20261124",
+      "source_commit": "21d5a131a00e804c65d86e6f1dff63a72fe5027f",
+      "source_dirty": false,
+      "archive_sha256": "b2a08c8b1df66fce285a26b8f41c09232d666bea6ba05e9895f22b3b4bdf2296"
+    },
+    {
+      "campaign": "activation-rounding-dinov3-20261124",
+      "source_commit": "7b9a37eacdf934c82c5cd457a459b500d22702d4",
+      "source_dirty": false,
+      "archive_sha256": "b6dd5bda59cfab88f6310fd9e9b34f473e8fbee971037d48d54c81b2bf42085a"
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "source_commit": "a8804da8e41036dceac24dfb866c8ccdcd7e3074",
+      "source_dirty": false,
+      "archive_sha256": "d5904c0cb922ab7ce2c80f7aed5a0f435db25e26cfb6b216e9b1584672593aaa"
+    }
+  ],
+  "archive_records": 5,
+  "archive_attachments": 631,
+  "operator_array_checks": 528,
+  "complete_descriptor_checks": 180,
+  "means": [
+    {
+      "campaign": "activation-rounding-dinov3-20261124",
+      "policy": "bf16",
+      "images": 10,
+      "mean_relative_mse": 0.0,
+      "mean_cosine_distance": 4.4408920985006264e-17
+    },
+    {
+      "campaign": "activation-rounding-dinov3-20261124",
+      "policy": "qkv4-nearest",
+      "images": 10,
+      "mean_relative_mse": 0.0803460310004635,
+      "mean_cosine_distance": 0.04068271403018524
+    },
+    {
+      "campaign": "activation-rounding-dinov3-20261124",
+      "policy": "qkv4-r1",
+      "images": 10,
+      "mean_relative_mse": 0.08077382492715052,
+      "mean_cosine_distance": 0.04094270610769283
+    },
+    {
+      "campaign": "activation-rounding-dinov3-20261124",
+      "policy": "qkv4-r4",
+      "images": 10,
+      "mean_relative_mse": 0.05992979192449431,
+      "mean_cosine_distance": 0.03015798475095215
+    },
+    {
+      "campaign": "activation-rounding-dinov3-20261124",
+      "policy": "qkv8-r1",
+      "images": 10,
+      "mean_relative_mse": 0.00033507509719118674,
+      "mean_cosine_distance": 0.000165471527347405
+    },
+    {
+      "campaign": "activation-rounding-dinov3-20261124",
+      "policy": "uniform4",
+      "images": 10,
+      "mean_relative_mse": 0.17208021196390902,
+      "mean_cosine_distance": 0.08818662900496269
+    },
+    {
+      "campaign": "activation-rounding-dinov3-20261124",
+      "policy": "uniform8",
+      "images": 10,
+      "mean_relative_mse": 0.0003402439250605725,
+      "mean_cosine_distance": 0.00016911011136516718
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "bf16",
+      "images": 10,
+      "mean_relative_mse": 0.0,
+      "mean_cosine_distance": 4.4408920985006264e-17
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "q4-k8-v8",
+      "images": 10,
+      "mean_relative_mse": 0.019486985443640366,
+      "mean_cosine_distance": 0.009708576145371206
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "q8-k4-v8",
+      "images": 10,
+      "mean_relative_mse": 0.014248417097685526,
+      "mean_cosine_distance": 0.0070010596924053314
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "qk4-r1-v8",
+      "images": 10,
+      "mean_relative_mse": 0.058832229406136416,
+      "mean_cosine_distance": 0.02960704223320796
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "qk4-v8",
+      "images": 10,
+      "mean_relative_mse": 0.06118221881891954,
+      "mean_cosine_distance": 0.0308761950453303
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "qkv4-balanced-r1",
+      "images": 10,
+      "mean_relative_mse": 0.07515698476233924,
+      "mean_cosine_distance": 0.038066436261862166
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "qkv4-balanced-r4",
+      "images": 10,
+      "mean_relative_mse": 0.05868773433969613,
+      "mean_cosine_distance": 0.029574608632199673
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "qkv4-nearest",
+      "images": 10,
+      "mean_relative_mse": 0.0803460310004635,
+      "mean_cosine_distance": 0.04068271403018524
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "qkv4-raw-r1",
+      "images": 10,
+      "mean_relative_mse": 0.08077382492715052,
+      "mean_cosine_distance": 0.04094270610769283
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "qkv8-balanced-r4",
+      "images": 10,
+      "mean_relative_mse": 0.0003290089800167768,
+      "mean_cosine_distance": 0.000163995992264232
+    },
+    {
+      "campaign": "attention-rounding-dinov3-20261124",
+      "policy": "uniform8",
+      "images": 10,
+      "mean_relative_mse": 0.0003402439250605725,
+      "mean_cosine_distance": 0.00016911011136516718
+    }
+  ],
+  "limitations": [
+    "Preliminary exact-grid alternative differs from corrected adjacent rounding; do not pool",
+    "Both model campaigns reuse the same ten Imagenette images",
+    "Local receiving improvement is not full-model task quality or target-chip energy",
+    "Frozen-feature CIFAR100 task results are archived and analyzed separately"
+  ]
+}

@@ -102,3 +102,7 @@ measures independently bounded exact BF16 observations against complete native
 reference execution. Full-model/control fidelity holds on the tested inputs,
 but both selective implementations are slower. Complete per-output audits,
 controller arrays and repeated software-emulation timings are preserved.
+
+[Shared activation rounding report](reports/2026-11-24-activation-rounding.md)
+links complete receiving, descriptor and preliminary evidence with regenerable
+comparison tables.
