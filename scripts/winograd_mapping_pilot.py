@@ -8,6 +8,7 @@ from pathlib import Path
 
 from activation_pilot import ENGINE, ROOT, digest, revision, write_json
 from winograd_mapping import BF16, FP8, from_profile, retention, work
+from winograd_encoded_retention import retention as encoded_retention
 
 
 def main() -> None:
@@ -44,7 +45,7 @@ def main() -> None:
         "engine": revision(ENGINE), "profile": str(args.profile.resolve()),
         "profile_sha256": digest(args.profile), "component": args.component,
         "source_sha256": {name: digest(ROOT / "scripts" / name) for name in (
-            "winograd_mapping.py", "winograd_mapping_pilot.py", "activation_pilot.py")},
+            "winograd_mapping.py", "winograd_mapping_pilot.py", "winograd_encoded_retention.py", "activation_pilot.py")},
         "original_component_macs": component["geometry"]["matrix_and_conv_macs"],
         "eligible_direct_macs": totals[0]["logical_macs"],
         "layers": layers, "totals": totals,
@@ -53,9 +54,16 @@ def main() -> None:
             for interface in (BF16, FP8) for tile in (2, 4)
             for rows in (32, 64, 128, 256)
             for planes in (1, 4, (tile + 2) ** 2) for double in (False, True)],
+        "encoded_retention_variants": [
+            {"layer": layer["name"], **encoded_retention(
+                layer["shape"]["channels"], layer["shape"]["outputs"],
+                tile=tile, rows=rows, plane_batch=planes)}
+            for layer in layers for tile in (2, 4) for rows in (32, 64) for planes in (1, 4)],
         "limitations": [
             "Eligible dense 3x3 stride1 dilation1 convolutions only; all other component work remains unchanged",
             "Vector counts are interface work, not cycles, joules or measured SRAM transactions",
+            "Encoded-cache retention proposes capacity placement only; int16 exponent payload is declared explicitly",
+            "Fitting a weight payload and a materialized source tile in general memory does not fit all layer activations",
             "FP8 geometry does not establish a numerically valid transformed quantization policy",
             "Fixed K128/BF16 or K256/FP8 and N128; streamed M is not a fixed array dimension",
             "2MiB argument memory is shared by lhs and rhs; 2MiB result memory is separate",
