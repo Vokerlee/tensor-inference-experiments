@@ -50,3 +50,10 @@ same three declared Imagenette inputs. Both selective implementations are slower
 than the complete native reference. All per-case timings and full controller
 arrays are preserved; this is software-emulation evidence, not device energy
 or population task accuracy. DINOv3 height1 control has no subsequent row block.
+
+[Shared activation rounding](../../reports/2026-11-24-activation-rounding.md)
+compares low-rank receiving metrics, matched Q/K/V roles and complete descriptors.
+A large local QKV improvement does not transfer to rank1 full-model fidelity.
+Both descriptor campaigns reuse the same ten images; task recognition is a
+separate experiment. All favorable, unfavorable and preliminary statistics
+remain recoverable.
