@@ -1,0 +1,22 @@
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 3279.73it/s]
+original {'rmse': 0.0, 'mean_error': 0.0, 'maximum_absolute_error': 0.0, 'relative_mse': 0.0, 'psnr_unit_range': None, 'identical': True}
+int8-k256-f4-a8-native: decoded 1/4
+int8-k256-f4-a8-native: decoded 2/4
+int8-k256-f4-a8-native: decoded 3/4
+int8-k256-f4-a8-native: decoded 4/4
+int8-k256-f4-a8-native {'rmse': 0.031119607946899747, 'mean_error': 0.00047473376616835594, 'maximum_absolute_error': 0.888671875, 'relative_mse': 0.003571321716007692, 'psnr_unit_range': 30.139317660106215, 'identical': False}
+int8-k256-f4-a8-r1-native: decoded 1/4
+int8-k256-f4-a8-r1-native: decoded 2/4
+int8-k256-f4-a8-r1-native: decoded 3/4
+int8-k256-f4-a8-r1-native: decoded 4/4
+int8-k256-f4-a8-r1-native {'rmse': 0.03000294798730898, 'mean_error': 0.00032914460947116214, 'maximum_absolute_error': 0.890625, 'relative_mse': 0.0033196217302200034, 'psnr_unit_range': 30.456721417793243, 'identical': False}
+int8-k256-f4-a8-shift: decoded 1/4
+int8-k256-f4-a8-shift: decoded 2/4
+int8-k256-f4-a8-shift: decoded 3/4
+int8-k256-f4-a8-shift: decoded 4/4
+int8-k256-f4-a8-shift {'rmse': 0.030091224611672268, 'mean_error': 0.00039171349878112477, 'maximum_absolute_error': 0.8828125, 'relative_mse': 0.003339184881724858, 'psnr_unit_range': 30.431202751499818, 'identical': False}
+int8-k256-f4-a8-r4-native: decoded 1/4
+int8-k256-f4-a8-r4-native: decoded 2/4
+int8-k256-f4-a8-r4-native: decoded 3/4
+int8-k256-f4-a8-r4-native: decoded 4/4
+int8-k256-f4-a8-r4-native {'rmse': 0.02837078604997588, 'mean_error': 0.0004707902359465758, 'maximum_absolute_error': 0.9296875, 'relative_mse': 0.0029682705138803244, 'psnr_unit_range': 30.942572626742223, 'identical': False}
