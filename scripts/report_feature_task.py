@@ -3,19 +3,23 @@
 
 import argparse
 import csv
+import gzip
+import io
 import json
 from pathlib import Path
 
-from activation_pilot import ROOT, digest, write_json
+from activation_pilot import ROOT, digest
 from archive_feature_task import MANIFEST, load_report, verify
 from feature_task_analysis import summarize
 
 
 def table(path: Path, rows: list[dict]) -> None:
-    with path.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0]), lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(rows)
+    stream = io.StringIO(newline="")
+    writer = csv.DictWriter(stream, fieldnames=list(rows[0]), lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    payload = stream.getvalue().encode()
+    path.write_bytes(gzip.compress(payload, mtime=0) if path.suffix == ".gz" else payload)
 
 
 def main():
@@ -68,8 +72,9 @@ def main():
                                 "relative_mse": row["relative_mse"][policy]})
     table(args.output / "policies.csv", policies)
     table(args.output / "paired.csv", comparisons)
-    table(args.output / "queries.csv", queries)
-    write_json(args.output / "summary.json", summary)
+    table(args.output / "queries.csv.gz", queries)
+    payload = (json.dumps(summary, separators=(",", ":"), allow_nan=False) + "\n").encode()
+    (args.output / "summary.json.gz").write_bytes(gzip.compress(payload, mtime=0))
     print(json.dumps(comparisons, indent=2))
 
 
