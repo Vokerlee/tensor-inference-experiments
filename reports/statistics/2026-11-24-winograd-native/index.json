@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "native-matched-winograd-discovery-20261124/report.json",
+      "archive": "native-matched-winograd-discovery-20261124/report.json.gz",
+      "source_sha256": "ae6a062fb1af58105d30060d88867dd5066c595252ab56e91581dfbf2e05065f",
+      "payload_sha256": "ae6a062fb1af58105d30060d88867dd5066c595252ab56e91581dfbf2e05065f",
+      "archive_sha256": "fda5c56c0e9b1fff1491a4e1d031f8b70c3964ad7f1a451c8b907fef4b6c206f",
+      "source_bytes": 1217768,
+      "payload_bytes": 1217768,
+      "archive_bytes": 187896,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder",
+      "experiments": {
+        "commit": "bd773568197231cf7f8704813c80da3c58598aea",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "9fa738f3641249206634d94840a355d9240b7ffa",
+        "dirty": false
+      }
+    },
+    {
+      "source": "native-matched-winograd-holdout-20261124/report.json",
+      "archive": "native-matched-winograd-holdout-20261124/report.json.gz",
+      "source_sha256": "e9544c563985817399b52dcc39aa04feec987c77d5e7c6ba3666be25f5157ab8",
+      "payload_sha256": "e9544c563985817399b52dcc39aa04feec987c77d5e7c6ba3666be25f5157ab8",
+      "archive_sha256": "00f8ab233d94dd3bb75b0593a3db84fd894d6e0c30e3d25dc66e128d275ed6b4",
+      "source_bytes": 1809051,
+      "payload_bytes": 1809051,
+      "archive_bytes": 220648,
+      "normalized_fields": [],
+      "model": "dc-ae-sana-decoder",
+      "experiments": {
+        "commit": "bd773568197231cf7f8704813c80da3c58598aea",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "9fa738f3641249206634d94840a355d9240b7ffa",
+        "dirty": false
+      }
+    },
+    {
+      "source": "winograd-encoded-retention-20261124/report.json",
+      "archive": "winograd-encoded-retention-20261124/report.json.gz",
+      "source_sha256": "1f42133bc7d8224ab1eb774c8b80588a7a7fc0dce9d7712ef0437b86493b93d9",
+      "payload_sha256": "faee12cbdb9c50f860b1e413ee47b9e8ed32e87434005113ea5330acd396e7dd",
+      "archive_sha256": "19ec910c493f192b9ba41fab94b594635e1cb1b335adf8d7a282fc32d42853bf",
+      "source_bytes": 358100,
+      "payload_bytes": 357936,
+      "archive_bytes": 8443,
+      "normalized_fields": [
+        "/profile"
+      ],
+      "experiments": {
+        "commit": "25c7f4eeead81228885159890b89bb9b4b4f387b",
+        "dirty": false
+      },
+      "engine": {
+        "commit": "9fa738f3641249206634d94840a355d9240b7ffa",
+        "dirty": false
+      }
+    }
+  ],
+  "limitations": [
+    "Archiving preserves recorded evidence; it does not verify scientific validity or source cleanliness",
+    "Missing/dirty source metadata and preliminary runs remain as recorded",
+    "Only listed machine-local path fields are normalized; scientific numerical values are unchanged",
+    "Checkpoints, generated images and numerical output arrays are separate from these JSON statistics"
+  ]
+}
