@@ -11,7 +11,7 @@ from activation_pilot import digest
 from integer_winograd import convolution, prepare
 from winograd_reference import transform_weights, transforms
 from winograd_rounding import prepare as prepare_geometry
-from winograd_shift_rounding import prepare as prepare_shift
+from winograd_shift_rounding import ShiftGeometry, prepare as prepare_shift
 
 
 POLICIES = {
@@ -28,6 +28,8 @@ POLICIES = {
     "int8-k256-a8-r4-native": (8, 4, False, "cuda"),
     "int8-k256-a4-shift": (4, 1, False, "shift-cuda"),
     "int8-k256-a8-shift": (8, 1, False, "shift-cuda"),
+    "int8-k256-a4-native": (4, 0, False, "nearest-cuda"),
+    "int8-k256-a8-native": (8, 0, False, "nearest-cuda"),
 }
 
 
@@ -69,6 +71,11 @@ def modified(layers: dict, case: str, records: list, tile_batch: int,
         elif geometry is not None and backend == "shift-cuda":
             geometries[name] = prepare_shift(geometry, backend="cuda")
             arrays[f"layer{index}.packed_metadata"] = geometries[name].metadata.cpu().numpy()
+        elif geometry is None and backend == "nearest-cuda":
+            packed = torch.zeros(reconstructed.shape[1], reconstructed.shape[0],
+                                 dtype=torch.int16, device=layer.weight.device)
+            geometries[name] = ShiftGeometry(packed, "cuda", rank=0)
+            arrays[f"layer{index}.packed_metadata"] = packed.cpu().numpy()
         metadata.append(row)
     prepared = {"weight_preparation": metadata}
     if evidence is not None:
