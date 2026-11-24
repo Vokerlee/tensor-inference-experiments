@@ -1,0 +1,18 @@
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 2660.15it/s]
+original {'rmse': 0.0, 'mean_error': 0.0, 'maximum_absolute_error': 0.0, 'relative_mse': 0.0, 'psnr_unit_range': None, 'identical': True}
+f2-fp32: decoded 1/1
+f2-fp32 {'rmse': 0.0013552786918461226, 'mean_error': 0.00036882547040780384, 'maximum_absolute_error': 0.0546875, 'relative_mse': 1.0434985166706108e-05, 'psnr_unit_range': 57.35942779489613, 'identical': False}
+f2-bf16: decoded 1/1
+f2-bf16 {'rmse': 0.0015466947110812054, 'mean_error': 0.00044645369052886963, 'maximum_absolute_error': 0.0546875, 'relative_mse': 1.3590762289459652e-05, 'psnr_unit_range': 56.21190799074309, 'identical': False}
+f2-a8: decoded 1/1
+f2-a8 {'rmse': 0.002340520659718482, 'mean_error': 0.00046649078528086346, 'maximum_absolute_error': 0.0859375, 'relative_mse': 3.112143210140277e-05, 'psnr_unit_range': 52.61375042025751, 'identical': False}
+f2-a4: decoded 1/1
+f2-a4 {'rmse': 0.024284070691624932, 'mean_error': -0.0008018718411525091, 'maximum_absolute_error': 0.439453125, 'relative_mse': 0.0033502529049724648, 'psnr_unit_range': 32.2935702310716, 'identical': False}
+f4-bf16: decoded 1/1
+f4-bf16 {'rmse': 0.0020395949396181624, 'mean_error': 0.0003673241784175237, 'maximum_absolute_error': 0.0859375, 'relative_mse': 2.3633196562408032e-05, 'psnr_unit_range': 53.809121484381876, 'identical': False}
+f4-a8: decoded 1/1
+f4-a8 {'rmse': 0.004551549594318403, 'mean_error': 0.00025286152958869934, 'maximum_absolute_error': 0.205078125, 'relative_mse': 0.00011769368855929251, 'psnr_unit_range': 46.83681441547674, 'identical': False}
+f2-bf16-stream: decoded 1/1
+f2-bf16-stream {'rmse': 0.0015401372715455966, 'mean_error': 0.0004438348114490509, 'maximum_absolute_error': 0.046875, 'relative_mse': 1.3475766509912372e-05, 'psnr_unit_range': 56.248811380440685, 'identical': False}
+f2-a8-stream: decoded 1/1
+f2-a8-stream {'rmse': 0.0023337715438777515, 'mean_error': 0.00046721907953421277, 'maximum_absolute_error': 0.07421875, 'relative_mse': 3.094220761033385e-05, 'psnr_unit_range': 52.638833197941054, 'identical': False}
