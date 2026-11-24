@@ -50,3 +50,20 @@ def test_cross_plane_rounding_uses_the_same_native_block_scale_contract():
     assert stats["rounding"]["source_zeros_changed"] == 0
     zeros, _ = multiply(torch.zeros(16, 2, 37), weights, bits=8)
     assert torch.count_nonzero(zeros) == 0
+
+
+def test_complete_integer_convolution_consumes_bounded_tiles_and_exact_k_tails():
+    from integer_winograd import convolution
+    from winograd_reference import transform_weights, transforms
+
+    torch.manual_seed(13)
+    source = torch.randint(-2, 3, (1, 32, 5, 7)).float()
+    weight = torch.zeros(3, 32, 3, 3)
+    weight[:, :, 1, 1] = 1
+    weights = prepare(transform_weights(weight, transforms(dtype=torch.float32)))
+    expected = torch.nn.functional.conv2d(source, weight, padding=1)
+    for streaming in (False, True):
+        actual, stats = convolution(source, weights, tile_batch=3, streaming_inverse=streaming)
+        torch.testing.assert_close(actual, expected, rtol=0, atol=0)
+        assert stats["tile_batches"] > 1
+        assert stats["activation_groups"] > 0
