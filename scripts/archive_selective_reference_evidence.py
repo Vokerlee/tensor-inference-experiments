@@ -130,7 +130,7 @@ def main() -> None:
             parser.error("archive creation requires explicit reports")
         create(args.root, args.input, args.supplement, args.output, args.deduplicate)
     records, attachments = verify_all(args.output)
-    print(f"Verified {records} complete JSON records and {attachments} byte-exact attachments")
+    print(f"Verified {records} JSON payloads and {attachments} byte-exact attachments")
 
 
 if __name__ == "__main__":

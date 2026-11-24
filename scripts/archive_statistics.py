@@ -114,7 +114,7 @@ def main() -> None:
             parser.error("archive creation requires explicit --input files")
         manifest = archive(args.root, args.output, args.input)
         verify(args.output)
-    print(f"Verified {len(manifest['files'])} complete statistical records")
+    print(f"Verified {len(manifest['files'])} statistical JSON payloads")
 
 
 if __name__ == "__main__":
