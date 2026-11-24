@@ -28,10 +28,11 @@ single headline. Existing historical fields are preserved as originally
 recorded, including missing provenance or dirty flags. Do not retrospectively
 claim stronger provenance for an old run.
 
-Large checkpoints, images and raw generated arrays remain outside Git under
-ignored results/cache paths; record manifests, fingerprints and exact replay
-commands so numerical data can be regenerated. Keep the compact scientific
-statistics and their interpretation in this repository. PhD hypotheses and
+Large checkpoints and regenerable input materializations remain in ignored
+results/cache paths with exact replay recipes and fingerprints. Preserve full
+measured output/error arrays and controller tapes in indexed compressed archives
+when they are needed to audit a result; rendered previews can be regenerated.
+Keep both concise interpretations and the complete scientific evidence. PhD hypotheses and
 private planning do not belong in model cards.
 
 [Complete statistical archive](../reports/statistics/2026-11-23/README.md)
