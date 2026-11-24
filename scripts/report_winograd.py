@@ -4,6 +4,7 @@
 import argparse
 import csv
 import gzip
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -62,6 +63,7 @@ def decoder_rows(report, campaign, attachments):
         reference = {key: data[key].copy() for key in ("raw", "images")}
     for case in report["cases"]:
         with np.load(attachments[case["arrays"].removeprefix("results/")], allow_pickle=False) as data:
+            raw_digest = hashlib.sha256(data["raw"].tobytes()).hexdigest()
             for array, metric in (("raw", "raw_vs_original"), ("images", "image_vs_original")):
                 audit_fields(scalar_metrics(data[array], reference[array]), case[metric])
                 for index, recorded in enumerate(case["per_input"]):
@@ -69,21 +71,26 @@ def decoder_rows(report, campaign, attachments):
         common = {"campaign": campaign, "case": case["case"],
                   "preliminary": campaign in PRELIMINARY,
                   "minimum_outputs": report["settings"].get("minimum_outputs", 0),
-                  "software_tile_batch": report["settings"]["tile_batch"]}
+                  "software_tile_batch": report["settings"]["tile_batch"],
+                  "capture_sha256": report["input_sha256"]}
         records.append({**common, "inputs": report["settings"]["count"],
+                        "raw_output_sha256": raw_digest,
                         **case["image_vs_original"], "layer_calls": len(case["calls"]),
                         "integer_partial_vectors": sum(call.get("integer_partial_vectors", 0)
-                                                       for call in case["calls"])})
+                                                       for call in case["calls"]),
+                        "fp8_partial_vectors": sum(call.get("fp8_partial_vectors", 0) for call in case["calls"])})
         for row in case["per_input"]:
             inputs.append({**common, "input_index": row["index"], **row["image_vs_original"]})
         for call in case["calls"]:
             calls.append({**common, "layer": call["layer"], "input_index": call["input_index"],
                           **{key: call.get(key) for key in (
-                              "K", "N", "activation_bits", "weight_bits", "original_channels", "lowering", "lowered_reduction",
-                              "padded_channels", "activation_groups", "zero_groups", "integer_partial_vectors",
+                              "K", "N", "activation_bits", "weight_bits", "operand_format", "original_channels", "lowering", "lowered_reduction",
+                              "padded_channels", "activation_groups", "zero_groups", "integer_partial_vectors", "fp8_partial_vectors",
                               "output_dequant_scalar_multiplications")},
                           "rounding": json.dumps(call.get("rounding"), sort_keys=True, separators=(",", ":")),
-                          "exponent_histogram": json.dumps(call.get("exponent_histogram"), sort_keys=True)})
+                          "exponent_histogram": json.dumps(call.get("exponent_histogram"), sort_keys=True),
+                          "potential_zero_input_vector_elisions": (call["zero_groups"] * math.ceil(call["output_shape"][1] / 128)
+                                                                    if call.get("K") == 256 else None)})
     return records, inputs, calls
 
 
@@ -128,6 +135,7 @@ def generate(archives, output):
         entries.extend((archive, entry) for entry in index["files"])
     output.mkdir(parents=True, exist_ok=True)
     cases, inputs, calls, operators, mapping, retention, provenance = [], [], [], [], [], [], []
+    conditions = {}
     campaigns = set()
     for archive, entry in entries:
         report = json.loads(gzip.decompress((archive / entry["archive"]).read_bytes()))
@@ -146,6 +154,14 @@ def generate(archives, output):
                            "native_sha256": report.get("native_sha256"),
                            "json_payload_sha256": entry["payload_sha256"]})
         if "cases" in report:
+            capture = report["inputs"]
+            for index in range(report["settings"]["count"]):
+                identity = {"checkpoint": report["checkpoint"]["revision"],
+                            "prompt": capture["prompts"][index], "seed": capture["seed"] + index,
+                            "steps": capture["steps"], "guidance_scale": capture["guidance_scale"],
+                            "resolution": capture["resolution"]}
+                key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
+                conditions[key] = {"condition_sha256": key, **identity}
             current = decoder_rows(report, campaign, attachments)
             cases.extend(current[0])
             inputs.extend(current[1])
@@ -162,6 +178,17 @@ def generate(archives, output):
                              for row in report.get("encoded_retention_variants", []))
         else:
             raise ValueError(f"unrecognized report {campaign}")
+    duplicate_checks, previous = 0, {}
+    for row in cases:
+        if row["preliminary"]:
+            continue
+        key = (row["capture_sha256"], row["inputs"], row["minimum_outputs"], row["case"])
+        if key in previous:
+            if previous[key] != row["raw_output_sha256"]:
+                raise ValueError("repeated canonical policy changed its complete raw output")
+            duplicate_checks += 1
+        previous[key] = row["raw_output_sha256"]
+    write_json(output / "input-conditions.json", list(conditions.values()))
     for name, rows in (("decoder-cases", cases), ("decoder-inputs", inputs), ("layer-calls", calls),
                        ("operators", operators), ("mapping", mapping), ("retention", retention)):
         write_table(output / f"{name}.csv", rows)
@@ -178,6 +205,8 @@ def generate(archives, output):
                "archive_records": sum(row[0] for row in verified),
                "logical_attachments": sum(row[1] for row in verified),
                "decoder_container_audits": len(cases), "per_input_audits": len(inputs),
+               "distinct_reused_input_conditions": len(conditions),
+               "duplicate_canonical_policy_checks": duplicate_checks,
                "operator_container_audits": len(operators), "operator_summary": operator_summary,
                "limitations": [
                    "Decoder cases reuse one discovery and four older holdout inputs; not independent new prompts",
