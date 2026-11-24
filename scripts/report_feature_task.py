@@ -6,7 +6,7 @@ import csv
 import json
 from pathlib import Path
 
-from activation_pilot import ROOT, digest, revision, write_json
+from activation_pilot import ROOT, digest, write_json
 from archive_feature_task import MANIFEST, load_report, verify
 from feature_task_analysis import summarize
 
@@ -29,7 +29,7 @@ def main():
     if len(names) != len(set(names)):
         parser.error("duplicate run names")
     policies, comparisons, queries = [], [], []
-    summary = {"schema": 1, "analysis_experiments": revision(ROOT), "runs": {},
+    summary = {"schema": 1, "runs": {},
                "source_sha256": {name: digest(ROOT / "scripts" / name) for name in (
                    "report_feature_task.py", "feature_task_analysis.py", "archive_feature_task.py")}}
     allocations = set()
