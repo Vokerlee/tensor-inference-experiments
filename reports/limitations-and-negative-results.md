@@ -61,3 +61,20 @@ losses against uniform INT8 are2.0/2.1pp. Balanced rank4 gains1.167pp over neare
 QKV4, but its declared family lower bound remains below zero. All primary
 screens fail. Retain the complete result; do not select a favorable100-image
 point estimate or descriptor-MSE ranking as a replacement acceptance criterion.
+
+## Transform precision and source support
+
+[Complete Winograd study](2026-11-24-winograd.md) retains all comparisons.
+Shape-fit one-axis selection loses follow-up pixel fidelity despite favorable
+discovery; all-layer one-axis improves fidelity while increasing vector work.
+Support-conditioned causal geometry gives small mixed per-input changes and no
+consistent free quality improvement. INT4 feedback does not recover INT8 pixel
+fidelity. Larger-tile local group32/BF16-weight improvements do not establish
+full W8/K256 quality, whose numerical contract differs.
+
+The shape-only mixed BF16-F4/eight-bit-F2 control is a stronger baseline, not a
+new adaptive algorithm. Its improved four-input pixel-MSE/packet point does not
+establish energy savings: multiplier precision, gating, weight movement,
+state/ports and array scheduling remain necessary costs. Preserve both positive
+and negative points rather than treating a local metric or fewer packets as a
+whole-system result.
